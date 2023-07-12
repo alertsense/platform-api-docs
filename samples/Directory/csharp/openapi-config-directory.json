@@ -1,0 +1,6 @@
+{
+    "packageName": "Konexus.Directory.ApiClient",
+    "library": "httpclient",
+    "optionalProjectFile": false,
+    "sourceFolder": "./"
+}

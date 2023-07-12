@@ -1,0 +1,3597 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Public Directory API",
+    "description": "<p>Working draft of the Konexus Public User directory API.</p><p>This API will be used to allow citizens to create and manage their UserProfiles including contact information and notification preferences. UserProfiles are allowed to contain multiple Emails, Phones, and Locations.</p><p>Weather Notification subscriptions are currently missing from the specification.",
+    "contact": {
+      "name": "Konexus Engineering Team",
+      "url": "https://bitbucket.org/AlertSense/platform-api-docs/src/dev/",
+      "email": "dev@konexus.com"
+    },
+    "version": "4.0.5"
+  },
+  "paths": {
+    "/{tenantId}/directory/{directoryId}/groups/discover": {
+      "get": {
+        "tags": [
+          "Groups"
+        ],
+        "summary": "Retrieves a list of Nested Public Groups for the targeted Tenant. These Groups can be joined if the current user has a UserProfile in the targeted Tenant.",
+        "operationId": "Groups_DiscoverGroups",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "directoryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupSummaryPagedApiResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      }
+    },
+    "/{realm}/directory/meta/languages": {
+      "get": {
+        "tags": [
+          "Meta"
+        ],
+        "summary": "Returns the Languages supported by the platform for Written and Spoken translation.",
+        "operationId": "Meta_GetLanguages",
+        "parameters": [
+          {
+            "name": "realm",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AvailableLanguagesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      }
+    },
+    "/{realm}/directory/meta/timezones": {
+      "get": {
+        "tags": [
+          "Meta"
+        ],
+        "summary": "Returns the Languages supported by the platform for Written and Spoken translation.",
+        "operationId": "Meta_GetTimeZones",
+        "parameters": [
+          {
+            "name": "realm",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AvailableTimeZonesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      }
+    },
+    "/verifications/email": {
+      "get": {
+        "tags": [
+          "Test"
+        ],
+        "operationId": "Test_GetPendingEmailVerifications",
+        "parameters": [
+          {
+            "name": "emailAddress",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PendingVerificationAttempt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      }
+    },
+    "/verifications/phone": {
+      "get": {
+        "tags": [
+          "Test"
+        ],
+        "operationId": "Test_GetPendingPhoneVerifications",
+        "parameters": [
+          {
+            "name": "phoneNumber",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PendingVerificationAttempt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      }
+    },
+    "/{tenantId}/directory/{directoryId}/users": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Create a new UserProfile in the targeted Tenant and Directory",
+        "operationId": "User_Create",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "directoryId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserProfileCommand"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserProfileCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserProfileCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserProfileCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfile"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      }
+    },
+    "/{tenantId}/directory/{directoryId}/users/{userId}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Retrieve a UserProfile that belongs to a specific Tenant and Directory by the User's Identifier.",
+        "operationId": "User_GetById",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "directoryId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfile"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Modify the base information of the targeted UserProfile.",
+        "operationId": "User_Update",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "directoryId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserProfileCommand"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserProfileCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserProfileCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserProfileCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      }
+    },
+    "/{tenantId}/directory/{directoryId}/users/query": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Retrieve a UserProfile that belongs to a specific Tenant and Directory by the User's Identifier.",
+        "operationId": "User_FindUsersByQuery",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "directoryId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FindUserQuery"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FindUserQuery"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FindUserQuery"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FindUserQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfileSummaryPagedApiResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      }
+    },
+    "/{tenantId}/directory/{directoryId}/users/{userId}/contact/emails/{emailAddress}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Retrieves details of a specific Email addresses for the targeted UserProfile.",
+        "operationId": "User_GetEmail",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "directoryId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "emailAddress",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailAddress"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Removes an email from the targeted UserProfile.",
+        "operationId": "User_RemoveEmail",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "directoryId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "emailAddress",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      }
+    },
+    "/{tenantId}/directory/{directoryId}/users/{userId}/contact/emails": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Create a new email to the target UserProfile if the existing email address doesn't already exist.",
+        "operationId": "User_AddNewEmail",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "directoryId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddEmailCommand"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddEmailCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddEmailCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddEmailCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailAddress"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      }
+    },
+    "/{tenantId}/directory/{directoryId}/users/{userId}/contact/emails/{emailAddress}/verification/resendToken": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Retrieve a ResendVerificationToken to trigger the Verification Code process. Returns 429 if too many ResendVerificationTokens have been requested in the allowed time.",
+        "operationId": "User_GetEmailResendVerificationToken",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "directoryId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "emailAddress",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResendVerificationToken"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      }
+    },
+    "/{tenantId}/directory/{directoryId}/users/{userId}/contact/emails/{emailAddress}/verification/resend": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Send a new verification Email Address to the targeted Email. Requires a ResendVerificationToken to prevent excessive sending of emails to the targeted Email Address.",
+        "operationId": "User_ResendEmailVerification",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "directoryId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "emailAddress",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Required to trigger the sending of the Verification Code to the targeted Email",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      }
+    },
+    "/{tenantId}/directory/{directoryId}/users/{userId}/contact/emails/{emailAddress}/verification/verify": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Compares the last verification code sent through Email to and changes the verification status of the targeted Email Address.",
+        "operationId": "User_VerifyEmail",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "directoryId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "emailAddress",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerificationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerificationResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      }
+    },
+    "/{tenantId}/directory/{directoryId}/users/{userId}/contact/phones/{phoneNumber}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Retrieves details of a specific Phone Number for the targeted UserProfile.",
+        "operationId": "User_GetPhone",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "directoryId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "phoneNumber",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PhoneNumber"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Removes an Phone Number from the targeted UserProfile.",
+        "operationId": "User_RemovePhone",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "directoryId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "phoneNumber",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      }
+    },
+    "/{tenantId}/directory/{directoryId}/users/{userId}/contact/phones": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Create a new email to the target UserProfile if the existing email address doesn't already exist.",
+        "operationId": "User_AddNewPhone",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "directoryId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddPhoneCommand"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddPhoneCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddPhoneCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddPhoneCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      }
+    },
+    "/{tenantId}/directory/{directoryId}/users/{userId}/contact/phones/{phoneNumber}/verification/resendToken": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Retrieve a ResendVerificationToken to trigger the Verification Code process. Returns 429 if too many ResendVerificationTokens have been requested in the allowed time.",
+        "operationId": "User_GetPhoneResendVerificationToken",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "directoryId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "phoneNumber",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResendVerificationToken"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      }
+    },
+    "/{tenantId}/directory/{directoryId}/users/{userId}/contact/phones/{phoneNumber}/verification/resend": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Send a new verification code to the targeted Phone Number  through SMS. Requires a ResendVerificationToken to prevent excessive messaging of SMS messages to the targeted Phone Number.",
+        "operationId": "User_ResendPhonelVerification",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "directoryId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "phoneNumber",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Required to trigger the sending of the Verification Code to the targeted Email",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      }
+    },
+    "/{tenantId}/directory/{directoryId}/users/{userId}/contact/phones/{phoneNumber}/verification/verify": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Compares the last verification code sent through SMS to and changes the verification status of the targeted Phone Number.",
+        "operationId": "User_VerifyPhone",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "directoryId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "phoneNumber",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerificationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      }
+    },
+    "/{tenantId}/directory/{directoryId}/users/{userId}/notifications/memberships": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Add the targeted UserProfile as a member of the targeted Group. Allows the targeted UserProfile to receive notifications sent to the targeted Group",
+        "operationId": "User_AddGroupMembership",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "directoryId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      }
+    },
+    "/{tenantId}/directory/{directoryId}/users/{userId}/notifications/memberships/{groupId}": {
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Removes the targeted UserProfile as a Member from the targeted Group. This prevents the targeted UserProfile from receiving notifications sent to the targeted Group.",
+        "operationId": "User_RemoveGroupMembership",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "directoryId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "groupId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      }
+    },
+    "/{tenantId}/directory/{directoryId}/users/{userId}/notifications/locations/{locationId}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Retrieves details of a specific Location for the targeted UserProfile.",
+        "operationId": "User_GetLocation",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "directoryId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "locationId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Location"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Remove an existing Location from the targeted UserProfile.",
+        "operationId": "User_RemoveLocation",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "directoryId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "locationId",
+            "in": "path",
+            "description": "Id of the specific location to remove.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      }
+    },
+    "/{tenantId}/directory/{directoryId}/users/{userId}/notifications/locations": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Create a new Location for the targeted UserProfile.",
+        "operationId": "User_AddNewLocation",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "directoryId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddLocationCommand"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddLocationCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddLocationCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddLocationCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AddEmailCommand": {
+        "required": [
+          "makePrimary",
+          "type",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ContactTargetType"
+          },
+          "display": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "makePrimary": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddLocationCommand": {
+        "required": [
+          "address",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "geoLocation": {
+            "$ref": "#/components/schemas/GeoLocation"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddPhoneCommand": {
+        "required": [
+          "makePrimary",
+          "mobilePhone",
+          "type",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ContactTargetType"
+          },
+          "display": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "makePrimary": {
+            "type": "boolean"
+          },
+          "mobilePhone": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Address": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "formatted": {
+            "type": "string",
+            "description": "The full mailing address, formatted for display or use\r\nwith a mailing label.  This attribute MAY contain newlines.",
+            "nullable": true
+          },
+          "streetAddress": {
+            "type": "string",
+            "description": "The full street address component, which may\r\ninclude house number, street name, P.O. box, and multi-line\r\nextended street address information.  This attribute MAY\r\ncontain newlines.",
+            "nullable": true
+          },
+          "locality": {
+            "type": "string",
+            "description": "The city or locality component.",
+            "nullable": true
+          },
+          "region": {
+            "type": "string",
+            "description": "The state or region component.",
+            "nullable": true
+          },
+          "postalCode": {
+            "type": "string",
+            "description": "The zip code or postal code component.",
+            "nullable": true
+          },
+          "country": {
+            "type": "string",
+            "description": "The country name component.When specified, the value\r\nMUST be in ISO 3166-1 \"alpha-2\" code format [ISO3166]; e.g.,\r\nthe United States and Sweden are \"US\" and \"SE\", respectively.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AvailableLanguagesResponse": {
+        "type": "object",
+        "properties": {
+          "writtenLanguages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LanguageCode"
+            },
+            "nullable": true
+          },
+          "spokenLanguages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LanguageCode"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AvailableTimeZonesResponse": {
+        "type": "object",
+        "properties": {
+          "timeZones": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TimeZoneSummary"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "BadRequestErrorMessage": {
+        "type": "object",
+        "properties": {
+          "errorCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "exception": {
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Details of an Error that has occurred."
+      },
+      "BadRequestResponse": {
+        "type": "object",
+        "properties": {
+          "errorMessages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BadRequestErrorMessage"
+            },
+            "description": "Collection of Errors that caused the request to fail.",
+            "nullable": true
+          },
+          "isValidationError": {
+            "type": "boolean"
+          },
+          "validationErrors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ValidationFailure"
+            },
+            "description": "Known validation errors the caused the request to fail. Resolving all of these failures does not ensure the request will be processed successfully.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ContactInformation": {
+        "type": "object",
+        "properties": {
+          "emails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EmailAddress"
+            },
+            "description": "Email addresses for the User.  The value SHOULD be specified\r\naccording to [RFC5321].  Service providers SHOULD canonicalize the\r\nvalue according to [RFC5321], e.g., \"bjensen@example.com\" instead\r\nof \"bjensen@EXAMPLE.COM\".  The \"display\" sub-attribute MAY be used\r\nto return the canonicalized representation of the email value.\r\nThe \"type\" sub-attribute is used to provide a classification\r\nmeaningful to the (human) user.  The user interface should\r\nencourage the use of basic values of \"work\", \"home\", and \"other\"\r\nand MAY allow additional type values to be used at the discretion\r\nof SCIM clients.",
+            "nullable": true
+          },
+          "phones": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PhoneNumber"
+            },
+            "nullable": true
+          },
+          "mobileApps": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MobileApp"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ContactTargetType": {
+        "enum": [
+          "Personal",
+          "Work"
+        ],
+        "type": "string"
+      },
+      "CreateEmailAddress": {
+        "required": [
+          "primary",
+          "type",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ContactTargetType"
+          },
+          "primary": {
+            "type": "boolean",
+            "description": "A Boolean value indicating the 'primary' or preferred attribute\r\nvalue for this attribute, e.g., the preferred mailing address or\r\nthe primary email address.The primary attribute value \"true\"\r\nMUST appear no more than once.If not specified, the value of\r\n\"primary\" SHALL be assumed to be \"false\"."
+          },
+          "value": {
+            "minLength": 1,
+            "type": "string",
+            "description": "The attribute's significant value, e.g., email address, phone\r\nnumber."
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateGroupMembership": {
+        "required": [
+          "groupId"
+        ],
+        "type": "object",
+        "properties": {
+          "groupId": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateLocation": {
+        "required": [
+          "address"
+        ],
+        "type": "object",
+        "properties": {
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreatePhoneNumber": {
+        "required": [
+          "primary",
+          "type",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ContactTargetType"
+          },
+          "primary": {
+            "type": "boolean",
+            "description": "A Boolean value indicating the 'primary' or preferred attribute\r\nvalue for this attribute, e.g., the preferred mailing address or\r\nthe primary email address.The primary attribute value \"true\"\r\nMUST appear no more than once.If not specified, the value of\r\n\"primary\" SHALL be assumed to be \"false\"."
+          },
+          "value": {
+            "minLength": 1,
+            "type": "string",
+            "description": "The attribute's significant value, e.g., email address, phone\r\nnumber."
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateUserProfileCommand": {
+        "required": [
+          "firstName",
+          "lastName"
+        ],
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "lastName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "displayName": {
+            "type": "string",
+            "description": "Allow the user to customize their display name separate from their First and Last names. If left empty, the DisplayName will be calculated by concatenating FirstName and LastName.",
+            "nullable": true
+          },
+          "preferredWrittenLanguage": {
+            "type": "string",
+            "description": "Indicates the user's preferred written language and is\r\ngenerally used for selecting a localized user interface.  The\r\nvalue indicates the set of natural languages that are preferred.\r\nThe format of the value is the same as the HTTP Accept-Language\r\nheader field (not including \"Accept-Language:\") and is specified\r\nin Section 5.3.5 of [RFC7231].  The intent of this value is to\r\nenable cloud applications to perform matching of language tags\r\n[RFC4647] to the user's language preferences, regardless of what\r\nmay be indicated by a user agent (which might be shared), or in an\r\ninteraction that does not involve a user (such as in a delegated\r\nOAuth 2.0 [RFC6749] style interaction) where normal HTTP\r\nAccept-Language header negotiation cannot take place.",
+            "nullable": true
+          },
+          "preferredSpokenLanguage": {
+            "type": "string",
+            "description": "Indicates the user's preferred poken language and is\r\ngenerally used for selecting a localized user interface.  The\r\nvalue indicates the set of natural languages that are preferred.\r\nThe format of the value is the same as the HTTP Accept-Language\r\nheader field (not including \"Accept-Language:\") and is specified\r\nin Section 5.3.5 of [RFC7231].  The intent of this value is to\r\nenable cloud applications to perform matching of language tags\r\n[RFC4647] to the user's language preferences, regardless of what\r\nmay be indicated by a user agent (which might be shared), or in an\r\ninteraction that does not involve a user (such as in a delegated\r\nOAuth 2.0 [RFC6749] style interaction) where normal HTTP\r\nAccept-Language header negotiation cannot take place.",
+            "nullable": true
+          },
+          "locale": {
+            "type": "string",
+            "description": "Used to indicate the User's default location for purposes of\r\nlocalizing such items as currency, date time format, or numerical\r\nrepresentations.  A valid value is a language tag as defined in\r\n[RFC5646].  Computer languages are explicitly excluded.\r\n\r\nA language tag is a sequence of one or more case-insensitive\r\nsub-tags, each separated by a hyphen character (\"-\", %x2D).  For\r\nbackward compatibility, servers MAY accept tags separated by an\r\nunderscore character (\"_\", %x5F).  In most cases, a language tag\r\nconsists of a primary language sub-tag that identifies a broad\r\nfamily of related languages (e.g., \"en\" = English) and that is\r\noptionally followed by a series of sub-tags that refine or narrow\r\nthat language's range (e.g., \"en-CA\" = the variety of English as\r\ncommunicated in Canada).  Whitespace is not allowed within a\r\nlanguage tag.  Example tags include:\r\n\r\nfr, en-US, es-419, az-Arab, x-pig-latin, man-Nkoo-GN\r\n\r\nSee [RFC5646] for further information.",
+            "nullable": true
+          },
+          "timezone": {
+            "type": "string",
+            "description": "The User's time zone, in IANA Time Zone database format [RFC6557],\r\nalso known as the \"Olson\" time zone database format [Olson-TZ]\r\n(e.g., \"America/Los_Angeles\").",
+            "nullable": true
+          },
+          "emails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreateEmailAddress"
+            },
+            "nullable": true
+          },
+          "phones": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreatePhoneNumber"
+            },
+            "nullable": true
+          },
+          "locations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreateLocation"
+            },
+            "nullable": true
+          },
+          "memberships": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreateGroupMembership"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "EmailAddress": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ContactTargetType"
+          },
+          "primary": {
+            "type": "boolean",
+            "description": "A Boolean value indicating the 'primary' or preferred attribute\r\nvalue for this attribute, e.g., the preferred mailing address or\r\nthe primary email address.The primary attribute value \"true\"\r\nMUST appear no more than once.If not specified, the value of\r\n\"primary\" SHALL be assumed to be \"false\"."
+          },
+          "display": {
+            "type": "string",
+            "description": "A human-readable name, primarily used for display purposes and\r\nhaving a mutability of \"immutable\".",
+            "nullable": true
+          },
+          "value": {
+            "type": "string",
+            "description": "The attribute's significant value, e.g., email address, phone\r\nnumber.",
+            "nullable": true
+          },
+          "verification": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          }
+        },
+        "additionalProperties": false
+      },
+      "FindUserQuery": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GeoLocation": {
+        "type": "object",
+        "properties": {
+          "latitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GroupSummary": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "default": {
+            "type": "boolean"
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GroupSummary"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GroupSummaryPagedApiResponse": {
+        "type": "object",
+        "properties": {
+          "totalItemCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GroupSummary"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LanguageCode": {
+        "type": "object",
+        "properties": {
+          "displayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Location": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "geoLocation": {
+            "$ref": "#/components/schemas/GeoLocation"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MobileApp": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "deviceType": {
+            "type": "string",
+            "nullable": true
+          },
+          "applicationId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "NestedReference": {
+        "type": "object",
+        "properties": {
+          "parent": {
+            "$ref": "#/components/schemas/NestedReference"
+          },
+          "path": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "uri": {
+            "type": "string",
+            "format": "uri",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "NotificationPreferences": {
+        "type": "object",
+        "properties": {
+          "locations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Location"
+            },
+            "nullable": true
+          },
+          "memberships": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NestedReference"
+            },
+            "nullable": true
+          },
+          "preferredWrittenLanguage": {
+            "type": "string",
+            "description": "Indicates the user's preferred written or spoken languages and is\r\ngenerally used for selecting a localized user interface.  The\r\nvalue indicates the set of natural languages that are preferred.\r\nThe format of the value is the same as the HTTP Accept-Language\r\nheader field (not including \"Accept-Language:\") and is specified\r\nin Section 5.3.5 of [RFC7231].  The intent of this value is to\r\nenable cloud applications to perform matching of language tags\r\n[RFC4647] to the user's language preferences, regardless of what\r\nmay be indicated by a user agent (which might be shared), or in an\r\ninteraction that does not involve a user (such as in a delegated\r\nOAuth 2.0 [RFC6749] style interaction) where normal HTTP\r\nAccept-Language header negotiation cannot take place.",
+            "nullable": true
+          },
+          "preferredSpokenLanguage": {
+            "type": "string",
+            "nullable": true
+          },
+          "locale": {
+            "type": "string",
+            "description": "Used to indicate the User's default location for purposes of\r\nlocalizing such items as currency, date time format, or numerical\r\nrepresentations.  A valid value is a language tag as defined in\r\n[RFC5646].  Computer languages are explicitly excluded.\r\n\r\nA language tag is a sequence of one or more case-insensitive\r\nsub-tags, each separated by a hyphen character (\"-\", %x2D).  For\r\nbackward compatibility, servers MAY accept tags separated by an\r\nunderscore character (\"_\", %x5F).  In most cases, a language tag\r\nconsists of a primary language sub-tag that identifies a broad\r\nfamily of related languages (e.g., \"en\" = English) and that is\r\noptionally followed by a series of sub-tags that refine or narrow\r\nthat language's range (e.g., \"en-CA\" = the variety of English as\r\ncommunicated in Canada).  Whitespace is not allowed within a\r\nlanguage tag.  Example tags include:\r\n\r\nfr, en-US, es-419, az-Arab, x-pig-latin, man-Nkoo-GN\r\n\r\nSee [RFC5646] for further information.",
+            "nullable": true
+          },
+          "timezone": {
+            "type": "string",
+            "description": "The User's time zone, in IANA Time Zone database format [RFC6557],\r\nalso known as the \"Olson\" time zone database format [Olson-TZ]\r\n(e.g., \"America/Los_Angeles\").",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PendingDeviceType": {
+        "enum": [
+          0,
+          1
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "PendingVerificationAttempt": {
+        "type": "object",
+        "properties": {
+          "device": {
+            "type": "string",
+            "nullable": true
+          },
+          "verificationCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "deviceType": {
+            "$ref": "#/components/schemas/PendingDeviceType"
+          },
+          "displayMessage": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateAttempted": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PhoneNumber": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ContactTargetType"
+          },
+          "primary": {
+            "type": "boolean",
+            "description": "A Boolean value indicating the 'primary' or preferred attribute\r\nvalue for this attribute, e.g., the preferred mailing address or\r\nthe primary email address.The primary attribute value \"true\"\r\nMUST appear no more than once.If not specified, the value of\r\n\"primary\" SHALL be assumed to be \"false\"."
+          },
+          "display": {
+            "type": "string",
+            "description": "A human-readable name, primarily used for display purposes and\r\nhaving a mutability of \"immutable\".",
+            "nullable": true
+          },
+          "value": {
+            "type": "string",
+            "description": "The attribute's significant value, e.g., email address, phone\r\nnumber.",
+            "nullable": true
+          },
+          "verification": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          },
+          "deviceType": {
+            "$ref": "#/components/schemas/PhoneType"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PhoneType": {
+        "enum": [
+          "Unknown",
+          "Mobile",
+          "Landline"
+        ],
+        "type": "string"
+      },
+      "ProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": { }
+      },
+      "Reference": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "uri": {
+            "type": "string",
+            "format": "uri",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ResendVerificationToken": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TimeZoneSummary": {
+        "type": "object",
+        "properties": {
+          "standardName": {
+            "type": "string",
+            "description": "The display name of the time zone's standard time.",
+            "nullable": true,
+            "readOnly": true
+          },
+          "id": {
+            "type": "string",
+            "description": "The time zone identifier.",
+            "nullable": true,
+            "readOnly": true
+          },
+          "displayName": {
+            "type": "string",
+            "description": "The time zone's general display name.",
+            "nullable": true,
+            "readOnly": true
+          },
+          "daylightName": {
+            "type": "string",
+            "description": "Gets the display name for the current time zone's daylight saving time.",
+            "nullable": true,
+            "readOnly": true
+          },
+          "baseUtcOffset": {
+            "type": "string",
+            "format": "date-span",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateUserProfileCommand": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "displayName": {
+            "type": "string",
+            "description": "Allow the user to customize their display name separate from their First and Last names. If left empty, the DisplayName will be calculated by concatenating FirstName and LastName.",
+            "nullable": true
+          },
+          "preferredWrittenLanguage": {
+            "type": "string",
+            "description": "Indicates the user's preferred written or spoken languages and is\r\ngenerally used for selecting a localized user interface.  The\r\nvalue indicates the set of natural languages that are preferred.\r\nThe format of the value is the same as the HTTP Accept-Language\r\nheader field (not including \"Accept-Language:\") and is specified\r\nin Section 5.3.5 of [RFC7231].  The intent of this value is to\r\nenable cloud applications to perform matching of language tags\r\n[RFC4647] to the user's language preferences, regardless of what\r\nmay be indicated by a user agent (which might be shared), or in an\r\ninteraction that does not involve a user (such as in a delegated\r\nOAuth 2.0 [RFC6749] style interaction) where normal HTTP\r\nAccept-Language header negotiation cannot take place.",
+            "nullable": true
+          },
+          "preferredSpokenLanguage": {
+            "type": "string",
+            "nullable": true
+          },
+          "locale": {
+            "type": "string",
+            "description": "Used to indicate the User's default location for purposes of\r\nlocalizing such items as currency, date time format, or numerical\r\nrepresentations.  A valid value is a language tag as defined in\r\n[RFC5646].  Computer languages are explicitly excluded.\r\n\r\nA language tag is a sequence of one or more case-insensitive\r\nsub-tags, each separated by a hyphen character (\"-\", %x2D).  For\r\nbackward compatibility, servers MAY accept tags separated by an\r\nunderscore character (\"_\", %x5F).  In most cases, a language tag\r\nconsists of a primary language sub-tag that identifies a broad\r\nfamily of related languages (e.g., \"en\" = English) and that is\r\noptionally followed by a series of sub-tags that refine or narrow\r\nthat language's range (e.g., \"en-CA\" = the variety of English as\r\ncommunicated in Canada).  Whitespace is not allowed within a\r\nlanguage tag.  Example tags include:\r\n\r\nfr, en-US, es-419, az-Arab, x-pig-latin, man-Nkoo-GN\r\n\r\nSee [RFC5646] for further information.",
+            "nullable": true
+          },
+          "timezone": {
+            "type": "string",
+            "description": "The User's time zone, in IANA Time Zone database format [RFC6557],\r\nalso known as the \"Olson\" time zone database format [Olson-TZ]\r\n(e.g., \"America/Los_Angeles\").",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserProfile": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "displayName": {
+            "type": "string",
+            "description": "The name of the user, suitable for display to end-users.  Each\r\nuser returned MAY include a non-empty displayName value.  The name\r\nSHOULD be the full name of the User being described, if known\r\n(e.g., \"Babs Jensen\" or \"Ms. Barbara J Jensen, III\") but MAY be a\r\nusername or handle, if that is all that is available (e.g.,\r\n\"bjensen\").  The value provided SHOULD be the primary textual\r\nlabel by which this User is normally displayed by the service\r\nprovider when presenting it to end-users.",
+            "nullable": true
+          },
+          "contactInformation": {
+            "$ref": "#/components/schemas/ContactInformation"
+          },
+          "notificationPreferences": {
+            "$ref": "#/components/schemas/NotificationPreferences"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserProfileSummary": {
+        "type": "object",
+        "properties": {
+          "profile": {
+            "$ref": "#/components/schemas/Reference"
+          },
+          "tenant": {
+            "$ref": "#/components/schemas/Reference"
+          },
+          "directory": {
+            "$ref": "#/components/schemas/Reference"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserProfileSummaryPagedApiResponse": {
+        "type": "object",
+        "properties": {
+          "totalItemCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserProfileSummary"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ValidationFailure": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "errorCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "errorMessage": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "VerificationAttempt": {
+        "type": "object",
+        "properties": {
+          "displayMessage": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateAttempted": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "VerificationResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "VerificationStatus": {
+        "type": "object",
+        "properties": {
+          "verified": {
+            "type": "boolean"
+          },
+          "lastVerificationAttempt": {
+            "$ref": "#/components/schemas/VerificationAttempt"
+          },
+          "verificationDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "Oauth2Scheme": {
+        "type": "oauth2",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "https://auth.dev.alertsense.io/connect/authorize",
+            "scopes": {
+              "tamarack": "Hickory",
+              "content": "ExternalID",
+              "elm": "GIS",
+              "directory:public": "Public User Directory Access"
+            }
+          },
+          "clientCredentials": {
+            "tokenUrl": "https://auth.dev.alertsense.io/connect/token",
+            "scopes": {
+              "tamarack": "Hickory",
+              "content": "ExternalID",
+              "elm": "GIS",
+              "directory:public": "Public User Directory Access"
+            }
+          }
+        }
+      },
+      "JwtBearerTokenScheme": {
+        "type": "apiKey",
+        "description": "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+  }
+}

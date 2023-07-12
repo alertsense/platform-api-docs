@@ -1,0 +1,8 @@
+{
+  "name": "konexus-platform-api-samples",
+  "version": "1.0.0",
+  "scripts": {
+    "openapi:directory-csharp": "openapi-generator-cli generate -i ../modules/Directory/directory-openapi-spec.json -g csharp-netcore -o ./Directory/csharp -c ./Directory/csharp/openapi-config-directory.json --global-property=apiTests=true  --global-property=modelTests=false --global-property=apiDocs=false --global-property=modelDocs=false"
+  },
+  "private": true
+}

@@ -1,0 +1,3152 @@
+openapi: 3.0.1
+info:
+  contact:
+    email: dev@konexus.com
+    name: Konexus Engineering Team
+    url: https://bitbucket.org/AlertSense/platform-api-docs/src/dev/
+  description: "<p>Working draft of the Konexus Public User directory API.</p><p>This\
+    \ API will be used to allow citizens to create and manage their UserProfiles including\
+    \ contact information and notification preferences. UserProfiles are allowed to\
+    \ contain multiple Emails, Phones, and Locations.</p><p>Weather Notification subscriptions\
+    \ are currently missing from the specification."
+  title: Public Directory API
+  version: 4.0.5
+servers:
+- url: /
+paths:
+  /{tenantId}/directory/{directoryId}/groups/discover:
+    get:
+      operationId: Groups_DiscoverGroups
+      parameters:
+      - explode: false
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: directoryId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupSummaryPagedApiResponse'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
+      summary: Retrieves a list of Nested Public Groups for the targeted Tenant. These
+        Groups can be joined if the current user has a UserProfile in the targeted
+        Tenant.
+      tags:
+      - Groups
+  /{realm}/directory/meta/languages:
+    get:
+      operationId: Meta_GetLanguages
+      parameters:
+      - explode: false
+        in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AvailableLanguagesResponse'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
+      summary: Returns the Languages supported by the platform for Written and Spoken
+        translation.
+      tags:
+      - Meta
+  /{realm}/directory/meta/timezones:
+    get:
+      operationId: Meta_GetTimeZones
+      parameters:
+      - explode: false
+        in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AvailableTimeZonesResponse'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
+      summary: Returns the Languages supported by the platform for Written and Spoken
+        translation.
+      tags:
+      - Meta
+  /verifications/email:
+    get:
+      operationId: Test_GetPendingEmailVerifications
+      parameters:
+      - explode: true
+        in: query
+        name: emailAddress
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PendingVerificationAttempt'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
+      tags:
+      - Test
+  /verifications/phone:
+    get:
+      operationId: Test_GetPendingPhoneVerifications
+      parameters:
+      - explode: true
+        in: query
+        name: phoneNumber
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PendingVerificationAttempt'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
+      tags:
+      - Test
+  /{tenantId}/directory/{directoryId}/users:
+    post:
+      operationId: User_Create
+      parameters:
+      - description: ""
+        explode: false
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: directoryId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/CreateUserProfileCommand'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserProfileCommand'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserProfileCommand'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/CreateUserProfileCommand'
+        description: ""
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
+      summary: Create a new UserProfile in the targeted Tenant and Directory
+      tags:
+      - User
+  /{tenantId}/directory/{directoryId}/users/{userId}:
+    get:
+      operationId: User_GetById
+      parameters:
+      - description: ""
+        explode: false
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: directoryId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
+      summary: Retrieve a UserProfile that belongs to a specific Tenant and Directory
+        by the User's Identifier.
+      tags:
+      - User
+    put:
+      operationId: User_Update
+      parameters:
+      - description: ""
+        explode: false
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: directoryId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserProfileCommand'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserProfileCommand'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserProfileCommand'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserProfileCommand'
+        description: ""
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
+      summary: Modify the base information of the targeted UserProfile.
+      tags:
+      - User
+  /{tenantId}/directory/{directoryId}/users/query:
+    post:
+      operationId: User_FindUsersByQuery
+      parameters:
+      - description: ""
+        explode: false
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: directoryId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/FindUserQuery'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FindUserQuery'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/FindUserQuery'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/FindUserQuery'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfileSummaryPagedApiResponse'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
+      summary: Retrieve a UserProfile that belongs to a specific Tenant and Directory
+        by the User's Identifier.
+      tags:
+      - User
+  /{tenantId}/directory/{directoryId}/users/{userId}/contact/emails/{emailAddress}:
+    delete:
+      operationId: User_RemoveEmail
+      parameters:
+      - description: ""
+        explode: false
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: directoryId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: emailAddress
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
+      summary: Removes an email from the targeted UserProfile.
+      tags:
+      - User
+    get:
+      operationId: User_GetEmail
+      parameters:
+      - description: ""
+        explode: false
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: directoryId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: emailAddress
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailAddress'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
+      summary: Retrieves details of a specific Email addresses for the targeted UserProfile.
+      tags:
+      - User
+  /{tenantId}/directory/{directoryId}/users/{userId}/contact/emails:
+    post:
+      operationId: User_AddNewEmail
+      parameters:
+      - description: ""
+        explode: false
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: directoryId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/AddEmailCommand'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddEmailCommand'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/AddEmailCommand'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/AddEmailCommand'
+        description: ""
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailAddress'
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
+      summary: Create a new email to the target UserProfile if the existing email
+        address doesn't already exist.
+      tags:
+      - User
+  /{tenantId}/directory/{directoryId}/users/{userId}/contact/emails/{emailAddress}/verification/resendToken:
+    get:
+      operationId: User_GetEmailResendVerificationToken
+      parameters:
+      - description: ""
+        explode: false
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: directoryId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: emailAddress
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResendVerificationToken'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Too Many Requests
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
+      summary: Retrieve a ResendVerificationToken to trigger the Verification Code
+        process. Returns 429 if too many ResendVerificationTokens have been requested
+        in the allowed time.
+      tags:
+      - User
+  /{tenantId}/directory/{directoryId}/users/{userId}/contact/emails/{emailAddress}/verification/resend:
+    post:
+      operationId: User_ResendEmailVerification
+      parameters:
+      - description: ""
+        explode: false
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: directoryId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: emailAddress
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              type: string
+          application/json:
+            schema:
+              type: string
+          text/json:
+            schema:
+              type: string
+          application/*+json:
+            schema:
+              type: string
+        description: Required to trigger the sending of the Verification Code to the
+          targeted Email
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
+      summary: Send a new verification Email Address to the targeted Email. Requires
+        a ResendVerificationToken to prevent excessive sending of emails to the targeted
+        Email Address.
+      tags:
+      - User
+  /{tenantId}/directory/{directoryId}/users/{userId}/contact/emails/{emailAddress}/verification/verify:
+    post:
+      operationId: User_VerifyEmail
+      parameters:
+      - description: ""
+        explode: false
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: directoryId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: emailAddress
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              type: string
+          application/json:
+            schema:
+              type: string
+          text/json:
+            schema:
+              type: string
+          application/*+json:
+            schema:
+              type: string
+        description: ""
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerificationResponse'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerificationResponse'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
+      summary: Compares the last verification code sent through Email to and changes
+        the verification status of the targeted Email Address.
+      tags:
+      - User
+  /{tenantId}/directory/{directoryId}/users/{userId}/contact/phones/{phoneNumber}:
+    delete:
+      operationId: User_RemovePhone
+      parameters:
+      - description: ""
+        explode: false
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: directoryId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: phoneNumber
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
+      summary: Removes an Phone Number from the targeted UserProfile.
+      tags:
+      - User
+    get:
+      operationId: User_GetPhone
+      parameters:
+      - description: ""
+        explode: false
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: directoryId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: phoneNumber
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneNumber'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
+      summary: Retrieves details of a specific Phone Number for the targeted UserProfile.
+      tags:
+      - User
+  /{tenantId}/directory/{directoryId}/users/{userId}/contact/phones:
+    post:
+      operationId: User_AddNewPhone
+      parameters:
+      - description: ""
+        explode: false
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: directoryId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/AddPhoneCommand'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddPhoneCommand'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/AddPhoneCommand'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/AddPhoneCommand'
+        description: ""
+      responses:
+        "201":
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
+      summary: Create a new email to the target UserProfile if the existing email
+        address doesn't already exist.
+      tags:
+      - User
+  /{tenantId}/directory/{directoryId}/users/{userId}/contact/phones/{phoneNumber}/verification/resendToken:
+    get:
+      operationId: User_GetPhoneResendVerificationToken
+      parameters:
+      - description: ""
+        explode: false
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: directoryId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: phoneNumber
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResendVerificationToken'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Too Many Requests
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
+      summary: Retrieve a ResendVerificationToken to trigger the Verification Code
+        process. Returns 429 if too many ResendVerificationTokens have been requested
+        in the allowed time.
+      tags:
+      - User
+  /{tenantId}/directory/{directoryId}/users/{userId}/contact/phones/{phoneNumber}/verification/resend:
+    post:
+      operationId: User_ResendPhonelVerification
+      parameters:
+      - description: ""
+        explode: false
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: directoryId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: phoneNumber
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              type: string
+          application/json:
+            schema:
+              type: string
+          text/json:
+            schema:
+              type: string
+          application/*+json:
+            schema:
+              type: string
+        description: Required to trigger the sending of the Verification Code to the
+          targeted Email
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
+      summary: Send a new verification code to the targeted Phone Number  through
+        SMS. Requires a ResendVerificationToken to prevent excessive messaging of
+        SMS messages to the targeted Phone Number.
+      tags:
+      - User
+  /{tenantId}/directory/{directoryId}/users/{userId}/contact/phones/{phoneNumber}/verification/verify:
+    post:
+      operationId: User_VerifyPhone
+      parameters:
+      - description: ""
+        explode: false
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: directoryId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: phoneNumber
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              type: string
+          application/json:
+            schema:
+              type: string
+          text/json:
+            schema:
+              type: string
+          application/*+json:
+            schema:
+              type: string
+        description: ""
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerificationResponse'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
+      summary: Compares the last verification code sent through SMS to and changes
+        the verification status of the targeted Phone Number.
+      tags:
+      - User
+  /{tenantId}/directory/{directoryId}/users/{userId}/notifications/memberships:
+    post:
+      operationId: User_AddGroupMembership
+      parameters:
+      - description: ""
+        explode: false
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: directoryId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              type: string
+          application/json:
+            schema:
+              type: string
+          text/json:
+            schema:
+              type: string
+          application/*+json:
+            schema:
+              type: string
+        description: ""
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
+      summary: Add the targeted UserProfile as a member of the targeted Group. Allows
+        the targeted UserProfile to receive notifications sent to the targeted Group
+      tags:
+      - User
+  /{tenantId}/directory/{directoryId}/users/{userId}/notifications/memberships/{groupId}:
+    delete:
+      operationId: User_RemoveGroupMembership
+      parameters:
+      - description: ""
+        explode: false
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: directoryId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: groupId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
+      summary: Removes the targeted UserProfile as a Member from the targeted Group.
+        This prevents the targeted UserProfile from receiving notifications sent to
+        the targeted Group.
+      tags:
+      - User
+  /{tenantId}/directory/{directoryId}/users/{userId}/notifications/locations/{locationId}:
+    delete:
+      operationId: User_RemoveLocation
+      parameters:
+      - description: ""
+        explode: false
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: directoryId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Id of the specific location to remove.
+        explode: false
+        in: path
+        name: locationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
+      summary: Remove an existing Location from the targeted UserProfile.
+      tags:
+      - User
+    get:
+      operationId: User_GetLocation
+      parameters:
+      - description: ""
+        explode: false
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: directoryId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: locationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Location'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
+      summary: Retrieves details of a specific Location for the targeted UserProfile.
+      tags:
+      - User
+  /{tenantId}/directory/{directoryId}/users/{userId}/notifications/locations:
+    post:
+      operationId: User_AddNewLocation
+      parameters:
+      - description: ""
+        explode: false
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: directoryId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/AddLocationCommand'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddLocationCommand'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/AddLocationCommand'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/AddLocationCommand'
+        description: ""
+      responses:
+        "201":
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
+      summary: Create a new Location for the targeted UserProfile.
+      tags:
+      - User
+components:
+  schemas:
+    AddEmailCommand:
+      additionalProperties: false
+      example:
+        display: display
+        type: null
+        value: value
+        makePrimary: true
+      properties:
+        type:
+          $ref: '#/components/schemas/ContactTargetType'
+        display:
+          nullable: true
+          type: string
+        value:
+          minLength: 1
+          type: string
+        makePrimary:
+          type: boolean
+      required:
+      - makePrimary
+      - type
+      - value
+      type: object
+    AddLocationCommand:
+      additionalProperties: false
+      example:
+        address:
+          country: country
+          streetAddress: streetAddress
+          formatted: formatted
+          postalCode: postalCode
+          locality: locality
+          type: type
+          region: region
+        geoLocation:
+          latitude: 0.8008281904610115
+          longitude: 6.027456183070403
+        name: name
+      properties:
+        name:
+          minLength: 1
+          type: string
+        address:
+          $ref: '#/components/schemas/Address'
+        geoLocation:
+          $ref: '#/components/schemas/GeoLocation'
+      required:
+      - address
+      - name
+      type: object
+    AddPhoneCommand:
+      additionalProperties: false
+      example:
+        mobilePhone: true
+        display: display
+        type: null
+        value: value
+        makePrimary: true
+      properties:
+        type:
+          $ref: '#/components/schemas/ContactTargetType'
+        display:
+          nullable: true
+          type: string
+        value:
+          minLength: 1
+          type: string
+        makePrimary:
+          type: boolean
+        mobilePhone:
+          type: boolean
+      required:
+      - makePrimary
+      - mobilePhone
+      - type
+      - value
+      type: object
+    Address:
+      additionalProperties: false
+      example:
+        country: country
+        streetAddress: streetAddress
+        formatted: formatted
+        postalCode: postalCode
+        locality: locality
+        type: type
+        region: region
+      properties:
+        type:
+          nullable: true
+          type: string
+        formatted:
+          description: "The full mailing address, formatted for display or use\r\n\
+            with a mailing label.  This attribute MAY contain newlines."
+          nullable: true
+          type: string
+        streetAddress:
+          description: "The full street address component, which may\r\ninclude house\
+            \ number, street name, P.O. box, and multi-line\r\nextended street address\
+            \ information.  This attribute MAY\r\ncontain newlines."
+          nullable: true
+          type: string
+        locality:
+          description: The city or locality component.
+          nullable: true
+          type: string
+        region:
+          description: The state or region component.
+          nullable: true
+          type: string
+        postalCode:
+          description: The zip code or postal code component.
+          nullable: true
+          type: string
+        country:
+          description: "The country name component.When specified, the value\r\nMUST\
+            \ be in ISO 3166-1 \"alpha-2\" code format [ISO3166]; e.g.,\r\nthe United\
+            \ States and Sweden are \"US\" and \"SE\", respectively."
+          nullable: true
+          type: string
+      type: object
+    AvailableLanguagesResponse:
+      additionalProperties: false
+      example:
+        writtenLanguages:
+        - displayName: displayName
+          value: value
+        - displayName: displayName
+          value: value
+        spokenLanguages:
+        - displayName: displayName
+          value: value
+        - displayName: displayName
+          value: value
+      properties:
+        writtenLanguages:
+          items:
+            $ref: '#/components/schemas/LanguageCode'
+          nullable: true
+          type: array
+        spokenLanguages:
+          items:
+            $ref: '#/components/schemas/LanguageCode'
+          nullable: true
+          type: array
+      type: object
+    AvailableTimeZonesResponse:
+      additionalProperties: false
+      example:
+        timeZones:
+        - standardName: standardName
+          baseUtcOffset: baseUtcOffset
+          displayName: displayName
+          id: id
+          daylightName: daylightName
+        - standardName: standardName
+          baseUtcOffset: baseUtcOffset
+          displayName: displayName
+          id: id
+          daylightName: daylightName
+      properties:
+        timeZones:
+          items:
+            $ref: '#/components/schemas/TimeZoneSummary'
+          nullable: true
+          type: array
+      type: object
+    BadRequestErrorMessage:
+      additionalProperties: false
+      description: Details of an Error that has occurred.
+      properties:
+        errorCode:
+          nullable: true
+          type: string
+        message:
+          nullable: true
+          type: string
+        exception:
+          nullable: true
+      type: object
+    BadRequestResponse:
+      additionalProperties: false
+      properties:
+        errorMessages:
+          description: Collection of Errors that caused the request to fail.
+          items:
+            $ref: '#/components/schemas/BadRequestErrorMessage'
+          nullable: true
+          type: array
+        isValidationError:
+          type: boolean
+        validationErrors:
+          description: Known validation errors the caused the request to fail. Resolving
+            all of these failures does not ensure the request will be processed successfully.
+          items:
+            $ref: '#/components/schemas/ValidationFailure'
+          nullable: true
+          type: array
+      type: object
+    ContactInformation:
+      additionalProperties: false
+      example:
+        emails:
+        - display: display
+          type: null
+          value: value
+          verification:
+            lastVerificationAttempt:
+              displayMessage: displayMessage
+              dateAttempted: 2000-01-23T04:56:07.000+00:00
+            verified: true
+            verificationDate: 2000-01-23T04:56:07.000+00:00
+          primary: true
+        - display: display
+          type: null
+          value: value
+          verification:
+            lastVerificationAttempt:
+              displayMessage: displayMessage
+              dateAttempted: 2000-01-23T04:56:07.000+00:00
+            verified: true
+            verificationDate: 2000-01-23T04:56:07.000+00:00
+          primary: true
+        mobileApps:
+        - deviceType: deviceType
+          name: name
+          applicationId: applicationId
+        - deviceType: deviceType
+          name: name
+          applicationId: applicationId
+        phones:
+        - deviceType: null
+          display: display
+          type: null
+          value: value
+          verification:
+            lastVerificationAttempt:
+              displayMessage: displayMessage
+              dateAttempted: 2000-01-23T04:56:07.000+00:00
+            verified: true
+            verificationDate: 2000-01-23T04:56:07.000+00:00
+          primary: true
+        - deviceType: null
+          display: display
+          type: null
+          value: value
+          verification:
+            lastVerificationAttempt:
+              displayMessage: displayMessage
+              dateAttempted: 2000-01-23T04:56:07.000+00:00
+            verified: true
+            verificationDate: 2000-01-23T04:56:07.000+00:00
+          primary: true
+      properties:
+        emails:
+          description: "Email addresses for the User.  The value SHOULD be specified\r\
+            \naccording to [RFC5321].  Service providers SHOULD canonicalize the\r\
+            \nvalue according to [RFC5321], e.g., \"bjensen@example.com\" instead\r\
+            \nof \"bjensen@EXAMPLE.COM\".  The \"display\" sub-attribute MAY be used\r\
+            \nto return the canonicalized representation of the email value.\r\nThe\
+            \ \"type\" sub-attribute is used to provide a classification\r\nmeaningful\
+            \ to the (human) user.  The user interface should\r\nencourage the use\
+            \ of basic values of \"work\", \"home\", and \"other\"\r\nand MAY allow\
+            \ additional type values to be used at the discretion\r\nof SCIM clients."
+          items:
+            $ref: '#/components/schemas/EmailAddress'
+          nullable: true
+          type: array
+        phones:
+          items:
+            $ref: '#/components/schemas/PhoneNumber'
+          nullable: true
+          type: array
+        mobileApps:
+          items:
+            $ref: '#/components/schemas/MobileApp'
+          nullable: true
+          type: array
+      type: object
+    ContactTargetType:
+      enum:
+      - Personal
+      - Work
+      type: string
+    CreateEmailAddress:
+      additionalProperties: false
+      example:
+        type: null
+        value: value
+        primary: true
+      properties:
+        type:
+          $ref: '#/components/schemas/ContactTargetType'
+        primary:
+          description: "A Boolean value indicating the 'primary' or preferred attribute\r\
+            \nvalue for this attribute, e.g., the preferred mailing address or\r\n\
+            the primary email address.The primary attribute value \"true\"\r\nMUST\
+            \ appear no more than once.If not specified, the value of\r\n\"primary\"\
+            \ SHALL be assumed to be \"false\"."
+          type: boolean
+        value:
+          description: "The attribute's significant value, e.g., email address, phone\r\
+            \nnumber."
+          minLength: 1
+          type: string
+      required:
+      - primary
+      - type
+      - value
+      type: object
+    CreateGroupMembership:
+      additionalProperties: false
+      example:
+        groupId: groupId
+      properties:
+        groupId:
+          minLength: 1
+          type: string
+      required:
+      - groupId
+      type: object
+    CreateLocation:
+      additionalProperties: false
+      example:
+        address:
+          country: country
+          streetAddress: streetAddress
+          formatted: formatted
+          postalCode: postalCode
+          locality: locality
+          type: type
+          region: region
+      properties:
+        address:
+          $ref: '#/components/schemas/Address'
+      required:
+      - address
+      type: object
+    CreatePhoneNumber:
+      additionalProperties: false
+      example:
+        type: null
+        value: value
+        primary: true
+      properties:
+        type:
+          $ref: '#/components/schemas/ContactTargetType'
+        primary:
+          description: "A Boolean value indicating the 'primary' or preferred attribute\r\
+            \nvalue for this attribute, e.g., the preferred mailing address or\r\n\
+            the primary email address.The primary attribute value \"true\"\r\nMUST\
+            \ appear no more than once.If not specified, the value of\r\n\"primary\"\
+            \ SHALL be assumed to be \"false\"."
+          type: boolean
+        value:
+          description: "The attribute's significant value, e.g., email address, phone\r\
+            \nnumber."
+          minLength: 1
+          type: string
+      required:
+      - primary
+      - type
+      - value
+      type: object
+    CreateUserProfileCommand:
+      additionalProperties: false
+      example:
+        emails:
+        - type: null
+          value: value
+          primary: true
+        - type: null
+          value: value
+          primary: true
+        firstName: firstName
+        lastName: lastName
+        displayName: displayName
+        timezone: timezone
+        preferredWrittenLanguage: preferredWrittenLanguage
+        phones:
+        - type: null
+          value: value
+          primary: true
+        - type: null
+          value: value
+          primary: true
+        preferredSpokenLanguage: preferredSpokenLanguage
+        locations:
+        - address:
+            country: country
+            streetAddress: streetAddress
+            formatted: formatted
+            postalCode: postalCode
+            locality: locality
+            type: type
+            region: region
+        - address:
+            country: country
+            streetAddress: streetAddress
+            formatted: formatted
+            postalCode: postalCode
+            locality: locality
+            type: type
+            region: region
+        locale: locale
+        memberships:
+        - groupId: groupId
+        - groupId: groupId
+      properties:
+        firstName:
+          minLength: 1
+          type: string
+        lastName:
+          minLength: 1
+          type: string
+        displayName:
+          description: "Allow the user to customize their display name separate from\
+            \ their First and Last names. If left empty, the DisplayName will be calculated\
+            \ by concatenating FirstName and LastName."
+          nullable: true
+          type: string
+        preferredWrittenLanguage:
+          description: "Indicates the user's preferred written language and is\r\n\
+            generally used for selecting a localized user interface.  The\r\nvalue\
+            \ indicates the set of natural languages that are preferred.\r\nThe format\
+            \ of the value is the same as the HTTP Accept-Language\r\nheader field\
+            \ (not including \"Accept-Language:\") and is specified\r\nin Section\
+            \ 5.3.5 of [RFC7231].  The intent of this value is to\r\nenable cloud\
+            \ applications to perform matching of language tags\r\n[RFC4647] to the\
+            \ user's language preferences, regardless of what\r\nmay be indicated\
+            \ by a user agent (which might be shared), or in an\r\ninteraction that\
+            \ does not involve a user (such as in a delegated\r\nOAuth 2.0 [RFC6749]\
+            \ style interaction) where normal HTTP\r\nAccept-Language header negotiation\
+            \ cannot take place."
+          nullable: true
+          type: string
+        preferredSpokenLanguage:
+          description: "Indicates the user's preferred poken language and is\r\ngenerally\
+            \ used for selecting a localized user interface.  The\r\nvalue indicates\
+            \ the set of natural languages that are preferred.\r\nThe format of the\
+            \ value is the same as the HTTP Accept-Language\r\nheader field (not including\
+            \ \"Accept-Language:\") and is specified\r\nin Section 5.3.5 of [RFC7231].\
+            \  The intent of this value is to\r\nenable cloud applications to perform\
+            \ matching of language tags\r\n[RFC4647] to the user's language preferences,\
+            \ regardless of what\r\nmay be indicated by a user agent (which might\
+            \ be shared), or in an\r\ninteraction that does not involve a user (such\
+            \ as in a delegated\r\nOAuth 2.0 [RFC6749] style interaction) where normal\
+            \ HTTP\r\nAccept-Language header negotiation cannot take place."
+          nullable: true
+          type: string
+        locale:
+          description: "Used to indicate the User's default location for purposes\
+            \ of\r\nlocalizing such items as currency, date time format, or numerical\r\
+            \nrepresentations.  A valid value is a language tag as defined in\r\n\
+            [RFC5646].  Computer languages are explicitly excluded.\r\n\r\nA language\
+            \ tag is a sequence of one or more case-insensitive\r\nsub-tags, each\
+            \ separated by a hyphen character (\"-\", %x2D).  For\r\nbackward compatibility,\
+            \ servers MAY accept tags separated by an\r\nunderscore character (\"\
+            _\", %x5F).  In most cases, a language tag\r\nconsists of a primary language\
+            \ sub-tag that identifies a broad\r\nfamily of related languages (e.g.,\
+            \ \"en\" = English) and that is\r\noptionally followed by a series of\
+            \ sub-tags that refine or narrow\r\nthat language's range (e.g., \"en-CA\"\
+            \ = the variety of English as\r\ncommunicated in Canada).  Whitespace\
+            \ is not allowed within a\r\nlanguage tag.  Example tags include:\r\n\r\
+            \nfr, en-US, es-419, az-Arab, x-pig-latin, man-Nkoo-GN\r\n\r\nSee [RFC5646]\
+            \ for further information."
+          nullable: true
+          type: string
+        timezone:
+          description: "The User's time zone, in IANA Time Zone database format [RFC6557],\r\
+            \nalso known as the \"Olson\" time zone database format [Olson-TZ]\r\n\
+            (e.g., \"America/Los_Angeles\")."
+          nullable: true
+          type: string
+        emails:
+          items:
+            $ref: '#/components/schemas/CreateEmailAddress'
+          nullable: true
+          type: array
+        phones:
+          items:
+            $ref: '#/components/schemas/CreatePhoneNumber'
+          nullable: true
+          type: array
+        locations:
+          items:
+            $ref: '#/components/schemas/CreateLocation'
+          nullable: true
+          type: array
+        memberships:
+          items:
+            $ref: '#/components/schemas/CreateGroupMembership'
+          nullable: true
+          type: array
+      required:
+      - firstName
+      - lastName
+      type: object
+    EmailAddress:
+      additionalProperties: false
+      example:
+        display: display
+        type: null
+        value: value
+        verification:
+          lastVerificationAttempt:
+            displayMessage: displayMessage
+            dateAttempted: 2000-01-23T04:56:07.000+00:00
+          verified: true
+          verificationDate: 2000-01-23T04:56:07.000+00:00
+        primary: true
+      properties:
+        type:
+          $ref: '#/components/schemas/ContactTargetType'
+        primary:
+          description: "A Boolean value indicating the 'primary' or preferred attribute\r\
+            \nvalue for this attribute, e.g., the preferred mailing address or\r\n\
+            the primary email address.The primary attribute value \"true\"\r\nMUST\
+            \ appear no more than once.If not specified, the value of\r\n\"primary\"\
+            \ SHALL be assumed to be \"false\"."
+          type: boolean
+        display:
+          description: "A human-readable name, primarily used for display purposes\
+            \ and\r\nhaving a mutability of \"immutable\"."
+          nullable: true
+          type: string
+        value:
+          description: "The attribute's significant value, e.g., email address, phone\r\
+            \nnumber."
+          nullable: true
+          type: string
+        verification:
+          $ref: '#/components/schemas/VerificationStatus'
+      type: object
+    FindUserQuery:
+      additionalProperties: false
+      example:
+        phone: phone
+        email: email
+      properties:
+        email:
+          nullable: true
+          type: string
+        phone:
+          nullable: true
+          type: string
+      type: object
+    GeoLocation:
+      additionalProperties: false
+      example:
+        latitude: 0.8008281904610115
+        longitude: 6.027456183070403
+      properties:
+        latitude:
+          format: double
+          type: number
+        longitude:
+          format: double
+          type: number
+      type: object
+    GroupSummary:
+      additionalProperties: false
+      example:
+        default: true
+        children:
+        - null
+        - null
+        name: name
+        description: description
+        id: id
+      properties:
+        id:
+          nullable: true
+          type: string
+        name:
+          nullable: true
+          type: string
+        description:
+          nullable: true
+          type: string
+        default:
+          type: boolean
+        children:
+          items:
+            $ref: '#/components/schemas/GroupSummary'
+          nullable: true
+          type: array
+      type: object
+    GroupSummaryPagedApiResponse:
+      additionalProperties: false
+      example:
+        pageSize: 1
+        page: 6
+        items:
+        - default: true
+          children:
+          - null
+          - null
+          name: name
+          description: description
+          id: id
+        - default: true
+          children:
+          - null
+          - null
+          name: name
+          description: description
+          id: id
+        totalItemCount: 0
+      properties:
+        totalItemCount:
+          format: int64
+          type: integer
+        page:
+          format: int32
+          type: integer
+        pageSize:
+          format: int32
+          type: integer
+        items:
+          items:
+            $ref: '#/components/schemas/GroupSummary'
+          nullable: true
+          type: array
+      type: object
+    LanguageCode:
+      additionalProperties: false
+      example:
+        displayName: displayName
+        value: value
+      properties:
+        displayName:
+          nullable: true
+          type: string
+        value:
+          nullable: true
+          type: string
+      type: object
+    Location:
+      additionalProperties: false
+      example:
+        address:
+          country: country
+          streetAddress: streetAddress
+          formatted: formatted
+          postalCode: postalCode
+          locality: locality
+          type: type
+          region: region
+        geoLocation:
+          latitude: 0.8008281904610115
+          longitude: 6.027456183070403
+        name: name
+        id: id
+      properties:
+        id:
+          nullable: true
+          type: string
+        name:
+          nullable: true
+          type: string
+        address:
+          $ref: '#/components/schemas/Address'
+        geoLocation:
+          $ref: '#/components/schemas/GeoLocation'
+      type: object
+    MobileApp:
+      additionalProperties: false
+      example:
+        deviceType: deviceType
+        name: name
+        applicationId: applicationId
+      properties:
+        name:
+          nullable: true
+          type: string
+        deviceType:
+          nullable: true
+          type: string
+        applicationId:
+          nullable: true
+          type: string
+      type: object
+    NestedReference:
+      additionalProperties: false
+      example:
+        parent: null
+        path: path
+        name: name
+        description: description
+        id: id
+        uri: https://openapi-generator.tech
+      properties:
+        parent:
+          $ref: '#/components/schemas/NestedReference'
+        path:
+          nullable: true
+          type: string
+        id:
+          nullable: true
+          type: string
+        name:
+          nullable: true
+          type: string
+        description:
+          nullable: true
+          type: string
+        uri:
+          format: uri
+          nullable: true
+          type: string
+      type: object
+    NotificationPreferences:
+      additionalProperties: false
+      example:
+        timezone: timezone
+        preferredWrittenLanguage: preferredWrittenLanguage
+        locations:
+        - address:
+            country: country
+            streetAddress: streetAddress
+            formatted: formatted
+            postalCode: postalCode
+            locality: locality
+            type: type
+            region: region
+          geoLocation:
+            latitude: 0.8008281904610115
+            longitude: 6.027456183070403
+          name: name
+          id: id
+        - address:
+            country: country
+            streetAddress: streetAddress
+            formatted: formatted
+            postalCode: postalCode
+            locality: locality
+            type: type
+            region: region
+          geoLocation:
+            latitude: 0.8008281904610115
+            longitude: 6.027456183070403
+          name: name
+          id: id
+        preferredSpokenLanguage: preferredSpokenLanguage
+        locale: locale
+        memberships:
+        - parent: null
+          path: path
+          name: name
+          description: description
+          id: id
+          uri: https://openapi-generator.tech
+        - parent: null
+          path: path
+          name: name
+          description: description
+          id: id
+          uri: https://openapi-generator.tech
+      properties:
+        locations:
+          items:
+            $ref: '#/components/schemas/Location'
+          nullable: true
+          type: array
+        memberships:
+          items:
+            $ref: '#/components/schemas/NestedReference'
+          nullable: true
+          type: array
+        preferredWrittenLanguage:
+          description: "Indicates the user's preferred written or spoken languages\
+            \ and is\r\ngenerally used for selecting a localized user interface. \
+            \ The\r\nvalue indicates the set of natural languages that are preferred.\r\
+            \nThe format of the value is the same as the HTTP Accept-Language\r\n\
+            header field (not including \"Accept-Language:\") and is specified\r\n\
+            in Section 5.3.5 of [RFC7231].  The intent of this value is to\r\nenable\
+            \ cloud applications to perform matching of language tags\r\n[RFC4647]\
+            \ to the user's language preferences, regardless of what\r\nmay be indicated\
+            \ by a user agent (which might be shared), or in an\r\ninteraction that\
+            \ does not involve a user (such as in a delegated\r\nOAuth 2.0 [RFC6749]\
+            \ style interaction) where normal HTTP\r\nAccept-Language header negotiation\
+            \ cannot take place."
+          nullable: true
+          type: string
+        preferredSpokenLanguage:
+          nullable: true
+          type: string
+        locale:
+          description: "Used to indicate the User's default location for purposes\
+            \ of\r\nlocalizing such items as currency, date time format, or numerical\r\
+            \nrepresentations.  A valid value is a language tag as defined in\r\n\
+            [RFC5646].  Computer languages are explicitly excluded.\r\n\r\nA language\
+            \ tag is a sequence of one or more case-insensitive\r\nsub-tags, each\
+            \ separated by a hyphen character (\"-\", %x2D).  For\r\nbackward compatibility,\
+            \ servers MAY accept tags separated by an\r\nunderscore character (\"\
+            _\", %x5F).  In most cases, a language tag\r\nconsists of a primary language\
+            \ sub-tag that identifies a broad\r\nfamily of related languages (e.g.,\
+            \ \"en\" = English) and that is\r\noptionally followed by a series of\
+            \ sub-tags that refine or narrow\r\nthat language's range (e.g., \"en-CA\"\
+            \ = the variety of English as\r\ncommunicated in Canada).  Whitespace\
+            \ is not allowed within a\r\nlanguage tag.  Example tags include:\r\n\r\
+            \nfr, en-US, es-419, az-Arab, x-pig-latin, man-Nkoo-GN\r\n\r\nSee [RFC5646]\
+            \ for further information."
+          nullable: true
+          type: string
+        timezone:
+          description: "The User's time zone, in IANA Time Zone database format [RFC6557],\r\
+            \nalso known as the \"Olson\" time zone database format [Olson-TZ]\r\n\
+            (e.g., \"America/Los_Angeles\")."
+          nullable: true
+          type: string
+      type: object
+    PendingDeviceType:
+      enum:
+      - 0
+      - 1
+      format: int32
+      type: integer
+    PendingVerificationAttempt:
+      additionalProperties: false
+      example:
+        deviceType: null
+        displayMessage: displayMessage
+        dateAttempted: 2000-01-23T04:56:07.000+00:00
+        device: device
+        verificationCode: verificationCode
+      properties:
+        device:
+          nullable: true
+          type: string
+        verificationCode:
+          nullable: true
+          type: string
+        deviceType:
+          $ref: '#/components/schemas/PendingDeviceType'
+        displayMessage:
+          nullable: true
+          type: string
+        dateAttempted:
+          format: date-time
+          nullable: true
+          type: string
+      type: object
+    PhoneNumber:
+      additionalProperties: false
+      example:
+        deviceType: null
+        display: display
+        type: null
+        value: value
+        verification:
+          lastVerificationAttempt:
+            displayMessage: displayMessage
+            dateAttempted: 2000-01-23T04:56:07.000+00:00
+          verified: true
+          verificationDate: 2000-01-23T04:56:07.000+00:00
+        primary: true
+      properties:
+        type:
+          $ref: '#/components/schemas/ContactTargetType'
+        primary:
+          description: "A Boolean value indicating the 'primary' or preferred attribute\r\
+            \nvalue for this attribute, e.g., the preferred mailing address or\r\n\
+            the primary email address.The primary attribute value \"true\"\r\nMUST\
+            \ appear no more than once.If not specified, the value of\r\n\"primary\"\
+            \ SHALL be assumed to be \"false\"."
+          type: boolean
+        display:
+          description: "A human-readable name, primarily used for display purposes\
+            \ and\r\nhaving a mutability of \"immutable\"."
+          nullable: true
+          type: string
+        value:
+          description: "The attribute's significant value, e.g., email address, phone\r\
+            \nnumber."
+          nullable: true
+          type: string
+        verification:
+          $ref: '#/components/schemas/VerificationStatus'
+        deviceType:
+          $ref: '#/components/schemas/PhoneType'
+      type: object
+    PhoneType:
+      enum:
+      - Unknown
+      - Mobile
+      - Landline
+      type: string
+    ProblemDetails:
+      additionalProperties: {}
+      properties:
+        type:
+          nullable: true
+          type: string
+        title:
+          nullable: true
+          type: string
+        status:
+          format: int32
+          nullable: true
+          type: integer
+        detail:
+          nullable: true
+          type: string
+        instance:
+          nullable: true
+          type: string
+      type: object
+    Reference:
+      additionalProperties: false
+      example:
+        name: name
+        description: description
+        id: id
+        uri: https://openapi-generator.tech
+      properties:
+        id:
+          nullable: true
+          type: string
+        name:
+          nullable: true
+          type: string
+        description:
+          nullable: true
+          type: string
+        uri:
+          format: uri
+          nullable: true
+          type: string
+      type: object
+    ResendVerificationToken:
+      additionalProperties: false
+      example:
+        token: token
+      properties:
+        token:
+          nullable: true
+          type: string
+      type: object
+    TimeZoneSummary:
+      additionalProperties: false
+      example:
+        standardName: standardName
+        baseUtcOffset: baseUtcOffset
+        displayName: displayName
+        id: id
+        daylightName: daylightName
+      properties:
+        standardName:
+          description: The display name of the time zone's standard time.
+          nullable: true
+          readOnly: true
+          type: string
+        id:
+          description: The time zone identifier.
+          nullable: true
+          readOnly: true
+          type: string
+        displayName:
+          description: The time zone's general display name.
+          nullable: true
+          readOnly: true
+          type: string
+        daylightName:
+          description: Gets the display name for the current time zone's daylight
+            saving time.
+          nullable: true
+          readOnly: true
+          type: string
+        baseUtcOffset:
+          format: date-span
+          readOnly: true
+          type: string
+      type: object
+    UpdateUserProfileCommand:
+      additionalProperties: false
+      example:
+        firstName: firstName
+        lastName: lastName
+        displayName: displayName
+        timezone: timezone
+        preferredWrittenLanguage: preferredWrittenLanguage
+        preferredSpokenLanguage: preferredSpokenLanguage
+        locale: locale
+      properties:
+        firstName:
+          nullable: true
+          type: string
+        lastName:
+          nullable: true
+          type: string
+        displayName:
+          description: "Allow the user to customize their display name separate from\
+            \ their First and Last names. If left empty, the DisplayName will be calculated\
+            \ by concatenating FirstName and LastName."
+          nullable: true
+          type: string
+        preferredWrittenLanguage:
+          description: "Indicates the user's preferred written or spoken languages\
+            \ and is\r\ngenerally used for selecting a localized user interface. \
+            \ The\r\nvalue indicates the set of natural languages that are preferred.\r\
+            \nThe format of the value is the same as the HTTP Accept-Language\r\n\
+            header field (not including \"Accept-Language:\") and is specified\r\n\
+            in Section 5.3.5 of [RFC7231].  The intent of this value is to\r\nenable\
+            \ cloud applications to perform matching of language tags\r\n[RFC4647]\
+            \ to the user's language preferences, regardless of what\r\nmay be indicated\
+            \ by a user agent (which might be shared), or in an\r\ninteraction that\
+            \ does not involve a user (such as in a delegated\r\nOAuth 2.0 [RFC6749]\
+            \ style interaction) where normal HTTP\r\nAccept-Language header negotiation\
+            \ cannot take place."
+          nullable: true
+          type: string
+        preferredSpokenLanguage:
+          nullable: true
+          type: string
+        locale:
+          description: "Used to indicate the User's default location for purposes\
+            \ of\r\nlocalizing such items as currency, date time format, or numerical\r\
+            \nrepresentations.  A valid value is a language tag as defined in\r\n\
+            [RFC5646].  Computer languages are explicitly excluded.\r\n\r\nA language\
+            \ tag is a sequence of one or more case-insensitive\r\nsub-tags, each\
+            \ separated by a hyphen character (\"-\", %x2D).  For\r\nbackward compatibility,\
+            \ servers MAY accept tags separated by an\r\nunderscore character (\"\
+            _\", %x5F).  In most cases, a language tag\r\nconsists of a primary language\
+            \ sub-tag that identifies a broad\r\nfamily of related languages (e.g.,\
+            \ \"en\" = English) and that is\r\noptionally followed by a series of\
+            \ sub-tags that refine or narrow\r\nthat language's range (e.g., \"en-CA\"\
+            \ = the variety of English as\r\ncommunicated in Canada).  Whitespace\
+            \ is not allowed within a\r\nlanguage tag.  Example tags include:\r\n\r\
+            \nfr, en-US, es-419, az-Arab, x-pig-latin, man-Nkoo-GN\r\n\r\nSee [RFC5646]\
+            \ for further information."
+          nullable: true
+          type: string
+        timezone:
+          description: "The User's time zone, in IANA Time Zone database format [RFC6557],\r\
+            \nalso known as the \"Olson\" time zone database format [Olson-TZ]\r\n\
+            (e.g., \"America/Los_Angeles\")."
+          nullable: true
+          type: string
+      type: object
+    UserProfile:
+      additionalProperties: false
+      example:
+        firstName: firstName
+        lastName: lastName
+        contactInformation:
+          emails:
+          - display: display
+            type: null
+            value: value
+            verification:
+              lastVerificationAttempt:
+                displayMessage: displayMessage
+                dateAttempted: 2000-01-23T04:56:07.000+00:00
+              verified: true
+              verificationDate: 2000-01-23T04:56:07.000+00:00
+            primary: true
+          - display: display
+            type: null
+            value: value
+            verification:
+              lastVerificationAttempt:
+                displayMessage: displayMessage
+                dateAttempted: 2000-01-23T04:56:07.000+00:00
+              verified: true
+              verificationDate: 2000-01-23T04:56:07.000+00:00
+            primary: true
+          mobileApps:
+          - deviceType: deviceType
+            name: name
+            applicationId: applicationId
+          - deviceType: deviceType
+            name: name
+            applicationId: applicationId
+          phones:
+          - deviceType: null
+            display: display
+            type: null
+            value: value
+            verification:
+              lastVerificationAttempt:
+                displayMessage: displayMessage
+                dateAttempted: 2000-01-23T04:56:07.000+00:00
+              verified: true
+              verificationDate: 2000-01-23T04:56:07.000+00:00
+            primary: true
+          - deviceType: null
+            display: display
+            type: null
+            value: value
+            verification:
+              lastVerificationAttempt:
+                displayMessage: displayMessage
+                dateAttempted: 2000-01-23T04:56:07.000+00:00
+              verified: true
+              verificationDate: 2000-01-23T04:56:07.000+00:00
+            primary: true
+        displayName: displayName
+        notificationPreferences:
+          timezone: timezone
+          preferredWrittenLanguage: preferredWrittenLanguage
+          locations:
+          - address:
+              country: country
+              streetAddress: streetAddress
+              formatted: formatted
+              postalCode: postalCode
+              locality: locality
+              type: type
+              region: region
+            geoLocation:
+              latitude: 0.8008281904610115
+              longitude: 6.027456183070403
+            name: name
+            id: id
+          - address:
+              country: country
+              streetAddress: streetAddress
+              formatted: formatted
+              postalCode: postalCode
+              locality: locality
+              type: type
+              region: region
+            geoLocation:
+              latitude: 0.8008281904610115
+              longitude: 6.027456183070403
+            name: name
+            id: id
+          preferredSpokenLanguage: preferredSpokenLanguage
+          locale: locale
+          memberships:
+          - parent: null
+            path: path
+            name: name
+            description: description
+            id: id
+            uri: https://openapi-generator.tech
+          - parent: null
+            path: path
+            name: name
+            description: description
+            id: id
+            uri: https://openapi-generator.tech
+        id: id
+      properties:
+        id:
+          nullable: true
+          type: string
+        firstName:
+          nullable: true
+          type: string
+        lastName:
+          nullable: true
+          type: string
+        displayName:
+          description: "The name of the user, suitable for display to end-users. \
+            \ Each\r\nuser returned MAY include a non-empty displayName value.  The\
+            \ name\r\nSHOULD be the full name of the User being described, if known\r\
+            \n(e.g., \"Babs Jensen\" or \"Ms. Barbara J Jensen, III\") but MAY be\
+            \ a\r\nusername or handle, if that is all that is available (e.g.,\r\n\
+            \"bjensen\").  The value provided SHOULD be the primary textual\r\nlabel\
+            \ by which this User is normally displayed by the service\r\nprovider\
+            \ when presenting it to end-users."
+          nullable: true
+          type: string
+        contactInformation:
+          $ref: '#/components/schemas/ContactInformation'
+        notificationPreferences:
+          $ref: '#/components/schemas/NotificationPreferences'
+      type: object
+    UserProfileSummary:
+      additionalProperties: false
+      example:
+        profile:
+          name: name
+          description: description
+          id: id
+          uri: https://openapi-generator.tech
+        directory:
+          name: name
+          description: description
+          id: id
+          uri: https://openapi-generator.tech
+        tenant:
+          name: name
+          description: description
+          id: id
+          uri: https://openapi-generator.tech
+      properties:
+        profile:
+          $ref: '#/components/schemas/Reference'
+        tenant:
+          $ref: '#/components/schemas/Reference'
+        directory:
+          $ref: '#/components/schemas/Reference'
+      type: object
+    UserProfileSummaryPagedApiResponse:
+      additionalProperties: false
+      example:
+        pageSize: 1
+        page: 6
+        items:
+        - profile:
+            name: name
+            description: description
+            id: id
+            uri: https://openapi-generator.tech
+          directory:
+            name: name
+            description: description
+            id: id
+            uri: https://openapi-generator.tech
+          tenant:
+            name: name
+            description: description
+            id: id
+            uri: https://openapi-generator.tech
+        - profile:
+            name: name
+            description: description
+            id: id
+            uri: https://openapi-generator.tech
+          directory:
+            name: name
+            description: description
+            id: id
+            uri: https://openapi-generator.tech
+          tenant:
+            name: name
+            description: description
+            id: id
+            uri: https://openapi-generator.tech
+        totalItemCount: 0
+      properties:
+        totalItemCount:
+          format: int64
+          type: integer
+        page:
+          format: int32
+          type: integer
+        pageSize:
+          format: int32
+          type: integer
+        items:
+          items:
+            $ref: '#/components/schemas/UserProfileSummary'
+          nullable: true
+          type: array
+      type: object
+    ValidationFailure:
+      additionalProperties: false
+      properties:
+        name:
+          nullable: true
+          type: string
+        errorCode:
+          nullable: true
+          type: string
+        errorMessage:
+          nullable: true
+          type: string
+      type: object
+    VerificationAttempt:
+      additionalProperties: false
+      example:
+        displayMessage: displayMessage
+        dateAttempted: 2000-01-23T04:56:07.000+00:00
+      properties:
+        displayMessage:
+          nullable: true
+          type: string
+        dateAttempted:
+          format: date-time
+          nullable: true
+          type: string
+      type: object
+    VerificationResponse:
+      additionalProperties: false
+      example:
+        success: true
+        message: message
+      properties:
+        success:
+          type: boolean
+        message:
+          nullable: true
+          type: string
+      type: object
+    VerificationStatus:
+      additionalProperties: false
+      example:
+        lastVerificationAttempt:
+          displayMessage: displayMessage
+          dateAttempted: 2000-01-23T04:56:07.000+00:00
+        verified: true
+        verificationDate: 2000-01-23T04:56:07.000+00:00
+      properties:
+        verified:
+          type: boolean
+        lastVerificationAttempt:
+          $ref: '#/components/schemas/VerificationAttempt'
+        verificationDate:
+          format: date-time
+          nullable: true
+          type: string
+      type: object
+  securitySchemes:
+    Oauth2Scheme:
+      flows:
+        clientCredentials:
+          scopes:
+            tamarack: Hickory
+            content: ExternalID
+            elm: GIS
+            directory:public: Public User Directory Access
+          tokenUrl: https://auth.dev.alertsense.io/connect/token
+        implicit:
+          authorizationUrl: https://auth.dev.alertsense.io/connect/authorize
+          scopes:
+            tamarack: Hickory
+            content: ExternalID
+            elm: GIS
+            directory:public: Public User Directory Access
+      type: oauth2
+    JwtBearerTokenScheme:
+      description: "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter\
+        \ 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample:\
+        \ \"Bearer 12345abcdef\""
+      in: header
+      name: Authorization
+      type: apiKey
+
