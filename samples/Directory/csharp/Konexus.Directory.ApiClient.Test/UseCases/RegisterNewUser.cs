@@ -29,7 +29,6 @@ namespace Konexus.Directory.ApiClient.Test.UseCases
 
         protected string _tenantId;
         protected string _directoryId;
-        protected string _realmId;
         protected AvailableTimeZonesResponse _availableTimeZones;
         protected AvailableLanguagesResponse _availableLanguages;
         protected List<GroupSummary> _availableGroups;
@@ -45,10 +44,8 @@ namespace Konexus.Directory.ApiClient.Test.UseCases
 
             _tenantId = "3331";
             _directoryId = "public";
-            _realmId = "civicready";
 
             _apiBaseUrl = "https://api-handweave.dev.alertsense.io";
-            _apiBaseUrl = "http://localhost:5010";
             _authorityUrl = "https://auth.dev.alertsense.io";
 
             string clientId = "XXXXX";
@@ -104,7 +101,7 @@ namespace Konexus.Directory.ApiClient.Test.UseCases
             // Create the new User in the Directory with the API
             var userProfile = await CreateNewUserAsync(newUserProfileCommand);
 
-            foreach(var email in userProfile.ContactInformation.Emails)
+            foreach(var email in userProfile.ContactInformation.Emails.Items)
             {
                 // Check the verification status of their contact information
                 Assert.False(email.Verification.Verified);
@@ -113,7 +110,7 @@ namespace Konexus.Directory.ApiClient.Test.UseCases
                 await VerifyEmailAdressWithCode(userProfile.Id, email);
             }
 
-            foreach (var phone in userProfile.ContactInformation.Phones)
+            foreach (var phone in userProfile.ContactInformation.Phones.Items)
             {
                 // Check the verification status of their contact information
                 Assert.False(phone.Verification.Verified);
@@ -123,7 +120,7 @@ namespace Konexus.Directory.ApiClient.Test.UseCases
             }
 
             Assert.True(userProfile.NotificationPreferences.Locations != null);
-            foreach (var location in userProfile.NotificationPreferences.Locations)
+            foreach (var location in userProfile.NotificationPreferences.Locations.Items)
             {
                 Assert.True(location.GeoLocation != null, "Location was not geocoded.");
             }
@@ -154,7 +151,7 @@ namespace Konexus.Directory.ApiClient.Test.UseCases
             var secondaryEmail = $"second_{testUserEmail}";
 
             // add a secondary email to the user by Id
-            var email = await _apiClient.UserApi.UserAddNewEmailAsync(_tenantId, _directoryId, userProfile.Id, new AddEmailCommand(ContactTargetType.Work, null, secondaryEmail, false));
+            var email = await _apiClient.UsersApi.UsersCreateNewEmailAsync(_tenantId, _directoryId, userProfile.Id, new CreateEmailCommand(ContactTargetType.Work, false, secondaryEmail));
             
             // Check the verification status of their contact information
             Assert.False(email.Verification.Verified);
@@ -165,17 +162,17 @@ namespace Konexus.Directory.ApiClient.Test.UseCases
 
         protected async Task<List<UserProfileSummary>> FindExistingUser(string emailAddress)
         {
-            var findUsersResponse = await _apiClient.UserApi.UserFindUsersByQueryAsync(_tenantId, _directoryId, new FindUserQuery(emailAddress));
+            var findUsersResponse = await _apiClient.UsersApi.UsersFindUsersByQueryAsync(_tenantId, _directoryId, new FindUserQuery(emailAddress));
             
             return findUsersResponse.Items;
         }
 
         protected async Task DiscoverGroupsAndRetrieveMeta()
         {
-            _availableTimeZones = await _apiClient.MetaApi.MetaGetTimeZonesAsync(_realmId);
-            _availableLanguages = await _apiClient.MetaApi.MetaGetLanguagesAsync(_realmId);
+            _availableTimeZones = await _apiClient.MetaApi.MetaGetTimeZonesAsync(_tenantId);
+            _availableLanguages = await _apiClient.MetaApi.MetaGetLanguagesAsync(_tenantId);
 
-            var availableGroupsResponse = await _apiClient.GroupsApi.GroupsDiscoverGroupsAsync(_tenantId, _directoryId);
+            var availableGroupsResponse = await _apiClient.GroupsApi.GroupsDiscoverAvailableGroupsAsync(_tenantId, _directoryId);
             _availableGroups = availableGroupsResponse.Items;
         }               
 
@@ -207,17 +204,17 @@ namespace Konexus.Directory.ApiClient.Test.UseCases
                 // the users preferred locale for app localization, should be left null unless the user is planning on using the mobile app to send notifications
                 locale: null,
                 timezone: preferredTimeZone?.Id,
-                emails: new List<CreateEmailAddress>
+                emails: new List<CreateEmailCommand>
                 {
-                    new CreateEmailAddress(ContactTargetType.Work, true, emailAddress)
+                    new CreateEmailCommand(ContactTargetType.Work, true, emailAddress)
                 },
-                phones: new List<CreatePhoneNumber>
+                phones: new List<CreatePhoneCommand>
                 {
-                    new CreatePhoneNumber(ContactTargetType.Work, true, "+12081112222")
+                    new CreatePhoneCommand(ContactTargetType.Work, "+12081112222", true)
                 },
-                locations: new List<CreateLocation>
+                locations: new List<CreateLocationCommand>
                 {
-                    new CreateLocation(new Address("Personal", null, "1234 W North St", "City", "State", "012345", "US"))
+                    new CreateLocationCommand("Office", AddressType.Work, "500 E Shore Drive #240", "Eagle", "ID", "83616", "US")
                 },
                 memberships: groupMemberships//availableGroups.Items.Select(u => new CreateGroupMembership(u.Id)).ToList()
             );
@@ -226,7 +223,7 @@ namespace Konexus.Directory.ApiClient.Test.UseCases
 
         public async Task<UserProfile> CreateNewUserAsync(CreateUserProfileCommand createUserProfileCommand)
         {
-            var profile = await _apiClient.UserApi.UserCreateAsync(_tenantId, _directoryId, createUserProfileCommand);            
+            var profile = await _apiClient.UsersApi.UsersCreateAsync(_tenantId, _directoryId, createUserProfileCommand);            
             return profile;
         }
         protected async Task VerifyEmailAdressWithCode(string userId, EmailAddress email)
@@ -236,11 +233,11 @@ namespace Konexus.Directory.ApiClient.Test.UseCases
             Assert.True(pendingVerificationCode != null, $"A pending verification code was not found for {email.Value}");
 
             // verify the email address with the code provided out of band
-            var verificationResponse = await _apiClient.UserApi.UserVerifyEmailAsync(_tenantId, _directoryId, userId, email.Value, pendingVerificationCode.VerificationCode);
+            var verificationResponse = await _apiClient.UsersApi.UsersVerifyEmailAsync(_tenantId, _directoryId, userId, email.Value, new VerifyEmailCommand(pendingVerificationCode.VerificationCode));
             Assert.True(verificationResponse.Success);
 
             // fetch the email and make sure it's still verified
-            var emailAddressDetails = await _apiClient.UserApi.UserGetEmailAsync(_tenantId, _directoryId, userId, email.Value);
+            var emailAddressDetails = await _apiClient.UsersApi.UsersGetEmailAsync(_tenantId, _directoryId, userId, email.Value);
             Assert.True(emailAddressDetails.Verification.Verified);
         }
 
@@ -251,11 +248,11 @@ namespace Konexus.Directory.ApiClient.Test.UseCases
             Assert.True(pendingVerificationCode != null, $"A pending verification code was not found for {phone.Value}");
 
             // verify the phone address with the code provided out of band
-            var verificationResponse = await _apiClient.UserApi.UserVerifyPhoneAsync(_tenantId, _directoryId, userId, phone.Value, pendingVerificationCode.VerificationCode);
+            var verificationResponse = await _apiClient.UsersApi.UsersVerifyPhoneAsync(_tenantId, _directoryId, userId, phone.Value, new VerifyPhoneCommand(pendingVerificationCode.VerificationCode));
             Assert.True(verificationResponse.Success);
 
             // fetch the phone and make sure it's still verified
-            var emailAddressDetails = await _apiClient.UserApi.UserGetPhoneAsync(_tenantId, _directoryId, userId, phone.Value);
+            var emailAddressDetails = await _apiClient.UsersApi.UsersGetPhoneAsync(_tenantId, _directoryId, userId, phone.Value);
             Assert.True(emailAddressDetails.Verification.Verified);
         }
     }

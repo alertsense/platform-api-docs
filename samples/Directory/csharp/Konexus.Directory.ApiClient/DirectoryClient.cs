@@ -16,7 +16,7 @@ namespace Konexus.Directory.ApiClient
         public string BaseApiUrl { get; private set; }
         public Configuration Configuration { get; protected set; }
 
-        public UserApi UserApi { get; private set; }
+        public UsersApi UsersApi { get; private set; }
         public MetaApi MetaApi { get; private set; }
         public GroupsApi GroupsApi { get; private set; }
         public TestApi TestApi { get; private set; }
@@ -78,7 +78,7 @@ namespace Konexus.Directory.ApiClient
 
         private void ConfigureApis()
         {
-            UserApi = new UserApi(_httpClient, Configuration, _httpClientHandler);
+            UsersApi = new UsersApi(_httpClient, Configuration, _httpClientHandler);
             MetaApi = new MetaApi(_httpClient, Configuration, _httpClientHandler);
             GroupsApi = new GroupsApi(_httpClient, Configuration, _httpClientHandler);
             TestApi = new TestApi(_httpClient, Configuration, _httpClientHandler);

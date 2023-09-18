@@ -8,7 +8,7 @@
       "url": "https://bitbucket.org/AlertSense/platform-api-docs/src/dev/",
       "email": "dev@konexus.com"
     },
-    "version": "4.0.5"
+    "version": "4.1.0"
   },
   "paths": {
     "/{tenantId}/directory/{directoryId}/groups/discover": {
@@ -17,7 +17,7 @@
           "Groups"
         ],
         "summary": "Retrieves a list of Nested Public Groups for the targeted Tenant. These Groups can be joined if the current user has a UserProfile in the targeted Tenant.",
-        "operationId": "Groups_DiscoverGroups",
+        "operationId": "Groups_DiscoverAvailableGroups",
         "parameters": [
           {
             "name": "tenantId",
@@ -92,7 +92,7 @@
         ]
       }
     },
-    "/{realm}/directory/meta/languages": {
+    "/{tenantId}/directory/meta/languages": {
       "get": {
         "tags": [
           "Meta"
@@ -101,7 +101,7 @@
         "operationId": "Meta_GetLanguages",
         "parameters": [
           {
-            "name": "realm",
+            "name": "tenantId",
             "in": "path",
             "required": true,
             "schema": {
@@ -130,6 +130,16 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
           "403": {
             "description": "Forbidden",
             "content": {
@@ -149,9 +159,6 @@
                 }
               }
             }
-          },
-          "401": {
-            "description": "Unauthorized"
           }
         },
         "security": [
@@ -165,16 +172,16 @@
         ]
       }
     },
-    "/{realm}/directory/meta/timezones": {
+    "/{tenantId}/directory/meta/timezones": {
       "get": {
         "tags": [
           "Meta"
         ],
-        "summary": "Returns the Languages supported by the platform for Written and Spoken translation.",
+        "summary": "Returns the timezones supported in the system.",
         "operationId": "Meta_GetTimeZones",
         "parameters": [
           {
-            "name": "realm",
+            "name": "tenantId",
             "in": "path",
             "required": true,
             "schema": {
@@ -383,15 +390,14 @@
     "/{tenantId}/directory/{directoryId}/users": {
       "post": {
         "tags": [
-          "User"
+          "Users"
         ],
         "summary": "Create a new UserProfile in the targeted Tenant and Directory",
-        "operationId": "User_Create",
+        "operationId": "Users_Create",
         "parameters": [
           {
             "name": "tenantId",
             "in": "path",
-            "description": "",
             "required": true,
             "schema": {
               "type": "string"
@@ -400,7 +406,6 @@
           {
             "name": "directoryId",
             "in": "path",
-            "description": "",
             "required": true,
             "schema": {
               "type": "string"
@@ -408,7 +413,6 @@
           }
         ],
         "requestBody": {
-          "description": "",
           "content": {
             "application/json-patch+json": {
               "schema": {
@@ -491,10 +495,10 @@
     "/{tenantId}/directory/{directoryId}/users/{userId}": {
       "get": {
         "tags": [
-          "User"
+          "Users"
         ],
         "summary": "Retrieve a UserProfile that belongs to a specific Tenant and Directory by the User's Identifier.",
-        "operationId": "User_GetById",
+        "operationId": "Users_GetById",
         "parameters": [
           {
             "name": "tenantId",
@@ -581,10 +585,10 @@
       },
       "put": {
         "tags": [
-          "User"
+          "Users"
         ],
         "summary": "Modify the base information of the targeted UserProfile.",
-        "operationId": "User_Update",
+        "operationId": "Users_Update",
         "parameters": [
           {
             "name": "tenantId",
@@ -688,13 +692,197 @@
         ]
       }
     },
+    "/{tenantId}/directory/{directoryId}/users/{userId}/contact": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Retrieve a UserProfile that belongs to a specific Tenant and Directory by the User's Identifier.",
+        "operationId": "Users_GetContactInformationById",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "directoryId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContactInformation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      }
+    },
+    "/{tenantId}/directory/{directoryId}/users/{userId}/notifications": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Retrieve a UserProfile that belongs to a specific Tenant and Directory by the User's Identifier.",
+        "operationId": "Users_GetNotificationPreferencesById",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "directoryId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationPreferencesSummary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      }
+    },
     "/{tenantId}/directory/{directoryId}/users/query": {
       "post": {
         "tags": [
-          "User"
+          "Users"
         ],
         "summary": "Retrieve a UserProfile that belongs to a specific Tenant and Directory by the User's Identifier.",
-        "operationId": "User_FindUsersByQuery",
+        "operationId": "Users_FindUsersByQuery",
         "parameters": [
           {
             "name": "tenantId",
@@ -716,6 +904,7 @@
           }
         ],
         "requestBody": {
+          "description": "",
           "content": {
             "application/json-patch+json": {
               "schema": {
@@ -798,10 +987,10 @@
     "/{tenantId}/directory/{directoryId}/users/{userId}/contact/emails/{emailAddress}": {
       "get": {
         "tags": [
-          "User"
+          "Users"
         ],
         "summary": "Retrieves details of a specific Email addresses for the targeted UserProfile.",
-        "operationId": "User_GetEmail",
+        "operationId": "Users_GetEmail",
         "parameters": [
           {
             "name": "tenantId",
@@ -897,10 +1086,10 @@
       },
       "delete": {
         "tags": [
-          "User"
+          "Users"
         ],
         "summary": "Removes an email from the targeted UserProfile.",
-        "operationId": "User_RemoveEmail",
+        "operationId": "Users_RemoveEmail",
         "parameters": [
           {
             "name": "tenantId",
@@ -991,10 +1180,10 @@
     "/{tenantId}/directory/{directoryId}/users/{userId}/contact/emails": {
       "post": {
         "tags": [
-          "User"
+          "Users"
         ],
         "summary": "Create a new email to the target UserProfile if the existing email address doesn't already exist.",
-        "operationId": "User_AddNewEmail",
+        "operationId": "Users_CreateNewEmail",
         "parameters": [
           {
             "name": "tenantId",
@@ -1029,22 +1218,22 @@
           "content": {
             "application/json-patch+json": {
               "schema": {
-                "$ref": "#/components/schemas/AddEmailCommand"
+                "$ref": "#/components/schemas/CreateEmailCommand"
               }
             },
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddEmailCommand"
+                "$ref": "#/components/schemas/CreateEmailCommand"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddEmailCommand"
+                "$ref": "#/components/schemas/CreateEmailCommand"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/AddEmailCommand"
+                "$ref": "#/components/schemas/CreateEmailCommand"
               }
             }
           }
@@ -1105,13 +1294,13 @@
         ]
       }
     },
-    "/{tenantId}/directory/{directoryId}/users/{userId}/contact/emails/{emailAddress}/verification/resendToken": {
-      "get": {
+    "/{tenantId}/directory/{directoryId}/users/{userId}/contact/emails/{emailAddress}/verification/nonce": {
+      "post": {
         "tags": [
-          "User"
+          "Users"
         ],
-        "summary": "Retrieve a ResendVerificationToken to trigger the Verification Code process. Returns 429 if too many ResendVerificationTokens have been requested in the allowed time.",
-        "operationId": "User_GetEmailResendVerificationToken",
+        "summary": "Reserve a client generated Nonce to trigger the Verification Code process. Returns 429 if too many requests have been requested in the allowed time.",
+        "operationId": "Users_CreateEmailVerificationNonce",
         "parameters": [
           {
             "name": "tenantId",
@@ -1150,6 +1339,30 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateVerificationNonceCommand"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateVerificationNonceCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateVerificationNonceCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateVerificationNonceCommand"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Success",
@@ -1219,10 +1432,10 @@
     "/{tenantId}/directory/{directoryId}/users/{userId}/contact/emails/{emailAddress}/verification/resend": {
       "post": {
         "tags": [
-          "User"
+          "Users"
         ],
-        "summary": "Send a new verification Email Address to the targeted Email. Requires a ResendVerificationToken to prevent excessive sending of emails to the targeted Email Address.",
-        "operationId": "User_ResendEmailVerification",
+        "summary": "Send a new verification Email Address to the targeted Email. Requires a VerificationNonce to prevent excessive sending of emails to the targeted Email Address.",
+        "operationId": "Users_ResendEmailVerification",
         "parameters": [
           {
             "name": "tenantId",
@@ -1262,26 +1475,26 @@
           }
         ],
         "requestBody": {
-          "description": "Required to trigger the sending of the Verification Code to the targeted Email",
+          "description": "",
           "content": {
             "application/json-patch+json": {
               "schema": {
-                "type": "string"
+                "$ref": "#/components/schemas/SendVerificationCommand"
               }
             },
             "application/json": {
               "schema": {
-                "type": "string"
+                "$ref": "#/components/schemas/SendVerificationCommand"
               }
             },
             "text/json": {
               "schema": {
-                "type": "string"
+                "$ref": "#/components/schemas/SendVerificationCommand"
               }
             },
             "application/*+json": {
               "schema": {
-                "type": "string"
+                "$ref": "#/components/schemas/SendVerificationCommand"
               }
             }
           }
@@ -1338,10 +1551,10 @@
     "/{tenantId}/directory/{directoryId}/users/{userId}/contact/emails/{emailAddress}/verification/verify": {
       "post": {
         "tags": [
-          "User"
+          "Users"
         ],
         "summary": "Compares the last verification code sent through Email to and changes the verification status of the targeted Email Address.",
-        "operationId": "User_VerifyEmail",
+        "operationId": "Users_VerifyEmail",
         "parameters": [
           {
             "name": "tenantId",
@@ -1385,22 +1598,22 @@
           "content": {
             "application/json-patch+json": {
               "schema": {
-                "type": "string"
+                "$ref": "#/components/schemas/VerifyEmailCommand"
               }
             },
             "application/json": {
               "schema": {
-                "type": "string"
+                "$ref": "#/components/schemas/VerifyEmailCommand"
               }
             },
             "text/json": {
               "schema": {
-                "type": "string"
+                "$ref": "#/components/schemas/VerifyEmailCommand"
               }
             },
             "application/*+json": {
               "schema": {
-                "type": "string"
+                "$ref": "#/components/schemas/VerifyEmailCommand"
               }
             }
           }
@@ -1464,10 +1677,10 @@
     "/{tenantId}/directory/{directoryId}/users/{userId}/contact/phones/{phoneNumber}": {
       "get": {
         "tags": [
-          "User"
+          "Users"
         ],
         "summary": "Retrieves details of a specific Phone Number for the targeted UserProfile.",
-        "operationId": "User_GetPhone",
+        "operationId": "Users_GetPhone",
         "parameters": [
           {
             "name": "tenantId",
@@ -1563,10 +1776,10 @@
       },
       "delete": {
         "tags": [
-          "User"
+          "Users"
         ],
         "summary": "Removes an Phone Number from the targeted UserProfile.",
-        "operationId": "User_RemovePhone",
+        "operationId": "Users_RemovePhone",
         "parameters": [
           {
             "name": "tenantId",
@@ -1657,10 +1870,10 @@
     "/{tenantId}/directory/{directoryId}/users/{userId}/contact/phones": {
       "post": {
         "tags": [
-          "User"
+          "Users"
         ],
-        "summary": "Create a new email to the target UserProfile if the existing email address doesn't already exist.",
-        "operationId": "User_AddNewPhone",
+        "summary": "Create a new phone number on the target UserProfile if the existing phone number doesn't already exist.",
+        "operationId": "Users_CreateNewPhone",
         "parameters": [
           {
             "name": "tenantId",
@@ -1695,22 +1908,22 @@
           "content": {
             "application/json-patch+json": {
               "schema": {
-                "$ref": "#/components/schemas/AddPhoneCommand"
+                "$ref": "#/components/schemas/CreatePhoneCommand"
               }
             },
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddPhoneCommand"
+                "$ref": "#/components/schemas/CreatePhoneCommand"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddPhoneCommand"
+                "$ref": "#/components/schemas/CreatePhoneCommand"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/AddPhoneCommand"
+                "$ref": "#/components/schemas/CreatePhoneCommand"
               }
             }
           }
@@ -1764,13 +1977,13 @@
         ]
       }
     },
-    "/{tenantId}/directory/{directoryId}/users/{userId}/contact/phones/{phoneNumber}/verification/resendToken": {
-      "get": {
+    "/{tenantId}/directory/{directoryId}/users/{userId}/contact/phones/{phoneNumber}/verification/nonce": {
+      "post": {
         "tags": [
-          "User"
+          "Users"
         ],
         "summary": "Retrieve a ResendVerificationToken to trigger the Verification Code process. Returns 429 if too many ResendVerificationTokens have been requested in the allowed time.",
-        "operationId": "User_GetPhoneResendVerificationToken",
+        "operationId": "Users_CreatePhoneVerificationNonce",
         "parameters": [
           {
             "name": "tenantId",
@@ -1809,6 +2022,30 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateVerificationNonceCommand"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateVerificationNonceCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateVerificationNonceCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateVerificationNonceCommand"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Success",
@@ -1878,10 +2115,10 @@
     "/{tenantId}/directory/{directoryId}/users/{userId}/contact/phones/{phoneNumber}/verification/resend": {
       "post": {
         "tags": [
-          "User"
+          "Users"
         ],
-        "summary": "Send a new verification code to the targeted Phone Number  through SMS. Requires a ResendVerificationToken to prevent excessive messaging of SMS messages to the targeted Phone Number.",
-        "operationId": "User_ResendPhonelVerification",
+        "summary": "Send a new verification code to the targeted Phone Number through SMS. Requires a VerificationNonce to prevent excessive messaging of SMS messages to the targeted Phone Number.",
+        "operationId": "Users_ResendPhoneVerification",
         "parameters": [
           {
             "name": "tenantId",
@@ -1921,26 +2158,26 @@
           }
         ],
         "requestBody": {
-          "description": "Required to trigger the sending of the Verification Code to the targeted Email",
+          "description": "",
           "content": {
             "application/json-patch+json": {
               "schema": {
-                "type": "string"
+                "$ref": "#/components/schemas/SendVerificationCommand"
               }
             },
             "application/json": {
               "schema": {
-                "type": "string"
+                "$ref": "#/components/schemas/SendVerificationCommand"
               }
             },
             "text/json": {
               "schema": {
-                "type": "string"
+                "$ref": "#/components/schemas/SendVerificationCommand"
               }
             },
             "application/*+json": {
               "schema": {
-                "type": "string"
+                "$ref": "#/components/schemas/SendVerificationCommand"
               }
             }
           }
@@ -1997,10 +2234,10 @@
     "/{tenantId}/directory/{directoryId}/users/{userId}/contact/phones/{phoneNumber}/verification/verify": {
       "post": {
         "tags": [
-          "User"
+          "Users"
         ],
         "summary": "Compares the last verification code sent through SMS to and changes the verification status of the targeted Phone Number.",
-        "operationId": "User_VerifyPhone",
+        "operationId": "Users_VerifyPhone",
         "parameters": [
           {
             "name": "tenantId",
@@ -2044,22 +2281,22 @@
           "content": {
             "application/json-patch+json": {
               "schema": {
-                "type": "string"
+                "$ref": "#/components/schemas/VerifyPhoneCommand"
               }
             },
             "application/json": {
               "schema": {
-                "type": "string"
+                "$ref": "#/components/schemas/VerifyPhoneCommand"
               }
             },
             "text/json": {
               "schema": {
-                "type": "string"
+                "$ref": "#/components/schemas/VerifyPhoneCommand"
               }
             },
             "application/*+json": {
               "schema": {
-                "type": "string"
+                "$ref": "#/components/schemas/VerifyPhoneCommand"
               }
             }
           }
@@ -2123,10 +2360,10 @@
     "/{tenantId}/directory/{directoryId}/users/{userId}/notifications/memberships": {
       "post": {
         "tags": [
-          "User"
+          "Users"
         ],
         "summary": "Add the targeted UserProfile as a member of the targeted Group. Allows the targeted UserProfile to receive notifications sent to the targeted Group",
-        "operationId": "User_AddGroupMembership",
+        "operationId": "Users_CreateGroupMembership",
         "parameters": [
           {
             "name": "tenantId",
@@ -2233,10 +2470,10 @@
     "/{tenantId}/directory/{directoryId}/users/{userId}/notifications/memberships/{groupId}": {
       "delete": {
         "tags": [
-          "User"
+          "Users"
         ],
         "summary": "Removes the targeted UserProfile as a Member from the targeted Group. This prevents the targeted UserProfile from receiving notifications sent to the targeted Group.",
-        "operationId": "User_RemoveGroupMembership",
+        "operationId": "Users_RemoveGroupMembership",
         "parameters": [
           {
             "name": "tenantId",
@@ -2327,10 +2564,10 @@
     "/{tenantId}/directory/{directoryId}/users/{userId}/notifications/locations/{locationId}": {
       "get": {
         "tags": [
-          "User"
+          "Users"
         ],
         "summary": "Retrieves details of a specific Location for the targeted UserProfile.",
-        "operationId": "User_GetLocation",
+        "operationId": "Users_GetLocation",
         "parameters": [
           {
             "name": "tenantId",
@@ -2426,10 +2663,10 @@
       },
       "delete": {
         "tags": [
-          "User"
+          "Users"
         ],
         "summary": "Remove an existing Location from the targeted UserProfile.",
-        "operationId": "User_RemoveLocation",
+        "operationId": "Users_RemoveLocation",
         "parameters": [
           {
             "name": "tenantId",
@@ -2520,10 +2757,10 @@
     "/{tenantId}/directory/{directoryId}/users/{userId}/notifications/locations": {
       "post": {
         "tags": [
-          "User"
+          "Users"
         ],
         "summary": "Create a new Location for the targeted UserProfile.",
-        "operationId": "User_AddNewLocation",
+        "operationId": "Users_CreateNewLocation",
         "parameters": [
           {
             "name": "tenantId",
@@ -2558,22 +2795,22 @@
           "content": {
             "application/json-patch+json": {
               "schema": {
-                "$ref": "#/components/schemas/AddLocationCommand"
+                "$ref": "#/components/schemas/CreateLocationCommand"
               }
             },
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddLocationCommand"
+                "$ref": "#/components/schemas/CreateLocationCommand"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddLocationCommand"
+                "$ref": "#/components/schemas/CreateLocationCommand"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/AddLocationCommand"
+                "$ref": "#/components/schemas/CreateLocationCommand"
               }
             }
           }
@@ -2630,86 +2867,11 @@
   },
   "components": {
     "schemas": {
-      "AddEmailCommand": {
-        "required": [
-          "makePrimary",
-          "type",
-          "value"
-        ],
-        "type": "object",
-        "properties": {
-          "type": {
-            "$ref": "#/components/schemas/ContactTargetType"
-          },
-          "display": {
-            "type": "string",
-            "nullable": true
-          },
-          "value": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "makePrimary": {
-            "type": "boolean"
-          }
-        },
-        "additionalProperties": false
-      },
-      "AddLocationCommand": {
-        "required": [
-          "address",
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "address": {
-            "$ref": "#/components/schemas/Address"
-          },
-          "geoLocation": {
-            "$ref": "#/components/schemas/GeoLocation"
-          }
-        },
-        "additionalProperties": false
-      },
-      "AddPhoneCommand": {
-        "required": [
-          "makePrimary",
-          "mobilePhone",
-          "type",
-          "value"
-        ],
-        "type": "object",
-        "properties": {
-          "type": {
-            "$ref": "#/components/schemas/ContactTargetType"
-          },
-          "display": {
-            "type": "string",
-            "nullable": true
-          },
-          "value": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "makePrimary": {
-            "type": "boolean"
-          },
-          "mobilePhone": {
-            "type": "boolean"
-          }
-        },
-        "additionalProperties": false
-      },
       "Address": {
         "type": "object",
         "properties": {
           "type": {
-            "type": "string",
-            "nullable": true
+            "$ref": "#/components/schemas/AddressType"
           },
           "formatted": {
             "type": "string",
@@ -2743,6 +2905,14 @@
           }
         },
         "additionalProperties": false
+      },
+      "AddressType": {
+        "enum": [
+          "Home",
+          "Work",
+          "Other"
+        ],
+        "type": "string"
       },
       "AvailableLanguagesResponse": {
         "type": "object",
@@ -2824,19 +2994,10 @@
         "type": "object",
         "properties": {
           "emails": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/EmailAddress"
-            },
-            "description": "Email addresses for the User.  The value SHOULD be specified\r\naccording to [RFC5321].  Service providers SHOULD canonicalize the\r\nvalue according to [RFC5321], e.g., \"bjensen@example.com\" instead\r\nof \"bjensen@EXAMPLE.COM\".  The \"display\" sub-attribute MAY be used\r\nto return the canonicalized representation of the email value.\r\nThe \"type\" sub-attribute is used to provide a classification\r\nmeaningful to the (human) user.  The user interface should\r\nencourage the use of basic values of \"work\", \"home\", and \"other\"\r\nand MAY allow additional type values to be used at the discretion\r\nof SCIM clients.",
-            "nullable": true
+            "$ref": "#/components/schemas/EmailCollection"
           },
           "phones": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PhoneNumber"
-            },
-            "nullable": true
+            "$ref": "#/components/schemas/PhoneCollection"
           },
           "mobileApps": {
             "type": "array",
@@ -2855,9 +3016,8 @@
         ],
         "type": "string"
       },
-      "CreateEmailAddress": {
+      "CreateEmailCommand": {
         "required": [
-          "primary",
           "type",
           "value"
         ],
@@ -2868,12 +3028,11 @@
           },
           "primary": {
             "type": "boolean",
-            "description": "A Boolean value indicating the 'primary' or preferred attribute\r\nvalue for this attribute, e.g., the preferred mailing address or\r\nthe primary email address.The primary attribute value \"true\"\r\nMUST appear no more than once.If not specified, the value of\r\n\"primary\" SHALL be assumed to be \"false\"."
+            "description": "A Boolean value indicatin the primary email address."
           },
           "value": {
             "minLength": 1,
-            "type": "string",
-            "description": "The attribute's significant value, e.g., email address, phone\r\nnumber."
+            "type": "string"
           }
         },
         "additionalProperties": false
@@ -2891,20 +3050,60 @@
         },
         "additionalProperties": false
       },
-      "CreateLocation": {
+      "CreateLocationCommand": {
         "required": [
-          "address"
+          "name"
         ],
         "type": "object",
         "properties": {
-          "address": {
-            "$ref": "#/components/schemas/Address"
+          "name": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": {
+            "$ref": "#/components/schemas/AddressType"
+          },
+          "streetAddress": {
+            "type": "string",
+            "description": "The full street address component, which may\r\ninclude house number, street name, P.O. box, and multi-line\r\nextended street address information.  This attribute MAY\r\ncontain newlines.",
+            "nullable": true
+          },
+          "locality": {
+            "type": "string",
+            "description": "The city or locality component.",
+            "nullable": true
+          },
+          "region": {
+            "type": "string",
+            "description": "The state or region component.",
+            "nullable": true
+          },
+          "postalCode": {
+            "type": "string",
+            "description": "The zip code or postal code component.",
+            "nullable": true
+          },
+          "country": {
+            "type": "string",
+            "description": "The country name component.When specified, the value\r\nMUST be in ISO 3166-1 \"alpha-2\" code format [ISO3166]; e.g.,\r\nthe United States and Sweden are \"US\" and \"SE\", respectively.",
+            "nullable": true
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
           }
         },
         "additionalProperties": false
       },
-      "CreatePhoneNumber": {
+      "CreatePhoneCommand": {
         "required": [
+          "mobilePhone",
           "primary",
           "type",
           "value"
@@ -2914,14 +3113,15 @@
           "type": {
             "$ref": "#/components/schemas/ContactTargetType"
           },
-          "primary": {
-            "type": "boolean",
-            "description": "A Boolean value indicating the 'primary' or preferred attribute\r\nvalue for this attribute, e.g., the preferred mailing address or\r\nthe primary email address.The primary attribute value \"true\"\r\nMUST appear no more than once.If not specified, the value of\r\n\"primary\" SHALL be assumed to be \"false\"."
-          },
           "value": {
             "minLength": 1,
-            "type": "string",
-            "description": "The attribute's significant value, e.g., email address, phone\r\nnumber."
+            "type": "string"
+          },
+          "primary": {
+            "type": "boolean"
+          },
+          "mobilePhone": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false
@@ -2969,21 +3169,21 @@
           "emails": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/CreateEmailAddress"
+              "$ref": "#/components/schemas/CreateEmailCommand"
             },
             "nullable": true
           },
           "phones": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/CreatePhoneNumber"
+              "$ref": "#/components/schemas/CreatePhoneCommand"
             },
             "nullable": true
           },
           "locations": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/CreateLocation"
+              "$ref": "#/components/schemas/CreateLocationCommand"
             },
             "nullable": true
           },
@@ -2993,6 +3193,20 @@
               "$ref": "#/components/schemas/CreateGroupMembership"
             },
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateVerificationNonceCommand": {
+        "required": [
+          "nonce"
+        ],
+        "type": "object",
+        "properties": {
+          "nonce": {
+            "minLength": 1,
+            "type": "string",
+            "description": "A nonce is a random string, uniquely generated by the client to allow the server to verify that a request has \r\nnever been made before and helps prevent spamming end users with too many verification requests through email."
           }
         },
         "additionalProperties": false
@@ -3010,7 +3224,8 @@
           "display": {
             "type": "string",
             "description": "A human-readable name, primarily used for display purposes and\r\nhaving a mutability of \"immutable\".",
-            "nullable": true
+            "nullable": true,
+            "readOnly": true
           },
           "value": {
             "type": "string",
@@ -3019,6 +3234,24 @@
           },
           "verification": {
             "$ref": "#/components/schemas/VerificationStatus"
+          }
+        },
+        "additionalProperties": false
+      },
+      "EmailCollection": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EmailAddress"
+            },
+            "nullable": true
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -3051,6 +3284,81 @@
         },
         "additionalProperties": false
       },
+      "GroupMemberships": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GroupReference"
+            },
+            "nullable": true
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "count": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "isReadOnly": {
+            "type": "boolean",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GroupReference": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "uri": {
+            "type": "string",
+            "format": "uri",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GroupReferencePagedApiResponse": {
+        "type": "object",
+        "properties": {
+          "totalItemCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GroupReference"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "GroupSummary": {
         "type": "object",
         "properties": {
@@ -3067,6 +3375,9 @@
             "nullable": true
           },
           "default": {
+            "type": "boolean"
+          },
+          "isJoinable": {
             "type": "boolean"
           },
           "children": {
@@ -3129,11 +3440,58 @@
             "type": "string",
             "nullable": true
           },
+          "primary": {
+            "type": "boolean",
+            "description": "A Boolean value indicating the 'primary' or preferred attribute\r\nvalue for this attribute, e.g., the preferred mailing address or\r\nthe primary email address.The primary attribute value \"true\"\r\nMUST appear no more than once.If not specified, the value of\r\n\"primary\" SHALL be assumed to be \"false\"."
+          },
           "address": {
             "$ref": "#/components/schemas/Address"
           },
           "geoLocation": {
             "$ref": "#/components/schemas/GeoLocation"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LocationCollection": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Location"
+            },
+            "nullable": true
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LocationPagedApiResponse": {
+        "type": "object",
+        "properties": {
+          "totalItemCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Location"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -3156,52 +3514,45 @@
         },
         "additionalProperties": false
       },
-      "NestedReference": {
+      "NotificationPreferences": {
         "type": "object",
         "properties": {
-          "parent": {
-            "$ref": "#/components/schemas/NestedReference"
+          "locations": {
+            "$ref": "#/components/schemas/LocationCollection"
           },
-          "path": {
+          "memberships": {
+            "$ref": "#/components/schemas/GroupMemberships"
+          },
+          "preferredWrittenLanguage": {
+            "type": "string",
+            "description": "Indicates the user's preferred written or spoken languages and is\r\ngenerally used for selecting a localized user interface.  The\r\nvalue indicates the set of natural languages that are preferred.\r\nThe format of the value is the same as the HTTP Accept-Language\r\nheader field (not including \"Accept-Language:\") and is specified\r\nin Section 5.3.5 of [RFC7231].  The intent of this value is to\r\nenable cloud applications to perform matching of language tags\r\n[RFC4647] to the user's language preferences, regardless of what\r\nmay be indicated by a user agent (which might be shared), or in an\r\ninteraction that does not involve a user (such as in a delegated\r\nOAuth 2.0 [RFC6749] style interaction) where normal HTTP\r\nAccept-Language header negotiation cannot take place.",
+            "nullable": true
+          },
+          "preferredSpokenLanguage": {
             "type": "string",
             "nullable": true
           },
-          "id": {
+          "locale": {
             "type": "string",
+            "description": "Used to indicate the User's default location for purposes of\r\nlocalizing such items as currency, date time format, or numerical\r\nrepresentations.  A valid value is a language tag as defined in\r\n[RFC5646].  Computer languages are explicitly excluded.\r\n\r\nA language tag is a sequence of one or more case-insensitive\r\nsub-tags, each separated by a hyphen character (\"-\", %x2D).  For\r\nbackward compatibility, servers MAY accept tags separated by an\r\nunderscore character (\"_\", %x5F).  In most cases, a language tag\r\nconsists of a primary language sub-tag that identifies a broad\r\nfamily of related languages (e.g., \"en\" = English) and that is\r\noptionally followed by a series of sub-tags that refine or narrow\r\nthat language's range (e.g., \"en-CA\" = the variety of English as\r\ncommunicated in Canada).  Whitespace is not allowed within a\r\nlanguage tag.  Example tags include:\r\n\r\nfr, en-US, es-419, az-Arab, x-pig-latin, man-Nkoo-GN\r\n\r\nSee [RFC5646] for further information.",
             "nullable": true
           },
-          "name": {
+          "timezone": {
             "type": "string",
-            "nullable": true
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "uri": {
-            "type": "string",
-            "format": "uri",
+            "description": "The User's time zone, in IANA Time Zone database format [RFC6557],\r\nalso known as the \"Olson\" time zone database format [Olson-TZ]\r\n(e.g., \"America/Los_Angeles\").",
             "nullable": true
           }
         },
         "additionalProperties": false
       },
-      "NotificationPreferences": {
+      "NotificationPreferencesSummary": {
         "type": "object",
         "properties": {
           "locations": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Location"
-            },
-            "nullable": true
+            "$ref": "#/components/schemas/LocationPagedApiResponse"
           },
           "memberships": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/NestedReference"
-            },
-            "nullable": true
+            "$ref": "#/components/schemas/GroupReferencePagedApiResponse"
           },
           "preferredWrittenLanguage": {
             "type": "string",
@@ -3259,6 +3610,62 @@
         },
         "additionalProperties": false
       },
+      "PersonName": {
+        "type": "object",
+        "properties": {
+          "formatted": {
+            "type": "string",
+            "description": "The full name, including all middle names, titles, and suffixes as appropriate, formatted for display(e.g.,\"Ms. Barbara Jane Jensen, III\").",
+            "nullable": true,
+            "readOnly": true
+          },
+          "familyName": {
+            "type": "string",
+            "description": "The Family Name of the User, or Last Name in most Western languages (e.g., \"Jensen\" given the full name \"Ms. Barbara Jane Jensen, III\").",
+            "nullable": true
+          },
+          "givenName": {
+            "type": "string",
+            "description": "The Given Name of the User, or First Name in most Western languages (e.g., \"Barbara\" given the full name \"Ms. Barbara Jane Jensen, III\").",
+            "nullable": true
+          },
+          "middleName": {
+            "type": "string",
+            "description": "The Middle name(s) of the User(e.g., \"Jane\" given the full name \"Ms. Barbara Jane Jensen, III\").",
+            "nullable": true
+          },
+          "honorificPrefix": {
+            "type": "string",
+            "description": "The honorific prefix(es) of the User, or title in most Western languages(e.g., \"Ms.\" given the full name \"Ms. Barbara Jane Jensen, III\").",
+            "nullable": true
+          },
+          "honorificSuffix": {
+            "type": "string",
+            "description": "The honorific suffix(es) of the User, or suffix in most Western languages(e.g., \"III\" given the full name \"Ms. Barbara Jane Jensen, III\").",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "The components of the user's name.  Service providers MAY return \r\njust the full name as a single string in the formatted\r\nsub-attribute, or they MAY return just the individual component\r\nattributes using the other sub-attributes, or they MAY return\r\nboth.If both variants are returned, they SHOULD be describing\r\nthe same name, with the formatted name indicating how the\r\ncomponent attributes should be combined."
+      },
+      "PhoneCollection": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PhoneNumber"
+            },
+            "nullable": true
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
       "PhoneNumber": {
         "type": "object",
         "properties": {
@@ -3272,7 +3679,8 @@
           "display": {
             "type": "string",
             "description": "A human-readable name, primarily used for display purposes and\r\nhaving a mutability of \"immutable\".",
-            "nullable": true
+            "nullable": true,
+            "readOnly": true
           },
           "value": {
             "type": "string",
@@ -3356,6 +3764,20 @@
         },
         "additionalProperties": false
       },
+      "SendVerificationCommand": {
+        "required": [
+          "verificationNonce"
+        ],
+        "type": "object",
+        "properties": {
+          "verificationNonce": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Verification Nonce is reserved by the client in a previous command to prevent spamming end users with too many \r\nresponses within a reasonable timeframe enforced by the server."
+          }
+        },
+        "additionalProperties": false
+      },
       "TimeZoneSummary": {
         "type": "object",
         "properties": {
@@ -3432,22 +3854,36 @@
       "UserProfile": {
         "type": "object",
         "properties": {
+          "tenantId": {
+            "type": "string",
+            "description": "Identifier for the Tenant this resource belongs to.",
+            "nullable": true
+          },
+          "directories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The set of Directory Tags this resource belongs to. A UserProfile may belong to multiple directories.",
+            "nullable": true
+          },
           "id": {
             "type": "string",
+            "description": "A unique identifier for a SCIM resource as defined by the service\r\nprovider. Each representation of the resource MUST include a\r\nnon-empty \"id\" value.This identifier MUST be unique across the\r\nSCIM service provider's entire set of resources. It MUST be a\r\nstable, non-reassignable identifier that does not change when the\r\nsame resource is returned in subsequent requests.The value of\r\nthe \"id\" attribute is always issued by the service provider and\r\nMUST NOT be specified by the client.",
             "nullable": true
           },
-          "firstName": {
+          "externalId": {
             "type": "string",
-            "nullable": true
-          },
-          "lastName": {
-            "type": "string",
+            "description": "A String that is an identifier for the resource as defined by the\r\nprovisioning client.The \"externalId\" may simplify identification\r\nof a resource between the provisioning client and the service\r\nprovider by allowing the client to use a filter to locate the\r\nresource with an identifier from the provisioning domain,\r\nobviating the need to store a local mapping between the\r\nprovisioning domain's identifier of the resource and the\r\nidentifier used by the service provider. Each resource MAY\r\ninclude a non-empty \"externalId\" value. The value of the\r\n\"externalId\" attribute is always issued by the provisioning client\r\nand MUST NOT be specified by the service provider. The service\r\nprovider MUST always interpret the externalId as scoped to the\r\nprovisioning domain. While the server does not enforce\r\nuniqueness, it is assumed that the value's uniqueness is\r\ncontrolled by the client setting the value.See Section 9 for\r\nadditional considerations regarding privacy.",
             "nullable": true
           },
           "displayName": {
             "type": "string",
             "description": "The name of the user, suitable for display to end-users.  Each\r\nuser returned MAY include a non-empty displayName value.  The name\r\nSHOULD be the full name of the User being described, if known\r\n(e.g., \"Babs Jensen\" or \"Ms. Barbara J Jensen, III\") but MAY be a\r\nusername or handle, if that is all that is available (e.g.,\r\n\"bjensen\").  The value provided SHOULD be the primary textual\r\nlabel by which this User is normally displayed by the service\r\nprovider when presenting it to end-users.",
             "nullable": true
+          },
+          "name": {
+            "$ref": "#/components/schemas/PersonName"
           },
           "contactInformation": {
             "$ref": "#/components/schemas/ContactInformation"
@@ -3560,6 +3996,32 @@
           }
         },
         "additionalProperties": false
+      },
+      "VerifyEmailCommand": {
+        "required": [
+          "verificationCode"
+        ],
+        "type": "object",
+        "properties": {
+          "verificationCode": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "VerifyPhoneCommand": {
+        "required": [
+          "verificationCode"
+        ],
+        "type": "object",
+        "properties": {
+          "verificationCode": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
       }
     },
     "securitySchemes": {
@@ -3567,7 +4029,7 @@
         "type": "oauth2",
         "flows": {
           "implicit": {
-            "authorizationUrl": "https://auth.dev.alertsense.io/connect/authorize",
+            "authorizationUrl": "https://auth.alertsense.com/connect/authorize",
             "scopes": {
               "tamarack": "Hickory",
               "content": "ExternalID",
@@ -3576,7 +4038,7 @@
             }
           },
           "clientCredentials": {
-            "tokenUrl": "https://auth.dev.alertsense.io/connect/token",
+            "tokenUrl": "https://auth.alertsense.com/connect/token",
             "scopes": {
               "tamarack": "Hickory",
               "content": "ExternalID",

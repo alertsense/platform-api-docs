@@ -10,13 +10,13 @@ info:
     \ contain multiple Emails, Phones, and Locations.</p><p>Weather Notification subscriptions\
     \ are currently missing from the specification."
   title: Public Directory API
-  version: 4.0.5
+  version: 4.1.0
 servers:
 - url: /
 paths:
   /{tenantId}/directory/{directoryId}/groups/discover:
     get:
-      operationId: Groups_DiscoverGroups
+      operationId: Groups_DiscoverAvailableGroups
       parameters:
       - explode: false
         in: path
@@ -69,13 +69,13 @@ paths:
         Tenant.
       tags:
       - Groups
-  /{realm}/directory/meta/languages:
+  /{tenantId}/directory/meta/languages:
     get:
       operationId: Meta_GetLanguages
       parameters:
       - explode: false
         in: path
-        name: realm
+        name: tenantId
         required: true
         schema:
           type: string
@@ -93,6 +93,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/BadRequestResponse'
           description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Unauthorized
         "403":
           content:
             application/json:
@@ -105,8 +111,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
           description: Not Found
-        "401":
-          description: Unauthorized
       security:
       - Oauth2Scheme:
         - tamarack
@@ -116,13 +120,13 @@ paths:
         translation.
       tags:
       - Meta
-  /{realm}/directory/meta/timezones:
+  /{tenantId}/directory/meta/timezones:
     get:
       operationId: Meta_GetTimeZones
       parameters:
       - explode: false
         in: path
-        name: realm
+        name: tenantId
         required: true
         schema:
           type: string
@@ -159,8 +163,7 @@ paths:
         - tamarack
         - content
         JwtBearerTokenScheme: []
-      summary: Returns the Languages supported by the platform for Written and Spoken
-        translation.
+      summary: Returns the timezones supported in the system.
       tags:
       - Meta
   /verifications/email:
@@ -255,18 +258,16 @@ paths:
       - Test
   /{tenantId}/directory/{directoryId}/users:
     post:
-      operationId: User_Create
+      operationId: Users_Create
       parameters:
-      - description: ""
-        explode: false
+      - explode: false
         in: path
         name: tenantId
         required: true
         schema:
           type: string
         style: simple
-      - description: ""
-        explode: false
+      - explode: false
         in: path
         name: directoryId
         required: true
@@ -287,7 +288,6 @@ paths:
           application/*+json:
             schema:
               $ref: '#/components/schemas/CreateUserProfileCommand'
-        description: ""
       responses:
         "201":
           content:
@@ -322,10 +322,10 @@ paths:
         JwtBearerTokenScheme: []
       summary: Create a new UserProfile in the targeted Tenant and Directory
       tags:
-      - User
+      - Users
   /{tenantId}/directory/{directoryId}/users/{userId}:
     get:
-      operationId: User_GetById
+      operationId: Users_GetById
       parameters:
       - description: ""
         explode: false
@@ -386,9 +386,9 @@ paths:
       summary: Retrieve a UserProfile that belongs to a specific Tenant and Directory
         by the User's Identifier.
       tags:
-      - User
+      - Users
     put:
-      operationId: User_Update
+      operationId: Users_Update
       parameters:
       - description: ""
         explode: false
@@ -459,10 +459,138 @@ paths:
         JwtBearerTokenScheme: []
       summary: Modify the base information of the targeted UserProfile.
       tags:
-      - User
+      - Users
+  /{tenantId}/directory/{directoryId}/users/{userId}/contact:
+    get:
+      operationId: Users_GetContactInformationById
+      parameters:
+      - description: ""
+        explode: false
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: directoryId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactInformation'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
+      summary: Retrieve a UserProfile that belongs to a specific Tenant and Directory
+        by the User's Identifier.
+      tags:
+      - Users
+  /{tenantId}/directory/{directoryId}/users/{userId}/notifications:
+    get:
+      operationId: Users_GetNotificationPreferencesById
+      parameters:
+      - description: ""
+        explode: false
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: directoryId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationPreferencesSummary'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
+      summary: Retrieve a UserProfile that belongs to a specific Tenant and Directory
+        by the User's Identifier.
+      tags:
+      - Users
   /{tenantId}/directory/{directoryId}/users/query:
     post:
-      operationId: User_FindUsersByQuery
+      operationId: Users_FindUsersByQuery
       parameters:
       - description: ""
         explode: false
@@ -494,6 +622,7 @@ paths:
           application/*+json:
             schema:
               $ref: '#/components/schemas/FindUserQuery'
+        description: ""
       responses:
         "200":
           content:
@@ -529,10 +658,10 @@ paths:
       summary: Retrieve a UserProfile that belongs to a specific Tenant and Directory
         by the User's Identifier.
       tags:
-      - User
+      - Users
   /{tenantId}/directory/{directoryId}/users/{userId}/contact/emails/{emailAddress}:
     delete:
-      operationId: User_RemoveEmail
+      operationId: Users_RemoveEmail
       parameters:
       - description: ""
         explode: false
@@ -596,9 +725,9 @@ paths:
         JwtBearerTokenScheme: []
       summary: Removes an email from the targeted UserProfile.
       tags:
-      - User
+      - Users
     get:
-      operationId: User_GetEmail
+      operationId: Users_GetEmail
       parameters:
       - description: ""
         explode: false
@@ -666,10 +795,10 @@ paths:
         JwtBearerTokenScheme: []
       summary: Retrieves details of a specific Email addresses for the targeted UserProfile.
       tags:
-      - User
+      - Users
   /{tenantId}/directory/{directoryId}/users/{userId}/contact/emails:
     post:
-      operationId: User_AddNewEmail
+      operationId: Users_CreateNewEmail
       parameters:
       - description: ""
         explode: false
@@ -699,16 +828,16 @@ paths:
         content:
           application/json-patch+json:
             schema:
-              $ref: '#/components/schemas/AddEmailCommand'
+              $ref: '#/components/schemas/CreateEmailCommand'
           application/json:
             schema:
-              $ref: '#/components/schemas/AddEmailCommand'
+              $ref: '#/components/schemas/CreateEmailCommand'
           text/json:
             schema:
-              $ref: '#/components/schemas/AddEmailCommand'
+              $ref: '#/components/schemas/CreateEmailCommand'
           application/*+json:
             schema:
-              $ref: '#/components/schemas/AddEmailCommand'
+              $ref: '#/components/schemas/CreateEmailCommand'
         description: ""
       responses:
         "201":
@@ -745,10 +874,10 @@ paths:
       summary: Create a new email to the target UserProfile if the existing email
         address doesn't already exist.
       tags:
-      - User
-  /{tenantId}/directory/{directoryId}/users/{userId}/contact/emails/{emailAddress}/verification/resendToken:
-    get:
-      operationId: User_GetEmailResendVerificationToken
+      - Users
+  /{tenantId}/directory/{directoryId}/users/{userId}/contact/emails/{emailAddress}/verification/nonce:
+    post:
+      operationId: Users_CreateEmailVerificationNonce
       parameters:
       - description: ""
         explode: false
@@ -782,6 +911,20 @@ paths:
         schema:
           type: string
         style: simple
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/CreateVerificationNonceCommand'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateVerificationNonceCommand'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/CreateVerificationNonceCommand'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/CreateVerificationNonceCommand'
       responses:
         "200":
           content:
@@ -820,14 +963,13 @@ paths:
         - tamarack
         - content
         JwtBearerTokenScheme: []
-      summary: Retrieve a ResendVerificationToken to trigger the Verification Code
-        process. Returns 429 if too many ResendVerificationTokens have been requested
-        in the allowed time.
+      summary: Reserve a client generated Nonce to trigger the Verification Code process.
+        Returns 429 if too many requests have been requested in the allowed time.
       tags:
-      - User
+      - Users
   /{tenantId}/directory/{directoryId}/users/{userId}/contact/emails/{emailAddress}/verification/resend:
     post:
-      operationId: User_ResendEmailVerification
+      operationId: Users_ResendEmailVerification
       parameters:
       - description: ""
         explode: false
@@ -865,18 +1007,17 @@ paths:
         content:
           application/json-patch+json:
             schema:
-              type: string
+              $ref: '#/components/schemas/SendVerificationCommand'
           application/json:
             schema:
-              type: string
+              $ref: '#/components/schemas/SendVerificationCommand'
           text/json:
             schema:
-              type: string
+              $ref: '#/components/schemas/SendVerificationCommand'
           application/*+json:
             schema:
-              type: string
-        description: Required to trigger the sending of the Verification Code to the
-          targeted Email
+              $ref: '#/components/schemas/SendVerificationCommand'
+        description: ""
       responses:
         "204":
           description: No Content
@@ -906,13 +1047,13 @@ paths:
         - content
         JwtBearerTokenScheme: []
       summary: Send a new verification Email Address to the targeted Email. Requires
-        a ResendVerificationToken to prevent excessive sending of emails to the targeted
+        a VerificationNonce to prevent excessive sending of emails to the targeted
         Email Address.
       tags:
-      - User
+      - Users
   /{tenantId}/directory/{directoryId}/users/{userId}/contact/emails/{emailAddress}/verification/verify:
     post:
-      operationId: User_VerifyEmail
+      operationId: Users_VerifyEmail
       parameters:
       - description: ""
         explode: false
@@ -950,16 +1091,16 @@ paths:
         content:
           application/json-patch+json:
             schema:
-              type: string
+              $ref: '#/components/schemas/VerifyEmailCommand'
           application/json:
             schema:
-              type: string
+              $ref: '#/components/schemas/VerifyEmailCommand'
           text/json:
             schema:
-              type: string
+              $ref: '#/components/schemas/VerifyEmailCommand'
           application/*+json:
             schema:
-              type: string
+              $ref: '#/components/schemas/VerifyEmailCommand'
         description: ""
       responses:
         "200":
@@ -996,10 +1137,10 @@ paths:
       summary: Compares the last verification code sent through Email to and changes
         the verification status of the targeted Email Address.
       tags:
-      - User
+      - Users
   /{tenantId}/directory/{directoryId}/users/{userId}/contact/phones/{phoneNumber}:
     delete:
-      operationId: User_RemovePhone
+      operationId: Users_RemovePhone
       parameters:
       - description: ""
         explode: false
@@ -1063,9 +1204,9 @@ paths:
         JwtBearerTokenScheme: []
       summary: Removes an Phone Number from the targeted UserProfile.
       tags:
-      - User
+      - Users
     get:
-      operationId: User_GetPhone
+      operationId: Users_GetPhone
       parameters:
       - description: ""
         explode: false
@@ -1133,10 +1274,10 @@ paths:
         JwtBearerTokenScheme: []
       summary: Retrieves details of a specific Phone Number for the targeted UserProfile.
       tags:
-      - User
+      - Users
   /{tenantId}/directory/{directoryId}/users/{userId}/contact/phones:
     post:
-      operationId: User_AddNewPhone
+      operationId: Users_CreateNewPhone
       parameters:
       - description: ""
         explode: false
@@ -1166,16 +1307,16 @@ paths:
         content:
           application/json-patch+json:
             schema:
-              $ref: '#/components/schemas/AddPhoneCommand'
+              $ref: '#/components/schemas/CreatePhoneCommand'
           application/json:
             schema:
-              $ref: '#/components/schemas/AddPhoneCommand'
+              $ref: '#/components/schemas/CreatePhoneCommand'
           text/json:
             schema:
-              $ref: '#/components/schemas/AddPhoneCommand'
+              $ref: '#/components/schemas/CreatePhoneCommand'
           application/*+json:
             schema:
-              $ref: '#/components/schemas/AddPhoneCommand'
+              $ref: '#/components/schemas/CreatePhoneCommand'
         description: ""
       responses:
         "201":
@@ -1205,13 +1346,13 @@ paths:
         - tamarack
         - content
         JwtBearerTokenScheme: []
-      summary: Create a new email to the target UserProfile if the existing email
-        address doesn't already exist.
+      summary: Create a new phone number on the target UserProfile if the existing
+        phone number doesn't already exist.
       tags:
-      - User
-  /{tenantId}/directory/{directoryId}/users/{userId}/contact/phones/{phoneNumber}/verification/resendToken:
-    get:
-      operationId: User_GetPhoneResendVerificationToken
+      - Users
+  /{tenantId}/directory/{directoryId}/users/{userId}/contact/phones/{phoneNumber}/verification/nonce:
+    post:
+      operationId: Users_CreatePhoneVerificationNonce
       parameters:
       - description: ""
         explode: false
@@ -1245,6 +1386,20 @@ paths:
         schema:
           type: string
         style: simple
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/CreateVerificationNonceCommand'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateVerificationNonceCommand'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/CreateVerificationNonceCommand'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/CreateVerificationNonceCommand'
       responses:
         "200":
           content:
@@ -1287,10 +1442,10 @@ paths:
         process. Returns 429 if too many ResendVerificationTokens have been requested
         in the allowed time.
       tags:
-      - User
+      - Users
   /{tenantId}/directory/{directoryId}/users/{userId}/contact/phones/{phoneNumber}/verification/resend:
     post:
-      operationId: User_ResendPhonelVerification
+      operationId: Users_ResendPhoneVerification
       parameters:
       - description: ""
         explode: false
@@ -1328,18 +1483,17 @@ paths:
         content:
           application/json-patch+json:
             schema:
-              type: string
+              $ref: '#/components/schemas/SendVerificationCommand'
           application/json:
             schema:
-              type: string
+              $ref: '#/components/schemas/SendVerificationCommand'
           text/json:
             schema:
-              type: string
+              $ref: '#/components/schemas/SendVerificationCommand'
           application/*+json:
             schema:
-              type: string
-        description: Required to trigger the sending of the Verification Code to the
-          targeted Email
+              $ref: '#/components/schemas/SendVerificationCommand'
+        description: ""
       responses:
         "204":
           description: No Content
@@ -1368,14 +1522,14 @@ paths:
         - tamarack
         - content
         JwtBearerTokenScheme: []
-      summary: Send a new verification code to the targeted Phone Number  through
-        SMS. Requires a ResendVerificationToken to prevent excessive messaging of
-        SMS messages to the targeted Phone Number.
+      summary: Send a new verification code to the targeted Phone Number through SMS.
+        Requires a VerificationNonce to prevent excessive messaging of SMS messages
+        to the targeted Phone Number.
       tags:
-      - User
+      - Users
   /{tenantId}/directory/{directoryId}/users/{userId}/contact/phones/{phoneNumber}/verification/verify:
     post:
-      operationId: User_VerifyPhone
+      operationId: Users_VerifyPhone
       parameters:
       - description: ""
         explode: false
@@ -1413,16 +1567,16 @@ paths:
         content:
           application/json-patch+json:
             schema:
-              type: string
+              $ref: '#/components/schemas/VerifyPhoneCommand'
           application/json:
             schema:
-              type: string
+              $ref: '#/components/schemas/VerifyPhoneCommand'
           text/json:
             schema:
-              type: string
+              $ref: '#/components/schemas/VerifyPhoneCommand'
           application/*+json:
             schema:
-              type: string
+              $ref: '#/components/schemas/VerifyPhoneCommand'
         description: ""
       responses:
         "200":
@@ -1459,10 +1613,10 @@ paths:
       summary: Compares the last verification code sent through SMS to and changes
         the verification status of the targeted Phone Number.
       tags:
-      - User
+      - Users
   /{tenantId}/directory/{directoryId}/users/{userId}/notifications/memberships:
     post:
-      operationId: User_AddGroupMembership
+      operationId: Users_CreateGroupMembership
       parameters:
       - description: ""
         explode: false
@@ -1534,10 +1688,10 @@ paths:
       summary: Add the targeted UserProfile as a member of the targeted Group. Allows
         the targeted UserProfile to receive notifications sent to the targeted Group
       tags:
-      - User
+      - Users
   /{tenantId}/directory/{directoryId}/users/{userId}/notifications/memberships/{groupId}:
     delete:
-      operationId: User_RemoveGroupMembership
+      operationId: Users_RemoveGroupMembership
       parameters:
       - description: ""
         explode: false
@@ -1603,10 +1757,10 @@ paths:
         This prevents the targeted UserProfile from receiving notifications sent to
         the targeted Group.
       tags:
-      - User
+      - Users
   /{tenantId}/directory/{directoryId}/users/{userId}/notifications/locations/{locationId}:
     delete:
-      operationId: User_RemoveLocation
+      operationId: Users_RemoveLocation
       parameters:
       - description: ""
         explode: false
@@ -1670,9 +1824,9 @@ paths:
         JwtBearerTokenScheme: []
       summary: Remove an existing Location from the targeted UserProfile.
       tags:
-      - User
+      - Users
     get:
-      operationId: User_GetLocation
+      operationId: Users_GetLocation
       parameters:
       - description: ""
         explode: false
@@ -1740,10 +1894,10 @@ paths:
         JwtBearerTokenScheme: []
       summary: Retrieves details of a specific Location for the targeted UserProfile.
       tags:
-      - User
+      - Users
   /{tenantId}/directory/{directoryId}/users/{userId}/notifications/locations:
     post:
-      operationId: User_AddNewLocation
+      operationId: Users_CreateNewLocation
       parameters:
       - description: ""
         explode: false
@@ -1773,16 +1927,16 @@ paths:
         content:
           application/json-patch+json:
             schema:
-              $ref: '#/components/schemas/AddLocationCommand'
+              $ref: '#/components/schemas/CreateLocationCommand'
           application/json:
             schema:
-              $ref: '#/components/schemas/AddLocationCommand'
+              $ref: '#/components/schemas/CreateLocationCommand'
           text/json:
             schema:
-              $ref: '#/components/schemas/AddLocationCommand'
+              $ref: '#/components/schemas/CreateLocationCommand'
           application/*+json:
             schema:
-              $ref: '#/components/schemas/AddLocationCommand'
+              $ref: '#/components/schemas/CreateLocationCommand'
         description: ""
       responses:
         "201":
@@ -1814,86 +1968,9 @@ paths:
         JwtBearerTokenScheme: []
       summary: Create a new Location for the targeted UserProfile.
       tags:
-      - User
+      - Users
 components:
   schemas:
-    AddEmailCommand:
-      additionalProperties: false
-      example:
-        display: display
-        type: null
-        value: value
-        makePrimary: true
-      properties:
-        type:
-          $ref: '#/components/schemas/ContactTargetType'
-        display:
-          nullable: true
-          type: string
-        value:
-          minLength: 1
-          type: string
-        makePrimary:
-          type: boolean
-      required:
-      - makePrimary
-      - type
-      - value
-      type: object
-    AddLocationCommand:
-      additionalProperties: false
-      example:
-        address:
-          country: country
-          streetAddress: streetAddress
-          formatted: formatted
-          postalCode: postalCode
-          locality: locality
-          type: type
-          region: region
-        geoLocation:
-          latitude: 0.8008281904610115
-          longitude: 6.027456183070403
-        name: name
-      properties:
-        name:
-          minLength: 1
-          type: string
-        address:
-          $ref: '#/components/schemas/Address'
-        geoLocation:
-          $ref: '#/components/schemas/GeoLocation'
-      required:
-      - address
-      - name
-      type: object
-    AddPhoneCommand:
-      additionalProperties: false
-      example:
-        mobilePhone: true
-        display: display
-        type: null
-        value: value
-        makePrimary: true
-      properties:
-        type:
-          $ref: '#/components/schemas/ContactTargetType'
-        display:
-          nullable: true
-          type: string
-        value:
-          minLength: 1
-          type: string
-        makePrimary:
-          type: boolean
-        mobilePhone:
-          type: boolean
-      required:
-      - makePrimary
-      - mobilePhone
-      - type
-      - value
-      type: object
     Address:
       additionalProperties: false
       example:
@@ -1902,12 +1979,11 @@ components:
         formatted: formatted
         postalCode: postalCode
         locality: locality
-        type: type
+        type: null
         region: region
       properties:
         type:
-          nullable: true
-          type: string
+          $ref: '#/components/schemas/AddressType'
         formatted:
           description: "The full mailing address, formatted for display or use\r\n\
             with a mailing label.  This attribute MAY contain newlines."
@@ -1938,6 +2014,12 @@ components:
           nullable: true
           type: string
       type: object
+    AddressType:
+      enum:
+      - Home
+      - Work
+      - Other
+      type: string
     AvailableLanguagesResponse:
       additionalProperties: false
       example:
@@ -2020,26 +2102,28 @@ components:
       additionalProperties: false
       example:
         emails:
-        - display: display
-          type: null
-          value: value
-          verification:
-            lastVerificationAttempt:
-              displayMessage: displayMessage
-              dateAttempted: 2000-01-23T04:56:07.000+00:00
-            verified: true
-            verificationDate: 2000-01-23T04:56:07.000+00:00
-          primary: true
-        - display: display
-          type: null
-          value: value
-          verification:
-            lastVerificationAttempt:
-              displayMessage: displayMessage
-              dateAttempted: 2000-01-23T04:56:07.000+00:00
-            verified: true
-            verificationDate: 2000-01-23T04:56:07.000+00:00
-          primary: true
+          totalCount: 0
+          items:
+          - display: display
+            type: null
+            value: value
+            verification:
+              lastVerificationAttempt:
+                displayMessage: displayMessage
+                dateAttempted: 2000-01-23T04:56:07.000+00:00
+              verified: true
+              verificationDate: 2000-01-23T04:56:07.000+00:00
+            primary: true
+          - display: display
+            type: null
+            value: value
+            verification:
+              lastVerificationAttempt:
+                displayMessage: displayMessage
+                dateAttempted: 2000-01-23T04:56:07.000+00:00
+              verified: true
+              verificationDate: 2000-01-23T04:56:07.000+00:00
+            primary: true
         mobileApps:
         - deviceType: deviceType
           name: name
@@ -2048,48 +2132,35 @@ components:
           name: name
           applicationId: applicationId
         phones:
-        - deviceType: null
-          display: display
-          type: null
-          value: value
-          verification:
-            lastVerificationAttempt:
-              displayMessage: displayMessage
-              dateAttempted: 2000-01-23T04:56:07.000+00:00
-            verified: true
-            verificationDate: 2000-01-23T04:56:07.000+00:00
-          primary: true
-        - deviceType: null
-          display: display
-          type: null
-          value: value
-          verification:
-            lastVerificationAttempt:
-              displayMessage: displayMessage
-              dateAttempted: 2000-01-23T04:56:07.000+00:00
-            verified: true
-            verificationDate: 2000-01-23T04:56:07.000+00:00
-          primary: true
+          totalCount: 6
+          items:
+          - deviceType: null
+            display: display
+            type: null
+            value: value
+            verification:
+              lastVerificationAttempt:
+                displayMessage: displayMessage
+                dateAttempted: 2000-01-23T04:56:07.000+00:00
+              verified: true
+              verificationDate: 2000-01-23T04:56:07.000+00:00
+            primary: true
+          - deviceType: null
+            display: display
+            type: null
+            value: value
+            verification:
+              lastVerificationAttempt:
+                displayMessage: displayMessage
+                dateAttempted: 2000-01-23T04:56:07.000+00:00
+              verified: true
+              verificationDate: 2000-01-23T04:56:07.000+00:00
+            primary: true
       properties:
         emails:
-          description: "Email addresses for the User.  The value SHOULD be specified\r\
-            \naccording to [RFC5321].  Service providers SHOULD canonicalize the\r\
-            \nvalue according to [RFC5321], e.g., \"bjensen@example.com\" instead\r\
-            \nof \"bjensen@EXAMPLE.COM\".  The \"display\" sub-attribute MAY be used\r\
-            \nto return the canonicalized representation of the email value.\r\nThe\
-            \ \"type\" sub-attribute is used to provide a classification\r\nmeaningful\
-            \ to the (human) user.  The user interface should\r\nencourage the use\
-            \ of basic values of \"work\", \"home\", and \"other\"\r\nand MAY allow\
-            \ additional type values to be used at the discretion\r\nof SCIM clients."
-          items:
-            $ref: '#/components/schemas/EmailAddress'
-          nullable: true
-          type: array
+          $ref: '#/components/schemas/EmailCollection'
         phones:
-          items:
-            $ref: '#/components/schemas/PhoneNumber'
-          nullable: true
-          type: array
+          $ref: '#/components/schemas/PhoneCollection'
         mobileApps:
           items:
             $ref: '#/components/schemas/MobileApp'
@@ -2101,7 +2172,7 @@ components:
       - Personal
       - Work
       type: string
-    CreateEmailAddress:
+    CreateEmailCommand:
       additionalProperties: false
       example:
         type: null
@@ -2111,19 +2182,12 @@ components:
         type:
           $ref: '#/components/schemas/ContactTargetType'
         primary:
-          description: "A Boolean value indicating the 'primary' or preferred attribute\r\
-            \nvalue for this attribute, e.g., the preferred mailing address or\r\n\
-            the primary email address.The primary attribute value \"true\"\r\nMUST\
-            \ appear no more than once.If not specified, the value of\r\n\"primary\"\
-            \ SHALL be assumed to be \"false\"."
+          description: A Boolean value indicatin the primary email address.
           type: boolean
         value:
-          description: "The attribute's significant value, e.g., email address, phone\r\
-            \nnumber."
           minLength: 1
           type: string
       required:
-      - primary
       - type
       - value
       type: object
@@ -2138,45 +2202,78 @@ components:
       required:
       - groupId
       type: object
-    CreateLocation:
+    CreateLocationCommand:
       additionalProperties: false
       example:
-        address:
-          country: country
-          streetAddress: streetAddress
-          formatted: formatted
-          postalCode: postalCode
-          locality: locality
-          type: type
-          region: region
+        country: country
+        streetAddress: streetAddress
+        postalCode: postalCode
+        latitude: 0.8008281904610115
+        name: name
+        locality: locality
+        type: null
+        region: region
+        longitude: 6.027456183070403
       properties:
-        address:
-          $ref: '#/components/schemas/Address'
+        name:
+          minLength: 1
+          type: string
+        type:
+          $ref: '#/components/schemas/AddressType'
+        streetAddress:
+          description: "The full street address component, which may\r\ninclude house\
+            \ number, street name, P.O. box, and multi-line\r\nextended street address\
+            \ information.  This attribute MAY\r\ncontain newlines."
+          nullable: true
+          type: string
+        locality:
+          description: The city or locality component.
+          nullable: true
+          type: string
+        region:
+          description: The state or region component.
+          nullable: true
+          type: string
+        postalCode:
+          description: The zip code or postal code component.
+          nullable: true
+          type: string
+        country:
+          description: "The country name component.When specified, the value\r\nMUST\
+            \ be in ISO 3166-1 \"alpha-2\" code format [ISO3166]; e.g.,\r\nthe United\
+            \ States and Sweden are \"US\" and \"SE\", respectively."
+          nullable: true
+          type: string
+        latitude:
+          format: double
+          nullable: true
+          type: number
+        longitude:
+          format: double
+          nullable: true
+          type: number
       required:
-      - address
+      - name
       type: object
-    CreatePhoneNumber:
+    CreatePhoneCommand:
       additionalProperties: false
       example:
+        mobilePhone: true
         type: null
         value: value
         primary: true
       properties:
         type:
           $ref: '#/components/schemas/ContactTargetType'
-        primary:
-          description: "A Boolean value indicating the 'primary' or preferred attribute\r\
-            \nvalue for this attribute, e.g., the preferred mailing address or\r\n\
-            the primary email address.The primary attribute value \"true\"\r\nMUST\
-            \ appear no more than once.If not specified, the value of\r\n\"primary\"\
-            \ SHALL be assumed to be \"false\"."
-          type: boolean
         value:
-          description: "The attribute's significant value, e.g., email address, phone\r\
-            \nnumber."
           minLength: 1
           type: string
+        primary:
+          type: boolean
+        mobilePhone:
+          type: boolean
       required:
+      - mobilePhone
       - primary
       - type
       - value
@@ -2197,30 +2294,34 @@ components:
         timezone: timezone
         preferredWrittenLanguage: preferredWrittenLanguage
         phones:
-        - type: null
+        - mobilePhone: true
+          type: null
           value: value
           primary: true
-        - type: null
+        - mobilePhone: true
+          type: null
           value: value
           primary: true
         preferredSpokenLanguage: preferredSpokenLanguage
         locations:
-        - address:
-            country: country
-            streetAddress: streetAddress
-            formatted: formatted
-            postalCode: postalCode
-            locality: locality
-            type: type
-            region: region
-        - address:
-            country: country
-            streetAddress: streetAddress
-            formatted: formatted
-            postalCode: postalCode
-            locality: locality
-            type: type
-            region: region
+        - country: country
+          streetAddress: streetAddress
+          postalCode: postalCode
+          latitude: 0.8008281904610115
+          name: name
+          locality: locality
+          type: null
+          region: region
+          longitude: 6.027456183070403
+        - country: country
+          streetAddress: streetAddress
+          postalCode: postalCode
+          latitude: 0.8008281904610115
+          name: name
+          locality: locality
+          type: null
+          region: region
+          longitude: 6.027456183070403
         locale: locale
         memberships:
         - groupId: groupId
@@ -2293,17 +2394,17 @@ components:
           type: string
         emails:
           items:
-            $ref: '#/components/schemas/CreateEmailAddress'
+            $ref: '#/components/schemas/CreateEmailCommand'
           nullable: true
           type: array
         phones:
           items:
-            $ref: '#/components/schemas/CreatePhoneNumber'
+            $ref: '#/components/schemas/CreatePhoneCommand'
           nullable: true
           type: array
         locations:
           items:
-            $ref: '#/components/schemas/CreateLocation'
+            $ref: '#/components/schemas/CreateLocationCommand'
           nullable: true
           type: array
         memberships:
@@ -2314,6 +2415,21 @@ components:
       required:
       - firstName
       - lastName
+      type: object
+    CreateVerificationNonceCommand:
+      additionalProperties: false
+      example:
+        nonce: nonce
+      properties:
+        nonce:
+          description: "A nonce is a random string, uniquely generated by the client\
+            \ to allow the server to verify that a request has \r\nnever been made\
+            \ before and helps prevent spamming end users with too many verification\
+            \ requests through email."
+          minLength: 1
+          type: string
+      required:
+      - nonce
       type: object
     EmailAddress:
       additionalProperties: false
@@ -2342,6 +2458,7 @@ components:
           description: "A human-readable name, primarily used for display purposes\
             \ and\r\nhaving a mutability of \"immutable\"."
           nullable: true
+          readOnly: true
           type: string
         value:
           description: "The attribute's significant value, e.g., email address, phone\r\
@@ -2350,6 +2467,42 @@ components:
           type: string
         verification:
           $ref: '#/components/schemas/VerificationStatus'
+      type: object
+    EmailCollection:
+      additionalProperties: false
+      example:
+        totalCount: 0
+        items:
+        - display: display
+          type: null
+          value: value
+          verification:
+            lastVerificationAttempt:
+              displayMessage: displayMessage
+              dateAttempted: 2000-01-23T04:56:07.000+00:00
+            verified: true
+            verificationDate: 2000-01-23T04:56:07.000+00:00
+          primary: true
+        - display: display
+          type: null
+          value: value
+          verification:
+            lastVerificationAttempt:
+              displayMessage: displayMessage
+              dateAttempted: 2000-01-23T04:56:07.000+00:00
+            verified: true
+            verificationDate: 2000-01-23T04:56:07.000+00:00
+          primary: true
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/EmailAddress'
+          nullable: true
+          type: array
+        totalCount:
+          format: int32
+          readOnly: true
+          type: integer
       type: object
     FindUserQuery:
       additionalProperties: false
@@ -2367,8 +2520,8 @@ components:
     GeoLocation:
       additionalProperties: false
       example:
-        latitude: 0.8008281904610115
-        longitude: 6.027456183070403
+        latitude: 1.4658129805029452
+        longitude: 5.962133916683182
       properties:
         latitude:
           format: double
@@ -2376,6 +2529,92 @@ components:
         longitude:
           format: double
           type: number
+      type: object
+    GroupMemberships:
+      additionalProperties: false
+      example:
+        isReadOnly: true
+        count: 7
+        totalCount: 2
+        items:
+        - name: name
+          description: description
+          id: id
+          uri: https://openapi-generator.tech
+        - name: name
+          description: description
+          id: id
+          uri: https://openapi-generator.tech
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/GroupReference'
+          nullable: true
+          type: array
+        totalCount:
+          format: int32
+          readOnly: true
+          type: integer
+        count:
+          format: int32
+          readOnly: true
+          type: integer
+        isReadOnly:
+          readOnly: true
+          type: boolean
+      type: object
+    GroupReference:
+      additionalProperties: false
+      example:
+        name: name
+        description: description
+        id: id
+        uri: https://openapi-generator.tech
+      properties:
+        id:
+          nullable: true
+          type: string
+        name:
+          nullable: true
+          type: string
+        description:
+          nullable: true
+          type: string
+        uri:
+          format: uri
+          nullable: true
+          type: string
+      type: object
+    GroupReferencePagedApiResponse:
+      additionalProperties: false
+      example:
+        pageSize: 2
+        page: 5
+        items:
+        - name: name
+          description: description
+          id: id
+          uri: https://openapi-generator.tech
+        - name: name
+          description: description
+          id: id
+          uri: https://openapi-generator.tech
+        totalItemCount: 5
+      properties:
+        totalItemCount:
+          format: int64
+          type: integer
+        page:
+          format: int32
+          type: integer
+        pageSize:
+          format: int32
+          type: integer
+        items:
+          items:
+            $ref: '#/components/schemas/GroupReference'
+          nullable: true
+          type: array
       type: object
     GroupSummary:
       additionalProperties: false
@@ -2387,6 +2626,7 @@ components:
         name: name
         description: description
         id: id
+        isJoinable: true
       properties:
         id:
           nullable: true
@@ -2398,6 +2638,8 @@ components:
           nullable: true
           type: string
         default:
+          type: boolean
+        isJoinable:
           type: boolean
         children:
           items:
@@ -2418,6 +2660,7 @@ components:
           name: name
           description: description
           id: id
+          isJoinable: true
         - default: true
           children:
           - null
@@ -2425,6 +2668,7 @@ components:
           name: name
           description: description
           id: id
+          isJoinable: true
         totalItemCount: 0
       properties:
         totalItemCount:
@@ -2464,13 +2708,14 @@ components:
           formatted: formatted
           postalCode: postalCode
           locality: locality
-          type: type
+          type: null
           region: region
         geoLocation:
-          latitude: 0.8008281904610115
-          longitude: 6.027456183070403
+          latitude: 1.4658129805029452
+          longitude: 5.962133916683182
         name: name
         id: id
+        primary: true
       properties:
         id:
           nullable: true
@@ -2478,10 +2723,112 @@ components:
         name:
           nullable: true
           type: string
+        primary:
+          description: "A Boolean value indicating the 'primary' or preferred attribute\r\
+            \nvalue for this attribute, e.g., the preferred mailing address or\r\n\
+            the primary email address.The primary attribute value \"true\"\r\nMUST\
+            \ appear no more than once.If not specified, the value of\r\n\"primary\"\
+            \ SHALL be assumed to be \"false\"."
+          type: boolean
         address:
           $ref: '#/components/schemas/Address'
         geoLocation:
           $ref: '#/components/schemas/GeoLocation'
+      type: object
+    LocationCollection:
+      additionalProperties: false
+      example:
+        totalCount: 5
+        items:
+        - address:
+            country: country
+            streetAddress: streetAddress
+            formatted: formatted
+            postalCode: postalCode
+            locality: locality
+            type: null
+            region: region
+          geoLocation:
+            latitude: 1.4658129805029452
+            longitude: 5.962133916683182
+          name: name
+          id: id
+          primary: true
+        - address:
+            country: country
+            streetAddress: streetAddress
+            formatted: formatted
+            postalCode: postalCode
+            locality: locality
+            type: null
+            region: region
+          geoLocation:
+            latitude: 1.4658129805029452
+            longitude: 5.962133916683182
+          name: name
+          id: id
+          primary: true
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/Location'
+          nullable: true
+          type: array
+        totalCount:
+          format: int32
+          readOnly: true
+          type: integer
+      type: object
+    LocationPagedApiResponse:
+      additionalProperties: false
+      example:
+        pageSize: 1
+        page: 6
+        items:
+        - address:
+            country: country
+            streetAddress: streetAddress
+            formatted: formatted
+            postalCode: postalCode
+            locality: locality
+            type: null
+            region: region
+          geoLocation:
+            latitude: 1.4658129805029452
+            longitude: 5.962133916683182
+          name: name
+          id: id
+          primary: true
+        - address:
+            country: country
+            streetAddress: streetAddress
+            formatted: formatted
+            postalCode: postalCode
+            locality: locality
+            type: null
+            region: region
+          geoLocation:
+            latitude: 1.4658129805029452
+            longitude: 5.962133916683182
+          name: name
+          id: id
+          primary: true
+        totalItemCount: 0
+      properties:
+        totalItemCount:
+          format: int64
+          type: integer
+        page:
+          format: int32
+          type: integer
+        pageSize:
+          format: int32
+          type: integer
+        items:
+          items:
+            $ref: '#/components/schemas/Location'
+          nullable: true
+          type: array
       type: object
     MobileApp:
       additionalProperties: false
@@ -2500,93 +2847,163 @@ components:
           nullable: true
           type: string
       type: object
-    NestedReference:
-      additionalProperties: false
-      example:
-        parent: null
-        path: path
-        name: name
-        description: description
-        id: id
-        uri: https://openapi-generator.tech
-      properties:
-        parent:
-          $ref: '#/components/schemas/NestedReference'
-        path:
-          nullable: true
-          type: string
-        id:
-          nullable: true
-          type: string
-        name:
-          nullable: true
-          type: string
-        description:
-          nullable: true
-          type: string
-        uri:
-          format: uri
-          nullable: true
-          type: string
-      type: object
     NotificationPreferences:
       additionalProperties: false
       example:
         timezone: timezone
         preferredWrittenLanguage: preferredWrittenLanguage
         locations:
-        - address:
-            country: country
-            streetAddress: streetAddress
-            formatted: formatted
-            postalCode: postalCode
-            locality: locality
-            type: type
-            region: region
-          geoLocation:
-            latitude: 0.8008281904610115
-            longitude: 6.027456183070403
-          name: name
-          id: id
-        - address:
-            country: country
-            streetAddress: streetAddress
-            formatted: formatted
-            postalCode: postalCode
-            locality: locality
-            type: type
-            region: region
-          geoLocation:
-            latitude: 0.8008281904610115
-            longitude: 6.027456183070403
-          name: name
-          id: id
+          totalCount: 5
+          items:
+          - address:
+              country: country
+              streetAddress: streetAddress
+              formatted: formatted
+              postalCode: postalCode
+              locality: locality
+              type: null
+              region: region
+            geoLocation:
+              latitude: 1.4658129805029452
+              longitude: 5.962133916683182
+            name: name
+            id: id
+            primary: true
+          - address:
+              country: country
+              streetAddress: streetAddress
+              formatted: formatted
+              postalCode: postalCode
+              locality: locality
+              type: null
+              region: region
+            geoLocation:
+              latitude: 1.4658129805029452
+              longitude: 5.962133916683182
+            name: name
+            id: id
+            primary: true
         preferredSpokenLanguage: preferredSpokenLanguage
         locale: locale
         memberships:
-        - parent: null
-          path: path
-          name: name
-          description: description
-          id: id
-          uri: https://openapi-generator.tech
-        - parent: null
-          path: path
-          name: name
-          description: description
-          id: id
-          uri: https://openapi-generator.tech
+          isReadOnly: true
+          count: 7
+          totalCount: 2
+          items:
+          - name: name
+            description: description
+            id: id
+            uri: https://openapi-generator.tech
+          - name: name
+            description: description
+            id: id
+            uri: https://openapi-generator.tech
       properties:
         locations:
-          items:
-            $ref: '#/components/schemas/Location'
-          nullable: true
-          type: array
+          $ref: '#/components/schemas/LocationCollection'
         memberships:
-          items:
-            $ref: '#/components/schemas/NestedReference'
+          $ref: '#/components/schemas/GroupMemberships'
+        preferredWrittenLanguage:
+          description: "Indicates the user's preferred written or spoken languages\
+            \ and is\r\ngenerally used for selecting a localized user interface. \
+            \ The\r\nvalue indicates the set of natural languages that are preferred.\r\
+            \nThe format of the value is the same as the HTTP Accept-Language\r\n\
+            header field (not including \"Accept-Language:\") and is specified\r\n\
+            in Section 5.3.5 of [RFC7231].  The intent of this value is to\r\nenable\
+            \ cloud applications to perform matching of language tags\r\n[RFC4647]\
+            \ to the user's language preferences, regardless of what\r\nmay be indicated\
+            \ by a user agent (which might be shared), or in an\r\ninteraction that\
+            \ does not involve a user (such as in a delegated\r\nOAuth 2.0 [RFC6749]\
+            \ style interaction) where normal HTTP\r\nAccept-Language header negotiation\
+            \ cannot take place."
           nullable: true
-          type: array
+          type: string
+        preferredSpokenLanguage:
+          nullable: true
+          type: string
+        locale:
+          description: "Used to indicate the User's default location for purposes\
+            \ of\r\nlocalizing such items as currency, date time format, or numerical\r\
+            \nrepresentations.  A valid value is a language tag as defined in\r\n\
+            [RFC5646].  Computer languages are explicitly excluded.\r\n\r\nA language\
+            \ tag is a sequence of one or more case-insensitive\r\nsub-tags, each\
+            \ separated by a hyphen character (\"-\", %x2D).  For\r\nbackward compatibility,\
+            \ servers MAY accept tags separated by an\r\nunderscore character (\"\
+            _\", %x5F).  In most cases, a language tag\r\nconsists of a primary language\
+            \ sub-tag that identifies a broad\r\nfamily of related languages (e.g.,\
+            \ \"en\" = English) and that is\r\noptionally followed by a series of\
+            \ sub-tags that refine or narrow\r\nthat language's range (e.g., \"en-CA\"\
+            \ = the variety of English as\r\ncommunicated in Canada).  Whitespace\
+            \ is not allowed within a\r\nlanguage tag.  Example tags include:\r\n\r\
+            \nfr, en-US, es-419, az-Arab, x-pig-latin, man-Nkoo-GN\r\n\r\nSee [RFC5646]\
+            \ for further information."
+          nullable: true
+          type: string
+        timezone:
+          description: "The User's time zone, in IANA Time Zone database format [RFC6557],\r\
+            \nalso known as the \"Olson\" time zone database format [Olson-TZ]\r\n\
+            (e.g., \"America/Los_Angeles\")."
+          nullable: true
+          type: string
+      type: object
+    NotificationPreferencesSummary:
+      additionalProperties: false
+      example:
+        timezone: timezone
+        preferredWrittenLanguage: preferredWrittenLanguage
+        locations:
+          pageSize: 1
+          page: 6
+          items:
+          - address:
+              country: country
+              streetAddress: streetAddress
+              formatted: formatted
+              postalCode: postalCode
+              locality: locality
+              type: null
+              region: region
+            geoLocation:
+              latitude: 1.4658129805029452
+              longitude: 5.962133916683182
+            name: name
+            id: id
+            primary: true
+          - address:
+              country: country
+              streetAddress: streetAddress
+              formatted: formatted
+              postalCode: postalCode
+              locality: locality
+              type: null
+              region: region
+            geoLocation:
+              latitude: 1.4658129805029452
+              longitude: 5.962133916683182
+            name: name
+            id: id
+            primary: true
+          totalItemCount: 0
+        preferredSpokenLanguage: preferredSpokenLanguage
+        locale: locale
+        memberships:
+          pageSize: 2
+          page: 5
+          items:
+          - name: name
+            description: description
+            id: id
+            uri: https://openapi-generator.tech
+          - name: name
+            description: description
+            id: id
+            uri: https://openapi-generator.tech
+          totalItemCount: 5
+      properties:
+        locations:
+          $ref: '#/components/schemas/LocationPagedApiResponse'
+        memberships:
+          $ref: '#/components/schemas/GroupReferencePagedApiResponse'
         preferredWrittenLanguage:
           description: "Indicates the user's preferred written or spoken languages\
             \ and is\r\ngenerally used for selecting a localized user interface. \
@@ -2661,6 +3078,97 @@ components:
           nullable: true
           type: string
       type: object
+    PersonName:
+      additionalProperties: false
+      description: "The components of the user's name.  Service providers MAY return\
+        \ \r\njust the full name as a single string in the formatted\r\nsub-attribute,\
+        \ or they MAY return just the individual component\r\nattributes using the\
+        \ other sub-attributes, or they MAY return\r\nboth.If both variants are returned,\
+        \ they SHOULD be describing\r\nthe same name, with the formatted name indicating\
+        \ how the\r\ncomponent attributes should be combined."
+      example:
+        honorificSuffix: honorificSuffix
+        formatted: formatted
+        familyName: familyName
+        givenName: givenName
+        honorificPrefix: honorificPrefix
+        middleName: middleName
+      properties:
+        formatted:
+          description: "The full name, including all middle names, titles, and suffixes\
+            \ as appropriate, formatted for display(e.g.,\"Ms. Barbara Jane Jensen,\
+            \ III\")."
+          nullable: true
+          readOnly: true
+          type: string
+        familyName:
+          description: "The Family Name of the User, or Last Name in most Western\
+            \ languages (e.g., \"Jensen\" given the full name \"Ms. Barbara Jane Jensen,\
+            \ III\")."
+          nullable: true
+          type: string
+        givenName:
+          description: "The Given Name of the User, or First Name in most Western\
+            \ languages (e.g., \"Barbara\" given the full name \"Ms. Barbara Jane\
+            \ Jensen, III\")."
+          nullable: true
+          type: string
+        middleName:
+          description: "The Middle name(s) of the User(e.g., \"Jane\" given the full\
+            \ name \"Ms. Barbara Jane Jensen, III\")."
+          nullable: true
+          type: string
+        honorificPrefix:
+          description: "The honorific prefix(es) of the User, or title in most Western\
+            \ languages(e.g., \"Ms.\" given the full name \"Ms. Barbara Jane Jensen,\
+            \ III\")."
+          nullable: true
+          type: string
+        honorificSuffix:
+          description: "The honorific suffix(es) of the User, or suffix in most Western\
+            \ languages(e.g., \"III\" given the full name \"Ms. Barbara Jane Jensen,\
+            \ III\")."
+          nullable: true
+          type: string
+      type: object
+    PhoneCollection:
+      additionalProperties: false
+      example:
+        totalCount: 6
+        items:
+        - deviceType: null
+          display: display
+          type: null
+          value: value
+          verification:
+            lastVerificationAttempt:
+              displayMessage: displayMessage
+              dateAttempted: 2000-01-23T04:56:07.000+00:00
+            verified: true
+            verificationDate: 2000-01-23T04:56:07.000+00:00
+          primary: true
+        - deviceType: null
+          display: display
+          type: null
+          value: value
+          verification:
+            lastVerificationAttempt:
+              displayMessage: displayMessage
+              dateAttempted: 2000-01-23T04:56:07.000+00:00
+            verified: true
+            verificationDate: 2000-01-23T04:56:07.000+00:00
+          primary: true
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/PhoneNumber'
+          nullable: true
+          type: array
+        totalCount:
+          format: int32
+          readOnly: true
+          type: integer
+      type: object
     PhoneNumber:
       additionalProperties: false
       example:
@@ -2689,6 +3197,7 @@ components:
           description: "A human-readable name, primarily used for display purposes\
             \ and\r\nhaving a mutability of \"immutable\"."
           nullable: true
+          readOnly: true
           type: string
         value:
           description: "The attribute's significant value, e.g., email address, phone\r\
@@ -2756,6 +3265,20 @@ components:
         token:
           nullable: true
           type: string
+      type: object
+    SendVerificationCommand:
+      additionalProperties: false
+      example:
+        verificationNonce: verificationNonce
+      properties:
+        verificationNonce:
+          description: "Verification Nonce is reserved by the client in a previous\
+            \ command to prevent spamming end users with too many \r\nresponses within\
+            \ a reasonable timeframe enforced by the server."
+          minLength: 1
+          type: string
+      required:
+      - verificationNonce
       type: object
     TimeZoneSummary:
       additionalProperties: false
@@ -2861,30 +3384,30 @@ components:
     UserProfile:
       additionalProperties: false
       example:
-        firstName: firstName
-        lastName: lastName
         contactInformation:
           emails:
-          - display: display
-            type: null
-            value: value
-            verification:
-              lastVerificationAttempt:
-                displayMessage: displayMessage
-                dateAttempted: 2000-01-23T04:56:07.000+00:00
-              verified: true
-              verificationDate: 2000-01-23T04:56:07.000+00:00
-            primary: true
-          - display: display
-            type: null
-            value: value
-            verification:
-              lastVerificationAttempt:
-                displayMessage: displayMessage
-                dateAttempted: 2000-01-23T04:56:07.000+00:00
-              verified: true
-              verificationDate: 2000-01-23T04:56:07.000+00:00
-            primary: true
+            totalCount: 0
+            items:
+            - display: display
+              type: null
+              value: value
+              verification:
+                lastVerificationAttempt:
+                  displayMessage: displayMessage
+                  dateAttempted: 2000-01-23T04:56:07.000+00:00
+                verified: true
+                verificationDate: 2000-01-23T04:56:07.000+00:00
+              primary: true
+            - display: display
+              type: null
+              value: value
+              verification:
+                lastVerificationAttempt:
+                  displayMessage: displayMessage
+                  dateAttempted: 2000-01-23T04:56:07.000+00:00
+                verified: true
+                verificationDate: 2000-01-23T04:56:07.000+00:00
+              primary: true
           mobileApps:
           - deviceType: deviceType
             name: name
@@ -2893,83 +3416,131 @@ components:
             name: name
             applicationId: applicationId
           phones:
-          - deviceType: null
-            display: display
-            type: null
-            value: value
-            verification:
-              lastVerificationAttempt:
-                displayMessage: displayMessage
-                dateAttempted: 2000-01-23T04:56:07.000+00:00
-              verified: true
-              verificationDate: 2000-01-23T04:56:07.000+00:00
-            primary: true
-          - deviceType: null
-            display: display
-            type: null
-            value: value
-            verification:
-              lastVerificationAttempt:
-                displayMessage: displayMessage
-                dateAttempted: 2000-01-23T04:56:07.000+00:00
-              verified: true
-              verificationDate: 2000-01-23T04:56:07.000+00:00
-            primary: true
+            totalCount: 6
+            items:
+            - deviceType: null
+              display: display
+              type: null
+              value: value
+              verification:
+                lastVerificationAttempt:
+                  displayMessage: displayMessage
+                  dateAttempted: 2000-01-23T04:56:07.000+00:00
+                verified: true
+                verificationDate: 2000-01-23T04:56:07.000+00:00
+              primary: true
+            - deviceType: null
+              display: display
+              type: null
+              value: value
+              verification:
+                lastVerificationAttempt:
+                  displayMessage: displayMessage
+                  dateAttempted: 2000-01-23T04:56:07.000+00:00
+                verified: true
+                verificationDate: 2000-01-23T04:56:07.000+00:00
+              primary: true
         displayName: displayName
+        tenantId: tenantId
+        name:
+          honorificSuffix: honorificSuffix
+          formatted: formatted
+          familyName: familyName
+          givenName: givenName
+          honorificPrefix: honorificPrefix
+          middleName: middleName
+        directories:
+        - directories
+        - directories
+        externalId: externalId
         notificationPreferences:
           timezone: timezone
           preferredWrittenLanguage: preferredWrittenLanguage
           locations:
-          - address:
-              country: country
-              streetAddress: streetAddress
-              formatted: formatted
-              postalCode: postalCode
-              locality: locality
-              type: type
-              region: region
-            geoLocation:
-              latitude: 0.8008281904610115
-              longitude: 6.027456183070403
-            name: name
-            id: id
-          - address:
-              country: country
-              streetAddress: streetAddress
-              formatted: formatted
-              postalCode: postalCode
-              locality: locality
-              type: type
-              region: region
-            geoLocation:
-              latitude: 0.8008281904610115
-              longitude: 6.027456183070403
-            name: name
-            id: id
+            totalCount: 5
+            items:
+            - address:
+                country: country
+                streetAddress: streetAddress
+                formatted: formatted
+                postalCode: postalCode
+                locality: locality
+                type: null
+                region: region
+              geoLocation:
+                latitude: 1.4658129805029452
+                longitude: 5.962133916683182
+              name: name
+              id: id
+              primary: true
+            - address:
+                country: country
+                streetAddress: streetAddress
+                formatted: formatted
+                postalCode: postalCode
+                locality: locality
+                type: null
+                region: region
+              geoLocation:
+                latitude: 1.4658129805029452
+                longitude: 5.962133916683182
+              name: name
+              id: id
+              primary: true
           preferredSpokenLanguage: preferredSpokenLanguage
           locale: locale
           memberships:
-          - parent: null
-            path: path
-            name: name
-            description: description
-            id: id
-            uri: https://openapi-generator.tech
-          - parent: null
-            path: path
-            name: name
-            description: description
-            id: id
-            uri: https://openapi-generator.tech
+            isReadOnly: true
+            count: 7
+            totalCount: 2
+            items:
+            - name: name
+              description: description
+              id: id
+              uri: https://openapi-generator.tech
+            - name: name
+              description: description
+              id: id
+              uri: https://openapi-generator.tech
         id: id
       properties:
+        tenantId:
+          description: Identifier for the Tenant this resource belongs to.
+          nullable: true
+          type: string
+        directories:
+          description: The set of Directory Tags this resource belongs to. A UserProfile
+            may belong to multiple directories.
+          items:
+            type: string
+          nullable: true
+          type: array
         id:
+          description: "A unique identifier for a SCIM resource as defined by the\
+            \ service\r\nprovider. Each representation of the resource MUST include\
+            \ a\r\nnon-empty \"id\" value.This identifier MUST be unique across the\r\
+            \nSCIM service provider's entire set of resources. It MUST be a\r\nstable,\
+            \ non-reassignable identifier that does not change when the\r\nsame resource\
+            \ is returned in subsequent requests.The value of\r\nthe \"id\" attribute\
+            \ is always issued by the service provider and\r\nMUST NOT be specified\
+            \ by the client."
           nullable: true
           type: string
-        firstName:
-          nullable: true
-          type: string
-        lastName:
+        externalId:
+          description: "A String that is an identifier for the resource as defined\
+            \ by the\r\nprovisioning client.The \"externalId\" may simplify identification\r\
+            \nof a resource between the provisioning client and the service\r\nprovider\
+            \ by allowing the client to use a filter to locate the\r\nresource with\
+            \ an identifier from the provisioning domain,\r\nobviating the need to\
+            \ store a local mapping between the\r\nprovisioning domain's identifier\
+            \ of the resource and the\r\nidentifier used by the service provider.\
+            \ Each resource MAY\r\ninclude a non-empty \"externalId\" value. The value\
+            \ of the\r\n\"externalId\" attribute is always issued by the provisioning\
+            \ client\r\nand MUST NOT be specified by the service provider. The service\r\
+            \nprovider MUST always interpret the externalId as scoped to the\r\nprovisioning\
+            \ domain. While the server does not enforce\r\nuniqueness, it is assumed\
+            \ that the value's uniqueness is\r\ncontrolled by the client setting the\
+            \ value.See Section 9 for\r\nadditional considerations regarding privacy."
           nullable: true
           type: string
         displayName:
@@ -2983,6 +3554,8 @@ components:
             \ when presenting it to end-users."
           nullable: true
           type: string
+        name:
+          $ref: '#/components/schemas/PersonName'
         contactInformation:
           $ref: '#/components/schemas/ContactInformation'
         notificationPreferences:
@@ -3124,6 +3697,28 @@ components:
           nullable: true
           type: string
       type: object
+    VerifyEmailCommand:
+      additionalProperties: false
+      example:
+        verificationCode: verificationCode
+      properties:
+        verificationCode:
+          minLength: 1
+          type: string
+      required:
+      - verificationCode
+      type: object
+    VerifyPhoneCommand:
+      additionalProperties: false
+      example:
+        verificationCode: verificationCode
+      properties:
+        verificationCode:
+          minLength: 1
+          type: string
+      required:
+      - verificationCode
+      type: object
   securitySchemes:
     Oauth2Scheme:
       flows:
@@ -3133,9 +3728,9 @@ components:
             content: ExternalID
             elm: GIS
             directory:public: Public User Directory Access
-          tokenUrl: https://auth.dev.alertsense.io/connect/token
+          tokenUrl: https://auth.alertsense.com/connect/token
         implicit:
-          authorizationUrl: https://auth.dev.alertsense.io/connect/authorize
+          authorizationUrl: https://auth.alertsense.com/connect/authorize
           scopes:
             tamarack: Hickory
             content: ExternalID

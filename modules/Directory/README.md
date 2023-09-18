@@ -4,6 +4,34 @@ The Konexus Directory Module is central to the platform and provides clients and
 
 [OpenApi Specification](directory-openapi-spec.json)
 
+# Change Log
+
+## Version 4.1.0
+
+### Additions and Enhancements
+- The Platform API is now fully connected to the Tenant associated with the Identity that is authenticated through Client Credentials.
+### Bug Fixes
+- No bug fixes
+### Breaking Changes:
+
+- Changed the Meta Language and Timezone APIs to return the settings for the TenantId specified instead of by Realm.
+- Changed the Open API Spec Tag from User to Users which will cause generated client changes
+- Standardized OperationIds, Command names, and request structure:
+    - Renamed AddEmailCommand to CreateEmailCommand
+        - Renamed 
+    - Renamed AddPhoneNumberCommand to CreatePhoneCommand
+    - Renamed AddLocationCommand to CreateLocationCommand
+    - Renamed Users_GetEmailResendVerificationToken to Users_CreateEmailVerificationNonce
+    - Changed the payload of Users_ResendEmailVerification to be an object instead of a string
+    - Changed the payload of Users_VerifyEmail to be an object instead of a string
+    - Renamed User_GetPhoneResendVerificationToken to Users_CreatePhoneVerificationNonce
+    - Changed the payload of Users_ResendPhoneVerification to be an object instead of a string
+    - Changed the payload of Users_VerifyPhone to be an object instead of a string
+    - Changed the Email, Phones, and Membership collections from arrays to objects to support future paging
+ 
+
+
+
 # Samples and Clients
 - [C# Client and Tests](../../samples/Directory/csharp)
 
