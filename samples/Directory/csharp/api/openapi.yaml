@@ -10,7 +10,7 @@ info:
     \ contain multiple Emails, Phones, and Locations.</p><p>Weather Notification subscriptions\
     \ are currently missing from the specification."
   title: Public Directory API
-  version: 4.1.0
+  version: 4.2.0
 servers:
 - url: /
 paths:
@@ -1320,6 +1320,10 @@ paths:
         description: ""
       responses:
         "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneNumber'
           description: Created
         "400":
           content:
@@ -2293,6 +2297,7 @@ components:
         displayName: displayName
         timezone: timezone
         preferredWrittenLanguage: preferredWrittenLanguage
+        externalId: externalId
         phones:
         - mobilePhone: true
           type: null
@@ -2390,6 +2395,10 @@ components:
           description: "The User's time zone, in IANA Time Zone database format [RFC6557],\r\
             \nalso known as the \"Olson\" time zone database format [Olson-TZ]\r\n\
             (e.g., \"America/Los_Angeles\")."
+          nullable: true
+          type: string
+        externalId:
+          description: "The User's external identifier, if any. This is a unique identifier."
           nullable: true
           type: string
         emails:
@@ -2508,12 +2517,16 @@ components:
       additionalProperties: false
       example:
         phone: phone
+        externalId: externalId
         email: email
       properties:
         email:
           nullable: true
           type: string
         phone:
+          nullable: true
+          type: string
+        externalId:
           nullable: true
           type: string
       type: object
@@ -2619,7 +2632,8 @@ components:
     GroupSummary:
       additionalProperties: false
       example:
-        default: true
+        selfService:
+          default: true
         children:
         - null
         - null
@@ -2637,15 +2651,16 @@ components:
         description:
           nullable: true
           type: string
-        default:
-          type: boolean
-        isJoinable:
-          type: boolean
+        selfService:
+          $ref: '#/components/schemas/SelfServiceSettings'
         children:
           items:
             $ref: '#/components/schemas/GroupSummary'
           nullable: true
           type: array
+        isJoinable:
+          readOnly: true
+          type: boolean
       type: object
     GroupSummaryPagedApiResponse:
       additionalProperties: false
@@ -2653,7 +2668,8 @@ components:
         pageSize: 1
         page: 6
         items:
-        - default: true
+        - selfService:
+            default: true
           children:
           - null
           - null
@@ -2661,7 +2677,8 @@ components:
           description: description
           id: id
           isJoinable: true
-        - default: true
+        - selfService:
+            default: true
           children:
           - null
           - null
@@ -3049,10 +3066,9 @@ components:
       type: object
     PendingDeviceType:
       enum:
-      - 0
-      - 1
-      format: int32
-      type: integer
+      - Phone
+      - Email
+      type: string
     PendingVerificationAttempt:
       additionalProperties: false
       example:
@@ -3265,6 +3281,14 @@ components:
         token:
           nullable: true
           type: string
+      type: object
+    SelfServiceSettings:
+      additionalProperties: false
+      example:
+        default: true
+      properties:
+        default:
+          type: boolean
       type: object
     SendVerificationCommand:
       additionalProperties: false

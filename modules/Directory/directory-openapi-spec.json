@@ -8,7 +8,7 @@
       "url": "https://bitbucket.org/AlertSense/platform-api-docs/src/dev/",
       "email": "dev@konexus.com"
     },
-    "version": "4.1.0"
+    "version": "4.2.0"
   },
   "paths": {
     "/{tenantId}/directory/{directoryId}/groups/discover": {
@@ -1930,7 +1930,14 @@
         },
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PhoneNumber"
+                }
+              }
+            }
           },
           "400": {
             "description": "Bad Request",
@@ -3166,6 +3173,11 @@
             "description": "The User's time zone, in IANA Time Zone database format [RFC6557],\r\nalso known as the \"Olson\" time zone database format [Olson-TZ]\r\n(e.g., \"America/Los_Angeles\").",
             "nullable": true
           },
+          "externalId": {
+            "type": "string",
+            "description": "The User's external identifier, if any. This is a unique identifier.",
+            "nullable": true
+          },
           "emails": {
             "type": "array",
             "items": {
@@ -3264,6 +3276,10 @@
             "nullable": true
           },
           "phone": {
+            "type": "string",
+            "nullable": true
+          },
+          "externalId": {
             "type": "string",
             "nullable": true
           }
@@ -3374,11 +3390,8 @@
             "type": "string",
             "nullable": true
           },
-          "default": {
-            "type": "boolean"
-          },
-          "isJoinable": {
-            "type": "boolean"
+          "selfService": {
+            "$ref": "#/components/schemas/SelfServiceSettings"
           },
           "children": {
             "type": "array",
@@ -3386,6 +3399,10 @@
               "$ref": "#/components/schemas/GroupSummary"
             },
             "nullable": true
+          },
+          "isJoinable": {
+            "type": "boolean",
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -3578,11 +3595,10 @@
       },
       "PendingDeviceType": {
         "enum": [
-          0,
-          1
+          "Phone",
+          "Email"
         ],
-        "type": "integer",
-        "format": "int32"
+        "type": "string"
       },
       "PendingVerificationAttempt": {
         "type": "object",
@@ -3760,6 +3776,15 @@
           "token": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SelfServiceSettings": {
+        "type": "object",
+        "properties": {
+          "default": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false

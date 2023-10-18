@@ -28,33 +28,25 @@ using OpenAPIDateConverter = Konexus.Directory.ApiClient.Client.OpenAPIDateConve
 namespace Konexus.Directory.ApiClient.Model
 {
     /// <summary>
-    /// VerificationResponse
+    /// SelfServiceSettings
     /// </summary>
-    [DataContract(Name = "VerificationResponse")]
-    public partial class VerificationResponse : IEquatable<VerificationResponse>, IValidatableObject
+    [DataContract(Name = "SelfServiceSettings")]
+    public partial class SelfServiceSettings : IEquatable<SelfServiceSettings>, IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="VerificationResponse" /> class.
+        /// Initializes a new instance of the <see cref="SelfServiceSettings" /> class.
         /// </summary>
-        /// <param name="success">success.</param>
-        /// <param name="message">message.</param>
-        public VerificationResponse(bool success = default(bool), string message = default(string))
+        /// <param name="_default">_default.</param>
+        public SelfServiceSettings(bool _default = default(bool))
         {
-            this.Success = success;
-            this.Message = message;
+            this.Default = _default;
         }
 
         /// <summary>
-        /// Gets or Sets Success
+        /// Gets or Sets Default
         /// </summary>
-        [DataMember(Name = "success", EmitDefaultValue = true)]
-        public bool Success { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Message
-        /// </summary>
-        [DataMember(Name = "message", EmitDefaultValue = true)]
-        public string Message { get; set; }
+        [DataMember(Name = "default", EmitDefaultValue = true)]
+        public bool Default { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -63,9 +55,8 @@ namespace Konexus.Directory.ApiClient.Model
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class VerificationResponse {\n");
-            sb.Append("  Success: ").Append(Success).Append("\n");
-            sb.Append("  Message: ").Append(Message).Append("\n");
+            sb.Append("class SelfServiceSettings {\n");
+            sb.Append("  Default: ").Append(Default).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -86,15 +77,15 @@ namespace Konexus.Directory.ApiClient.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as VerificationResponse);
+            return this.Equals(input as SelfServiceSettings);
         }
 
         /// <summary>
-        /// Returns true if VerificationResponse instances are equal
+        /// Returns true if SelfServiceSettings instances are equal
         /// </summary>
-        /// <param name="input">Instance of VerificationResponse to be compared</param>
+        /// <param name="input">Instance of SelfServiceSettings to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(VerificationResponse input)
+        public bool Equals(SelfServiceSettings input)
         {
             if (input == null)
             {
@@ -102,13 +93,8 @@ namespace Konexus.Directory.ApiClient.Model
             }
             return 
                 (
-                    this.Success == input.Success ||
-                    this.Success.Equals(input.Success)
-                ) && 
-                (
-                    this.Message == input.Message ||
-                    (this.Message != null &&
-                    this.Message.Equals(input.Message))
+                    this.Default == input.Default ||
+                    this.Default.Equals(input.Default)
                 );
         }
 
@@ -121,11 +107,7 @@ namespace Konexus.Directory.ApiClient.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                hashCode = (hashCode * 59) + this.Success.GetHashCode();
-                if (this.Message != null)
-                {
-                    hashCode = (hashCode * 59) + this.Message.GetHashCode();
-                }
+                hashCode = (hashCode * 59) + this.Default.GetHashCode();
                 return hashCode;
             }
         }

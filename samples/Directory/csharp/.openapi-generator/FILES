@@ -58,6 +58,7 @@ Konexus.Directory.ApiClient/Model/PhoneType.cs
 Konexus.Directory.ApiClient/Model/ProblemDetails.cs
 Konexus.Directory.ApiClient/Model/Reference.cs
 Konexus.Directory.ApiClient/Model/ResendVerificationToken.cs
+Konexus.Directory.ApiClient/Model/SelfServiceSettings.cs
 Konexus.Directory.ApiClient/Model/SendVerificationCommand.cs
 Konexus.Directory.ApiClient/Model/TimeZoneSummary.cs
 Konexus.Directory.ApiClient/Model/UpdateUserProfileCommand.cs

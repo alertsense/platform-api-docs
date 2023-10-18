@@ -6,6 +6,20 @@ The Konexus Directory Module is central to the platform and provides clients and
 
 # Change Log
 
+## Version 4.2.0
+
+### Additions and Enhancements
+- Added support for creating users with ExternalId and looking up users by their ExternalId
+- Updated most 400 level error responses with clearer error messages.
+
+### Bug Fixes
+- Resolved an issue with Written and Spoken language preferences not being persisted
+
+### Breaking Changes:
+- Updated CreatePhoneCommand to return the PhoneNumber created in the response
+- Removed Default property on GroupSummary into a separate objected called SelfServiceSettings that has a Default property and will be used for future expansion.
+ 
+
 ## Version 4.1.0
 
 ### Additions and Enhancements
