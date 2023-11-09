@@ -6,6 +6,12 @@ The Konexus Directory Module is central to the platform and provides clients and
 
 # Change Log
 
+## Version 4.2.1
+
+### Additions and Enhancements
+- Added support to Create an ExternalId on an existing UserProfile
+- Added support to Delete an existing UserProfile - Note this is a Soft Delete in the system and recreating the same user may reuse the previous resource
+
 ## Version 4.2.0
 
 ### Additions and Enhancements

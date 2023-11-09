@@ -10,7 +10,7 @@ info:
     \ contain multiple Emails, Phones, and Locations.</p><p>Weather Notification subscriptions\
     \ are currently missing from the specification."
   title: Public Directory API
-  version: 4.2.0
+  version: 4.2.1
 servers:
 - url: /
 paths:
@@ -324,6 +324,65 @@ paths:
       tags:
       - Users
   /{tenantId}/directory/{directoryId}/users/{userId}:
+    delete:
+      operationId: Users_Delete
+      parameters:
+      - description: ""
+        explode: false
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: directoryId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: ""
+        explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
+      summary: Delete a UserProfile associated with a specific Tenant and Directory
+        by the User's Identifier.
+      tags:
+      - Users
     get:
       operationId: Users_GetById
       parameters:
@@ -458,6 +517,77 @@ paths:
         - content
         JwtBearerTokenScheme: []
       summary: Modify the base information of the targeted UserProfile.
+      tags:
+      - Users
+  /{tenantId}/directory/{directoryId}/users/{userId}/externalId:
+    post:
+      operationId: Users_CreateExternalId
+      parameters:
+      - explode: false
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: directoryId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/CreateExternalIdCommand'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateExternalIdCommand'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/CreateExternalIdCommand'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/CreateExternalIdCommand'
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
+      summary: Associate a new ExternalId to an existing user that belongs to a specific
+        Tenant and Directory by the User's Identifier.
       tags:
       - Users
   /{tenantId}/directory/{directoryId}/users/{userId}/contact:
@@ -2195,6 +2325,17 @@ components:
       - type
       - value
       type: object
+    CreateExternalIdCommand:
+      additionalProperties: false
+      example:
+        externalId: externalId
+      properties:
+        externalId:
+          minLength: 1
+          type: string
+      required:
+      - externalId
+      type: object
     CreateGroupMembership:
       additionalProperties: false
       example:
@@ -2270,6 +2411,7 @@ components:
         type:
           $ref: '#/components/schemas/ContactTargetType'
         value:
+          format: tel
           minLength: 1
           type: string
         primary:
@@ -3752,9 +3894,9 @@ components:
             content: ExternalID
             elm: GIS
             directory:public: Public User Directory Access
-          tokenUrl: https://auth.alertsense.com/connect/token
+          tokenUrl: https://auth.dev.alertsense.io/connect/token
         implicit:
-          authorizationUrl: https://auth.alertsense.com/connect/authorize
+          authorizationUrl: https://auth.dev.alertsense.io/connect/authorize
           scopes:
             tamarack: Hickory
             content: ExternalID

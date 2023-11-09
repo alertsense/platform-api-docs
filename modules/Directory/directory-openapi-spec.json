@@ -8,7 +8,7 @@
       "url": "https://bitbucket.org/AlertSense/platform-api-docs/src/dev/",
       "email": "dev@konexus.com"
     },
-    "version": "4.2.0"
+    "version": "4.2.1"
   },
   "paths": {
     "/{tenantId}/directory/{directoryId}/groups/discover": {
@@ -493,6 +493,89 @@
       }
     },
     "/{tenantId}/directory/{directoryId}/users/{userId}": {
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Delete a UserProfile associated with a specific Tenant and Directory by the User's Identifier.",
+        "operationId": "Users_Delete",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "directoryId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      },
       "get": {
         "tags": [
           "Users"
@@ -653,6 +736,112 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      }
+    },
+    "/{tenantId}/directory/{directoryId}/users/{userId}/externalId": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Associate a new ExternalId to an existing user that belongs to a specific Tenant and Directory by the User's Identifier.",
+        "operationId": "Users_CreateExternalId",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "directoryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateExternalIdCommand"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateExternalIdCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateExternalIdCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateExternalIdCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -3044,6 +3233,19 @@
         },
         "additionalProperties": false
       },
+      "CreateExternalIdCommand": {
+        "required": [
+          "externalId"
+        ],
+        "type": "object",
+        "properties": {
+          "externalId": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
       "CreateGroupMembership": {
         "required": [
           "groupId"
@@ -3122,7 +3324,8 @@
           },
           "value": {
             "minLength": 1,
-            "type": "string"
+            "type": "string",
+            "format": "tel"
           },
           "primary": {
             "type": "boolean"
@@ -4054,7 +4257,7 @@
         "type": "oauth2",
         "flows": {
           "implicit": {
-            "authorizationUrl": "https://auth.alertsense.com/connect/authorize",
+            "authorizationUrl": "https://auth.dev.alertsense.io/connect/authorize",
             "scopes": {
               "tamarack": "Hickory",
               "content": "ExternalID",
@@ -4063,7 +4266,7 @@
             }
           },
           "clientCredentials": {
-            "tokenUrl": "https://auth.alertsense.com/connect/token",
+            "tokenUrl": "https://auth.dev.alertsense.io/connect/token",
             "scopes": {
               "tamarack": "Hickory",
               "content": "ExternalID",

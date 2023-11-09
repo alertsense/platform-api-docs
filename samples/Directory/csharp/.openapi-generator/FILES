@@ -28,6 +28,7 @@ Konexus.Directory.ApiClient/Model/BadRequestResponse.cs
 Konexus.Directory.ApiClient/Model/ContactInformation.cs
 Konexus.Directory.ApiClient/Model/ContactTargetType.cs
 Konexus.Directory.ApiClient/Model/CreateEmailCommand.cs
+Konexus.Directory.ApiClient/Model/CreateExternalIdCommand.cs
 Konexus.Directory.ApiClient/Model/CreateGroupMembership.cs
 Konexus.Directory.ApiClient/Model/CreateLocationCommand.cs
 Konexus.Directory.ApiClient/Model/CreatePhoneCommand.cs
