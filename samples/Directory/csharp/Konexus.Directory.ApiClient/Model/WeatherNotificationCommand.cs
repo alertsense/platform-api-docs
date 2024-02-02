@@ -28,52 +28,48 @@ using OpenAPIDateConverter = Konexus.Directory.ApiClient.Client.OpenAPIDateConve
 namespace Konexus.Directory.ApiClient.Model
 {
     /// <summary>
-    /// CreateEmailCommand
+    /// WeatherNotificationCommand
     /// </summary>
-    [DataContract(Name = "CreateEmailCommand")]
-    public partial class CreateEmailCommand : IEquatable<CreateEmailCommand>, IValidatableObject
+    [DataContract(Name = "WeatherNotificationCommand")]
+    public partial class WeatherNotificationCommand : IEquatable<WeatherNotificationCommand>, IValidatableObject
     {
-
         /// <summary>
-        /// Gets or Sets Type
-        /// </summary>
-        [DataMember(Name = "type", IsRequired = true, EmitDefaultValue = true)]
-        public ContactTargetType Type { get; set; }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CreateEmailCommand" /> class.
+        /// Initializes a new instance of the <see cref="WeatherNotificationCommand" /> class.
         /// </summary>
         [JsonConstructorAttribute]
-        protected CreateEmailCommand() { }
+        protected WeatherNotificationCommand() { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="CreateEmailCommand" /> class.
+        /// Initializes a new instance of the <see cref="WeatherNotificationCommand" /> class.
         /// </summary>
-        /// <param name="type">type (required).</param>
-        /// <param name="primary">A Boolean value indicatin the primary email address..</param>
-        /// <param name="value">value (required).</param>
-        public CreateEmailCommand(ContactTargetType type = default(ContactTargetType), bool primary = default(bool), string value = default(string))
+        /// <param name="categoryId">categoryId (required).</param>
+        /// <param name="channels">channels (required).</param>
+        public WeatherNotificationCommand(string categoryId = default(string), List<WeatherChannel> channels = default(List<WeatherChannel>))
         {
-            this.Type = type;
-            // to ensure "value" is required (not null)
-            if (value == null)
+            // to ensure "categoryId" is required (not null)
+            if (categoryId == null)
             {
-                throw new ArgumentNullException("value is a required property for CreateEmailCommand and cannot be null");
+                throw new ArgumentNullException("categoryId is a required property for WeatherNotificationCommand and cannot be null");
             }
-            this.Value = value;
-            this.Primary = primary;
+            this.CategoryId = categoryId;
+            // to ensure "channels" is required (not null)
+            if (channels == null)
+            {
+                throw new ArgumentNullException("channels is a required property for WeatherNotificationCommand and cannot be null");
+            }
+            this.Channels = channels;
         }
 
         /// <summary>
-        /// A Boolean value indicatin the primary email address.
+        /// Gets or Sets CategoryId
         /// </summary>
-        /// <value>A Boolean value indicatin the primary email address.</value>
-        [DataMember(Name = "primary", EmitDefaultValue = true)]
-        public bool Primary { get; set; }
+        [DataMember(Name = "categoryId", IsRequired = true, EmitDefaultValue = true)]
+        public string CategoryId { get; set; }
 
         /// <summary>
-        /// Gets or Sets Value
+        /// Gets or Sets Channels
         /// </summary>
-        [DataMember(Name = "value", IsRequired = true, EmitDefaultValue = true)]
-        public string Value { get; set; }
+        [DataMember(Name = "channels", IsRequired = true, EmitDefaultValue = true)]
+        public List<WeatherChannel> Channels { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -82,10 +78,9 @@ namespace Konexus.Directory.ApiClient.Model
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class CreateEmailCommand {\n");
-            sb.Append("  Type: ").Append(Type).Append("\n");
-            sb.Append("  Primary: ").Append(Primary).Append("\n");
-            sb.Append("  Value: ").Append(Value).Append("\n");
+            sb.Append("class WeatherNotificationCommand {\n");
+            sb.Append("  CategoryId: ").Append(CategoryId).Append("\n");
+            sb.Append("  Channels: ").Append(Channels).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -106,15 +101,15 @@ namespace Konexus.Directory.ApiClient.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as CreateEmailCommand);
+            return this.Equals(input as WeatherNotificationCommand);
         }
 
         /// <summary>
-        /// Returns true if CreateEmailCommand instances are equal
+        /// Returns true if WeatherNotificationCommand instances are equal
         /// </summary>
-        /// <param name="input">Instance of CreateEmailCommand to be compared</param>
+        /// <param name="input">Instance of WeatherNotificationCommand to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(CreateEmailCommand input)
+        public bool Equals(WeatherNotificationCommand input)
         {
             if (input == null)
             {
@@ -122,17 +117,15 @@ namespace Konexus.Directory.ApiClient.Model
             }
             return 
                 (
-                    this.Type == input.Type ||
-                    this.Type.Equals(input.Type)
+                    this.CategoryId == input.CategoryId ||
+                    (this.CategoryId != null &&
+                    this.CategoryId.Equals(input.CategoryId))
                 ) && 
                 (
-                    this.Primary == input.Primary ||
-                    this.Primary.Equals(input.Primary)
-                ) && 
-                (
-                    this.Value == input.Value ||
-                    (this.Value != null &&
-                    this.Value.Equals(input.Value))
+                    this.Channels == input.Channels ||
+                    this.Channels != null &&
+                    input.Channels != null &&
+                    this.Channels.SequenceEqual(input.Channels)
                 );
         }
 
@@ -145,11 +138,13 @@ namespace Konexus.Directory.ApiClient.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                hashCode = (hashCode * 59) + this.Type.GetHashCode();
-                hashCode = (hashCode * 59) + this.Primary.GetHashCode();
-                if (this.Value != null)
+                if (this.CategoryId != null)
                 {
-                    hashCode = (hashCode * 59) + this.Value.GetHashCode();
+                    hashCode = (hashCode * 59) + this.CategoryId.GetHashCode();
+                }
+                if (this.Channels != null)
+                {
+                    hashCode = (hashCode * 59) + this.Channels.GetHashCode();
                 }
                 return hashCode;
             }
@@ -162,10 +157,10 @@ namespace Konexus.Directory.ApiClient.Model
         /// <returns>Validation Result</returns>
         IEnumerable<System.ComponentModel.DataAnnotations.ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
         {
-            // Value (string) minLength
-            if (this.Value != null && this.Value.Length < 1)
+            // CategoryId (string) minLength
+            if (this.CategoryId != null && this.CategoryId.Length < 1)
             {
-                yield return new System.ComponentModel.DataAnnotations.ValidationResult("Invalid value for Value, length must be greater than 1.", new [] { "Value" });
+                yield return new System.ComponentModel.DataAnnotations.ValidationResult("Invalid value for CategoryId, length must be greater than 1.", new [] { "CategoryId" });
             }
 
             yield break;

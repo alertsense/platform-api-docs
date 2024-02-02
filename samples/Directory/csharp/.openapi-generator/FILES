@@ -19,6 +19,7 @@ Konexus.Directory.ApiClient/Client/RequestOptions.cs
 Konexus.Directory.ApiClient/Client/RetryConfiguration.cs
 Konexus.Directory.ApiClient/Client/WebRequestPathBuilder.cs
 Konexus.Directory.ApiClient/Model/AbstractOpenAPISchema.cs
+Konexus.Directory.ApiClient/Model/AddWeatherNotificationsCommand.cs
 Konexus.Directory.ApiClient/Model/Address.cs
 Konexus.Directory.ApiClient/Model/AddressType.cs
 Konexus.Directory.ApiClient/Model/AvailableLanguagesResponse.cs
@@ -36,6 +37,7 @@ Konexus.Directory.ApiClient/Model/CreateUserProfileCommand.cs
 Konexus.Directory.ApiClient/Model/CreateVerificationNonceCommand.cs
 Konexus.Directory.ApiClient/Model/EmailAddress.cs
 Konexus.Directory.ApiClient/Model/EmailCollection.cs
+Konexus.Directory.ApiClient/Model/FindGroupQuery.cs
 Konexus.Directory.ApiClient/Model/FindUserQuery.cs
 Konexus.Directory.ApiClient/Model/GeoLocation.cs
 Konexus.Directory.ApiClient/Model/GroupMemberships.cs
@@ -58,6 +60,7 @@ Konexus.Directory.ApiClient/Model/PhoneNumber.cs
 Konexus.Directory.ApiClient/Model/PhoneType.cs
 Konexus.Directory.ApiClient/Model/ProblemDetails.cs
 Konexus.Directory.ApiClient/Model/Reference.cs
+Konexus.Directory.ApiClient/Model/RemoveWeatherNotificationsCommand.cs
 Konexus.Directory.ApiClient/Model/ResendVerificationToken.cs
 Konexus.Directory.ApiClient/Model/SelfServiceSettings.cs
 Konexus.Directory.ApiClient/Model/SendVerificationCommand.cs
@@ -72,4 +75,10 @@ Konexus.Directory.ApiClient/Model/VerificationResponse.cs
 Konexus.Directory.ApiClient/Model/VerificationStatus.cs
 Konexus.Directory.ApiClient/Model/VerifyEmailCommand.cs
 Konexus.Directory.ApiClient/Model/VerifyPhoneCommand.cs
+Konexus.Directory.ApiClient/Model/WeatherCategoriesResponse.cs
+Konexus.Directory.ApiClient/Model/WeatherCategoryInformation.cs
+Konexus.Directory.ApiClient/Model/WeatherChannel.cs
+Konexus.Directory.ApiClient/Model/WeatherNotification.cs
+Konexus.Directory.ApiClient/Model/WeatherNotificationCollection.cs
+Konexus.Directory.ApiClient/Model/WeatherNotificationCommand.cs
 api/openapi.yaml

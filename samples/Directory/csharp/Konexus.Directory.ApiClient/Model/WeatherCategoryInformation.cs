@@ -28,49 +28,53 @@ using OpenAPIDateConverter = Konexus.Directory.ApiClient.Client.OpenAPIDateConve
 namespace Konexus.Directory.ApiClient.Model
 {
     /// <summary>
-    /// GroupReference
+    /// WeatherCategoryInformation
     /// </summary>
-    [DataContract(Name = "GroupReference")]
-    public partial class GroupReference : IEquatable<GroupReference>, IValidatableObject
+    [DataContract(Name = "WeatherCategoryInformation")]
+    public partial class WeatherCategoryInformation : IEquatable<WeatherCategoryInformation>, IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="GroupReference" /> class.
+        /// Initializes a new instance of the <see cref="WeatherCategoryInformation" /> class.
         /// </summary>
-        /// <param name="id">id.</param>
-        /// <param name="name">name.</param>
-        /// <param name="description">description.</param>
-        /// <param name="uri">uri.</param>
-        public GroupReference(string id = default(string), string name = default(string), string description = default(string), string uri = default(string))
+        /// <param name="supportedChannels">supportedChannels.</param>
+        public WeatherCategoryInformation(List<WeatherChannel> supportedChannels = default(List<WeatherChannel>))
         {
-            this.Id = id;
-            this.Name = name;
-            this.Description = description;
-            this.Uri = uri;
+            this.SupportedChannels = supportedChannels;
         }
 
         /// <summary>
-        /// Gets or Sets Id
+        /// Gets or Sets CategoryId
         /// </summary>
-        [DataMember(Name = "id", EmitDefaultValue = true)]
-        public string Id { get; set; }
+        [DataMember(Name = "categoryId", EmitDefaultValue = true)]
+        public string CategoryId { get; private set; }
 
+        /// <summary>
+        /// Returns false as CategoryId should not be serialized given that it's read-only.
+        /// </summary>
+        /// <returns>false (boolean)</returns>
+        public bool ShouldSerializeCategoryId()
+        {
+            return false;
+        }
         /// <summary>
         /// Gets or Sets Name
         /// </summary>
         [DataMember(Name = "name", EmitDefaultValue = true)]
-        public string Name { get; set; }
+        public string Name { get; private set; }
 
         /// <summary>
-        /// Gets or Sets Description
+        /// Returns false as Name should not be serialized given that it's read-only.
         /// </summary>
-        [DataMember(Name = "description", EmitDefaultValue = true)]
-        public string Description { get; set; }
-
+        /// <returns>false (boolean)</returns>
+        public bool ShouldSerializeName()
+        {
+            return false;
+        }
         /// <summary>
-        /// Gets or Sets Uri
+        /// Gets or Sets SupportedChannels
         /// </summary>
-        [DataMember(Name = "uri", EmitDefaultValue = true)]
-        public string Uri { get; set; }
+        [DataMember(Name = "supportedChannels", EmitDefaultValue = true)]
+        public List<WeatherChannel> SupportedChannels { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -79,11 +83,10 @@ namespace Konexus.Directory.ApiClient.Model
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class GroupReference {\n");
-            sb.Append("  Id: ").Append(Id).Append("\n");
+            sb.Append("class WeatherCategoryInformation {\n");
+            sb.Append("  CategoryId: ").Append(CategoryId).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
-            sb.Append("  Description: ").Append(Description).Append("\n");
-            sb.Append("  Uri: ").Append(Uri).Append("\n");
+            sb.Append("  SupportedChannels: ").Append(SupportedChannels).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -104,15 +107,15 @@ namespace Konexus.Directory.ApiClient.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as GroupReference);
+            return this.Equals(input as WeatherCategoryInformation);
         }
 
         /// <summary>
-        /// Returns true if GroupReference instances are equal
+        /// Returns true if WeatherCategoryInformation instances are equal
         /// </summary>
-        /// <param name="input">Instance of GroupReference to be compared</param>
+        /// <param name="input">Instance of WeatherCategoryInformation to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(GroupReference input)
+        public bool Equals(WeatherCategoryInformation input)
         {
             if (input == null)
             {
@@ -120,9 +123,9 @@ namespace Konexus.Directory.ApiClient.Model
             }
             return 
                 (
-                    this.Id == input.Id ||
-                    (this.Id != null &&
-                    this.Id.Equals(input.Id))
+                    this.CategoryId == input.CategoryId ||
+                    (this.CategoryId != null &&
+                    this.CategoryId.Equals(input.CategoryId))
                 ) && 
                 (
                     this.Name == input.Name ||
@@ -130,14 +133,10 @@ namespace Konexus.Directory.ApiClient.Model
                     this.Name.Equals(input.Name))
                 ) && 
                 (
-                    this.Description == input.Description ||
-                    (this.Description != null &&
-                    this.Description.Equals(input.Description))
-                ) && 
-                (
-                    this.Uri == input.Uri ||
-                    (this.Uri != null &&
-                    this.Uri.Equals(input.Uri))
+                    this.SupportedChannels == input.SupportedChannels ||
+                    this.SupportedChannels != null &&
+                    input.SupportedChannels != null &&
+                    this.SupportedChannels.SequenceEqual(input.SupportedChannels)
                 );
         }
 
@@ -150,21 +149,17 @@ namespace Konexus.Directory.ApiClient.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.Id != null)
+                if (this.CategoryId != null)
                 {
-                    hashCode = (hashCode * 59) + this.Id.GetHashCode();
+                    hashCode = (hashCode * 59) + this.CategoryId.GetHashCode();
                 }
                 if (this.Name != null)
                 {
                     hashCode = (hashCode * 59) + this.Name.GetHashCode();
                 }
-                if (this.Description != null)
+                if (this.SupportedChannels != null)
                 {
-                    hashCode = (hashCode * 59) + this.Description.GetHashCode();
-                }
-                if (this.Uri != null)
-                {
-                    hashCode = (hashCode * 59) + this.Uri.GetHashCode();
+                    hashCode = (hashCode * 59) + this.SupportedChannels.GetHashCode();
                 }
                 return hashCode;
             }

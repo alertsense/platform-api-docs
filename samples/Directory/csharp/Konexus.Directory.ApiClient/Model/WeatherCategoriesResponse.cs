@@ -28,33 +28,25 @@ using OpenAPIDateConverter = Konexus.Directory.ApiClient.Client.OpenAPIDateConve
 namespace Konexus.Directory.ApiClient.Model
 {
     /// <summary>
-    /// AvailableLanguagesResponse
+    /// WeatherCategoriesResponse
     /// </summary>
-    [DataContract(Name = "AvailableLanguagesResponse")]
-    public partial class AvailableLanguagesResponse : IEquatable<AvailableLanguagesResponse>, IValidatableObject
+    [DataContract(Name = "WeatherCategoriesResponse")]
+    public partial class WeatherCategoriesResponse : IEquatable<WeatherCategoriesResponse>, IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AvailableLanguagesResponse" /> class.
+        /// Initializes a new instance of the <see cref="WeatherCategoriesResponse" /> class.
         /// </summary>
-        /// <param name="writtenLanguages">writtenLanguages.</param>
-        /// <param name="spokenLanguages">spokenLanguages.</param>
-        public AvailableLanguagesResponse(List<LanguageCode> writtenLanguages = default(List<LanguageCode>), List<LanguageCode> spokenLanguages = default(List<LanguageCode>))
+        /// <param name="categories">categories.</param>
+        public WeatherCategoriesResponse(List<WeatherCategoryInformation> categories = default(List<WeatherCategoryInformation>))
         {
-            this.WrittenLanguages = writtenLanguages;
-            this.SpokenLanguages = spokenLanguages;
+            this.Categories = categories;
         }
 
         /// <summary>
-        /// Gets or Sets WrittenLanguages
+        /// Gets or Sets Categories
         /// </summary>
-        [DataMember(Name = "writtenLanguages", EmitDefaultValue = true)]
-        public List<LanguageCode> WrittenLanguages { get; set; }
-
-        /// <summary>
-        /// Gets or Sets SpokenLanguages
-        /// </summary>
-        [DataMember(Name = "spokenLanguages", EmitDefaultValue = true)]
-        public List<LanguageCode> SpokenLanguages { get; set; }
+        [DataMember(Name = "categories", EmitDefaultValue = true)]
+        public List<WeatherCategoryInformation> Categories { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -63,9 +55,8 @@ namespace Konexus.Directory.ApiClient.Model
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class AvailableLanguagesResponse {\n");
-            sb.Append("  WrittenLanguages: ").Append(WrittenLanguages).Append("\n");
-            sb.Append("  SpokenLanguages: ").Append(SpokenLanguages).Append("\n");
+            sb.Append("class WeatherCategoriesResponse {\n");
+            sb.Append("  Categories: ").Append(Categories).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -86,15 +77,15 @@ namespace Konexus.Directory.ApiClient.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as AvailableLanguagesResponse);
+            return this.Equals(input as WeatherCategoriesResponse);
         }
 
         /// <summary>
-        /// Returns true if AvailableLanguagesResponse instances are equal
+        /// Returns true if WeatherCategoriesResponse instances are equal
         /// </summary>
-        /// <param name="input">Instance of AvailableLanguagesResponse to be compared</param>
+        /// <param name="input">Instance of WeatherCategoriesResponse to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(AvailableLanguagesResponse input)
+        public bool Equals(WeatherCategoriesResponse input)
         {
             if (input == null)
             {
@@ -102,16 +93,10 @@ namespace Konexus.Directory.ApiClient.Model
             }
             return 
                 (
-                    this.WrittenLanguages == input.WrittenLanguages ||
-                    this.WrittenLanguages != null &&
-                    input.WrittenLanguages != null &&
-                    this.WrittenLanguages.SequenceEqual(input.WrittenLanguages)
-                ) && 
-                (
-                    this.SpokenLanguages == input.SpokenLanguages ||
-                    this.SpokenLanguages != null &&
-                    input.SpokenLanguages != null &&
-                    this.SpokenLanguages.SequenceEqual(input.SpokenLanguages)
+                    this.Categories == input.Categories ||
+                    this.Categories != null &&
+                    input.Categories != null &&
+                    this.Categories.SequenceEqual(input.Categories)
                 );
         }
 
@@ -124,13 +109,9 @@ namespace Konexus.Directory.ApiClient.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.WrittenLanguages != null)
+                if (this.Categories != null)
                 {
-                    hashCode = (hashCode * 59) + this.WrittenLanguages.GetHashCode();
-                }
-                if (this.SpokenLanguages != null)
-                {
-                    hashCode = (hashCode * 59) + this.SpokenLanguages.GetHashCode();
+                    hashCode = (hashCode * 59) + this.Categories.GetHashCode();
                 }
                 return hashCode;
             }

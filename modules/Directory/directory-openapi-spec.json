@@ -1,14 +1,14 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "Public Directory API",
-    "description": "<p>Working draft of the Konexus Public User directory API.</p><p>This API will be used to allow citizens to create and manage their UserProfiles including contact information and notification preferences. UserProfiles are allowed to contain multiple Emails, Phones, and Locations.</p><p>Weather Notification subscriptions are currently missing from the specification.",
+    "title": "Konexus Platform API - Directory",
+    "description": "<p>Working draft of the Konexus Platform API - Directory Module</p>",
     "contact": {
       "name": "Konexus Engineering Team",
       "url": "https://bitbucket.org/AlertSense/platform-api-docs/src/dev/",
       "email": "dev@konexus.com"
     },
-    "version": "4.2.1"
+    "version": "4.2.3"
   },
   "paths": {
     "/{tenantId}/directory/{directoryId}/groups/discover": {
@@ -43,6 +43,243 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/GroupSummaryPagedApiResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      }
+    },
+    "/{tenantId}/directory/{directoryId}/groups/find": {
+      "post": {
+        "tags": [
+          "Groups"
+        ],
+        "summary": "Finds groups that match the query conditions.",
+        "operationId": "Groups_FindGroups",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "directoryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 25
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FindGroupQuery"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FindGroupQuery"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FindGroupQuery"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FindGroupQuery"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupSummaryPagedApiResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      }
+    },
+    "/{tenantId}/directory/{directoryId}/groups/{groupId}/members": {
+      "post": {
+        "tags": [
+          "Groups"
+        ],
+        "operationId": "Groups_GetGroupMembership",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "directoryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "groupId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "chatEnabled",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 25
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfileSummaryPagedApiResponse"
                 }
               }
             }
@@ -245,13 +482,94 @@
         ]
       }
     },
-    "/verifications/email": {
+    "/{tenantId}/directory/meta/weather/categories": {
+      "get": {
+        "tags": [
+          "Meta"
+        ],
+        "summary": "Retrieve supported weather categories.",
+        "operationId": "Meta_GetWeatherCategories",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WeatherCategoriesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      }
+    },
+    "/{tenantId}/testing/verifications/email": {
       "get": {
         "tags": [
           "Test"
         ],
         "operationId": "Test_GetPendingEmailVerifications",
         "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "emailAddress",
             "in": "query",
@@ -316,13 +634,28 @@
         ]
       }
     },
-    "/verifications/phone": {
+    "/{tenantId}/testing/verifications/phone": {
       "get": {
         "tags": [
           "Test"
         ],
         "operationId": "Test_GetPendingPhoneVerifications",
         "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "phoneNumber",
             "in": "query",
@@ -3013,7 +3346,308 @@
         },
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Location"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      }
+    },
+    "/{tenantId}/directory/{directoryId}/users/{userId}/notifications/weather": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "Users_GetWeatherNotifications",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "directoryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WeatherNotificationCollection"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "Users_AddWeatherNotifications",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "directoryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddWeatherNotificationsCommand"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddWeatherNotificationsCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddWeatherNotificationsCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddWeatherNotificationsCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "Users_RemoveWeatherNotifications",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "directoryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveWeatherNotificationsCommand"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveWeatherNotificationsCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveWeatherNotificationsCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveWeatherNotificationsCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
           },
           "400": {
             "description": "Bad Request",
@@ -3063,6 +3697,23 @@
   },
   "components": {
     "schemas": {
+      "AddWeatherNotificationsCommand": {
+        "required": [
+          "notifications"
+        ],
+        "type": "object",
+        "properties": {
+          "notifications": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WeatherNotificationCommand"
+            },
+            "description": "The weather notifications to add."
+          }
+        },
+        "additionalProperties": false
+      },
       "Address": {
         "type": "object",
         "properties": {
@@ -3471,6 +4122,16 @@
         },
         "additionalProperties": false
       },
+      "FindGroupQuery": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "FindUserQuery": {
         "type": "object",
         "properties": {
@@ -3808,10 +4469,12 @@
         "properties": {
           "device": {
             "type": "string",
+            "description": "Description of the Device being verified.",
             "nullable": true
           },
           "verificationCode": {
             "type": "string",
+            "description": "Verification Code.",
             "nullable": true
           },
           "deviceType": {
@@ -3819,10 +4482,12 @@
           },
           "displayMessage": {
             "type": "string",
+            "description": "Message to display to the end user about their Verification Attempt. May contain instructions for them to follow.",
             "nullable": true
           },
           "dateAttempted": {
             "type": "string",
+            "description": "The date the Verification Attempt was made.",
             "format": "date-time",
             "nullable": true
           }
@@ -3969,6 +4634,23 @@
             "type": "string",
             "format": "uri",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RemoveWeatherNotificationsCommand": {
+        "required": [
+          "notifications"
+        ],
+        "type": "object",
+        "properties": {
+          "notifications": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WeatherNotificationCommand"
+            },
+            "description": "The weather notifications to remove."
           }
         },
         "additionalProperties": false
@@ -4185,10 +4867,12 @@
         "properties": {
           "displayMessage": {
             "type": "string",
+            "description": "Message to display to the end user about their Verification Attempt. May contain instructions for them to follow.",
             "nullable": true
           },
           "dateAttempted": {
             "type": "string",
+            "description": "The date the Verification Attempt was made.",
             "format": "date-time",
             "nullable": true
           }
@@ -4199,10 +4883,12 @@
         "type": "object",
         "properties": {
           "success": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Specifies if the verification successful."
           },
           "message": {
             "type": "string",
+            "description": "Description of the Verification.",
             "nullable": true
           }
         },
@@ -4212,13 +4898,15 @@
         "type": "object",
         "properties": {
           "verified": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Specifieds if this device has been verified."
           },
           "lastVerificationAttempt": {
             "$ref": "#/components/schemas/VerificationAttempt"
           },
           "verificationDate": {
             "type": "string",
+            "description": "The Date the device was verified. Has no value if the device has not been verified.",
             "format": "date-time",
             "nullable": true
           }
@@ -4250,6 +4938,111 @@
           }
         },
         "additionalProperties": false
+      },
+      "WeatherCategoriesResponse": {
+        "type": "object",
+        "properties": {
+          "categories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WeatherCategoryInformation"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WeatherCategoryInformation": {
+        "type": "object",
+        "properties": {
+          "categoryId": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "supportedChannels": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WeatherChannel"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WeatherChannel": {
+        "enum": [
+          "TextEmail",
+          "VoiceHome",
+          "VoiceCell"
+        ],
+        "type": "string"
+      },
+      "WeatherNotification": {
+        "type": "object",
+        "properties": {
+          "categoryId": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "channels": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WeatherChannel"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WeatherNotificationCollection": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WeatherNotification"
+            },
+            "nullable": true
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WeatherNotificationCommand": {
+        "required": [
+          "categoryId",
+          "channels"
+        ],
+        "type": "object",
+        "properties": {
+          "categoryId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "channels": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WeatherChannel"
+            }
+          }
+        },
+        "additionalProperties": false
       }
     },
     "securitySchemes": {
@@ -4257,7 +5050,7 @@
         "type": "oauth2",
         "flows": {
           "implicit": {
-            "authorizationUrl": "https://auth.dev.alertsense.io/connect/authorize",
+            "authorizationUrl": "https://auth.alertsense.com/connect/authorize",
             "scopes": {
               "tamarack": "Hickory",
               "content": "ExternalID",
@@ -4266,7 +5059,7 @@
             }
           },
           "clientCredentials": {
-            "tokenUrl": "https://auth.dev.alertsense.io/connect/token",
+            "tokenUrl": "https://auth.alertsense.com/connect/token",
             "scopes": {
               "tamarack": "Hickory",
               "content": "ExternalID",

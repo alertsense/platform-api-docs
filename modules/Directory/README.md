@@ -6,6 +6,21 @@ The Konexus Directory Module is central to the platform and provides clients and
 
 # Change Log
 
+## Version 4.2.3
+
+### Additions and Enhancements
+- Added support for Weather Categories and Weather preferences
+- Added support for Querying for Users by Phone Number
+
+### Bug Fixes
+- Resolved an issue that occurred when creating a new User Location where the API was returning an incorrect response code (200 OK) according to the API Specification (201 Created).
+- Resolved issue with Location IDs not being deterministic
+
+## Version 4.2.2
+
+### Bug Fixes
+- Resolved Phone Verification Code issues
+
 ## Version 4.2.1
 
 ### Additions and Enhancements

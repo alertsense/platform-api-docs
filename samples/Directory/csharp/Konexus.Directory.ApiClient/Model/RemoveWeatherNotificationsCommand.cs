@@ -28,33 +28,36 @@ using OpenAPIDateConverter = Konexus.Directory.ApiClient.Client.OpenAPIDateConve
 namespace Konexus.Directory.ApiClient.Model
 {
     /// <summary>
-    /// AvailableLanguagesResponse
+    /// RemoveWeatherNotificationsCommand
     /// </summary>
-    [DataContract(Name = "AvailableLanguagesResponse")]
-    public partial class AvailableLanguagesResponse : IEquatable<AvailableLanguagesResponse>, IValidatableObject
+    [DataContract(Name = "RemoveWeatherNotificationsCommand")]
+    public partial class RemoveWeatherNotificationsCommand : IEquatable<RemoveWeatherNotificationsCommand>, IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AvailableLanguagesResponse" /> class.
+        /// Initializes a new instance of the <see cref="RemoveWeatherNotificationsCommand" /> class.
         /// </summary>
-        /// <param name="writtenLanguages">writtenLanguages.</param>
-        /// <param name="spokenLanguages">spokenLanguages.</param>
-        public AvailableLanguagesResponse(List<LanguageCode> writtenLanguages = default(List<LanguageCode>), List<LanguageCode> spokenLanguages = default(List<LanguageCode>))
+        [JsonConstructorAttribute]
+        protected RemoveWeatherNotificationsCommand() { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RemoveWeatherNotificationsCommand" /> class.
+        /// </summary>
+        /// <param name="notifications">The weather notifications to remove. (required).</param>
+        public RemoveWeatherNotificationsCommand(List<WeatherNotificationCommand> notifications = default(List<WeatherNotificationCommand>))
         {
-            this.WrittenLanguages = writtenLanguages;
-            this.SpokenLanguages = spokenLanguages;
+            // to ensure "notifications" is required (not null)
+            if (notifications == null)
+            {
+                throw new ArgumentNullException("notifications is a required property for RemoveWeatherNotificationsCommand and cannot be null");
+            }
+            this.Notifications = notifications;
         }
 
         /// <summary>
-        /// Gets or Sets WrittenLanguages
+        /// The weather notifications to remove.
         /// </summary>
-        [DataMember(Name = "writtenLanguages", EmitDefaultValue = true)]
-        public List<LanguageCode> WrittenLanguages { get; set; }
-
-        /// <summary>
-        /// Gets or Sets SpokenLanguages
-        /// </summary>
-        [DataMember(Name = "spokenLanguages", EmitDefaultValue = true)]
-        public List<LanguageCode> SpokenLanguages { get; set; }
+        /// <value>The weather notifications to remove.</value>
+        [DataMember(Name = "notifications", IsRequired = true, EmitDefaultValue = true)]
+        public List<WeatherNotificationCommand> Notifications { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -63,9 +66,8 @@ namespace Konexus.Directory.ApiClient.Model
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class AvailableLanguagesResponse {\n");
-            sb.Append("  WrittenLanguages: ").Append(WrittenLanguages).Append("\n");
-            sb.Append("  SpokenLanguages: ").Append(SpokenLanguages).Append("\n");
+            sb.Append("class RemoveWeatherNotificationsCommand {\n");
+            sb.Append("  Notifications: ").Append(Notifications).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -86,15 +88,15 @@ namespace Konexus.Directory.ApiClient.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as AvailableLanguagesResponse);
+            return this.Equals(input as RemoveWeatherNotificationsCommand);
         }
 
         /// <summary>
-        /// Returns true if AvailableLanguagesResponse instances are equal
+        /// Returns true if RemoveWeatherNotificationsCommand instances are equal
         /// </summary>
-        /// <param name="input">Instance of AvailableLanguagesResponse to be compared</param>
+        /// <param name="input">Instance of RemoveWeatherNotificationsCommand to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(AvailableLanguagesResponse input)
+        public bool Equals(RemoveWeatherNotificationsCommand input)
         {
             if (input == null)
             {
@@ -102,16 +104,10 @@ namespace Konexus.Directory.ApiClient.Model
             }
             return 
                 (
-                    this.WrittenLanguages == input.WrittenLanguages ||
-                    this.WrittenLanguages != null &&
-                    input.WrittenLanguages != null &&
-                    this.WrittenLanguages.SequenceEqual(input.WrittenLanguages)
-                ) && 
-                (
-                    this.SpokenLanguages == input.SpokenLanguages ||
-                    this.SpokenLanguages != null &&
-                    input.SpokenLanguages != null &&
-                    this.SpokenLanguages.SequenceEqual(input.SpokenLanguages)
+                    this.Notifications == input.Notifications ||
+                    this.Notifications != null &&
+                    input.Notifications != null &&
+                    this.Notifications.SequenceEqual(input.Notifications)
                 );
         }
 
@@ -124,13 +120,9 @@ namespace Konexus.Directory.ApiClient.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.WrittenLanguages != null)
+                if (this.Notifications != null)
                 {
-                    hashCode = (hashCode * 59) + this.WrittenLanguages.GetHashCode();
-                }
-                if (this.SpokenLanguages != null)
-                {
-                    hashCode = (hashCode * 59) + this.SpokenLanguages.GetHashCode();
+                    hashCode = (hashCode * 59) + this.Notifications.GetHashCode();
                 }
                 return hashCode;
             }

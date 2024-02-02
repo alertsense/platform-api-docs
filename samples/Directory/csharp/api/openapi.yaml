@@ -4,13 +4,9 @@ info:
     email: dev@konexus.com
     name: Konexus Engineering Team
     url: https://bitbucket.org/AlertSense/platform-api-docs/src/dev/
-  description: "<p>Working draft of the Konexus Public User directory API.</p><p>This\
-    \ API will be used to allow citizens to create and manage their UserProfiles including\
-    \ contact information and notification preferences. UserProfiles are allowed to\
-    \ contain multiple Emails, Phones, and Locations.</p><p>Weather Notification subscriptions\
-    \ are currently missing from the specification."
-  title: Public Directory API
-  version: 4.2.1
+  description: <p>Working draft of the Konexus Platform API - Directory Module</p>
+  title: Konexus Platform API - Directory
+  version: 4.2.3
 servers:
 - url: /
 paths:
@@ -67,6 +63,176 @@ paths:
       summary: Retrieves a list of Nested Public Groups for the targeted Tenant. These
         Groups can be joined if the current user has a UserProfile in the targeted
         Tenant.
+      tags:
+      - Groups
+  /{tenantId}/directory/{directoryId}/groups/find:
+    post:
+      operationId: Groups_FindGroups
+      parameters:
+      - explode: false
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: directoryId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          format: int32
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: pageSize
+        required: false
+        schema:
+          default: 25
+          format: int32
+          type: integer
+        style: form
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/FindGroupQuery'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FindGroupQuery'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/FindGroupQuery'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/FindGroupQuery'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupSummaryPagedApiResponse'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
+      summary: Finds groups that match the query conditions.
+      tags:
+      - Groups
+  /{tenantId}/directory/{directoryId}/groups/{groupId}/members:
+    post:
+      operationId: Groups_GetGroupMembership
+      parameters:
+      - explode: false
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: directoryId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: groupId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: chatEnabled
+        required: false
+        schema:
+          default: false
+          type: boolean
+        style: form
+      - explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          format: int32
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: pageSize
+        required: false
+        schema:
+          default: 25
+          format: int32
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfileSummaryPagedApiResponse'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
       tags:
       - Groups
   /{tenantId}/directory/meta/languages:
@@ -166,10 +332,63 @@ paths:
       summary: Returns the timezones supported in the system.
       tags:
       - Meta
-  /verifications/email:
+  /{tenantId}/directory/meta/weather/categories:
+    get:
+      operationId: Meta_GetWeatherCategories
+      parameters:
+      - explode: false
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WeatherCategoriesResponse'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
+      summary: Retrieve supported weather categories.
+      tags:
+      - Meta
+  /{tenantId}/testing/verifications/email:
     get:
       operationId: Test_GetPendingEmailVerifications
       parameters:
+      - explode: false
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          type: string
+        style: simple
       - explode: true
         in: query
         name: emailAddress
@@ -211,10 +430,24 @@ paths:
         JwtBearerTokenScheme: []
       tags:
       - Test
-  /verifications/phone:
+  /{tenantId}/testing/verifications/phone:
     get:
       operationId: Test_GetPendingPhoneVerifications
       parameters:
+      - explode: false
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: userId
+        required: false
+        schema:
+          type: string
+        style: form
       - explode: true
         in: query
         name: phoneNumber
@@ -2074,6 +2307,10 @@ paths:
         description: ""
       responses:
         "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Location'
           description: Created
         "400":
           content:
@@ -2103,8 +2340,225 @@ paths:
       summary: Create a new Location for the targeted UserProfile.
       tags:
       - Users
+  /{tenantId}/directory/{directoryId}/users/{userId}/notifications/weather:
+    delete:
+      operationId: Users_RemoveWeatherNotifications
+      parameters:
+      - explode: false
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: directoryId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/RemoveWeatherNotificationsCommand'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoveWeatherNotificationsCommand'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/RemoveWeatherNotificationsCommand'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/RemoveWeatherNotificationsCommand'
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
+      tags:
+      - Users
+    get:
+      operationId: Users_GetWeatherNotifications
+      parameters:
+      - explode: false
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: directoryId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WeatherNotificationCollection'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
+      tags:
+      - Users
+    post:
+      operationId: Users_AddWeatherNotifications
+      parameters:
+      - explode: false
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: directoryId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/AddWeatherNotificationsCommand'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddWeatherNotificationsCommand'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/AddWeatherNotificationsCommand'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/AddWeatherNotificationsCommand'
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
+      tags:
+      - Users
 components:
   schemas:
+    AddWeatherNotificationsCommand:
+      additionalProperties: false
+      example:
+        notifications:
+        - channels:
+          - null
+          - null
+          categoryId: categoryId
+        - channels:
+          - null
+          - null
+          categoryId: categoryId
+      properties:
+        notifications:
+          description: The weather notifications to add.
+          items:
+            $ref: '#/components/schemas/WeatherNotificationCommand'
+          minItems: 1
+          type: array
+      required:
+      - notifications
+      type: object
     Address:
       additionalProperties: false
       example:
@@ -2654,6 +3108,15 @@ components:
           format: int32
           readOnly: true
           type: integer
+      type: object
+    FindGroupQuery:
+      additionalProperties: false
+      example:
+        name: name
+      properties:
+        name:
+          nullable: true
+          type: string
       type: object
     FindUserQuery:
       additionalProperties: false
@@ -3221,17 +3684,22 @@ components:
         verificationCode: verificationCode
       properties:
         device:
+          description: Description of the Device being verified.
           nullable: true
           type: string
         verificationCode:
+          description: Verification Code.
           nullable: true
           type: string
         deviceType:
           $ref: '#/components/schemas/PendingDeviceType'
         displayMessage:
+          description: Message to display to the end user about their Verification
+            Attempt. May contain instructions for them to follow.
           nullable: true
           type: string
         dateAttempted:
+          description: The date the Verification Attempt was made.
           format: date-time
           nullable: true
           type: string
@@ -3414,6 +3882,28 @@ components:
           format: uri
           nullable: true
           type: string
+      type: object
+    RemoveWeatherNotificationsCommand:
+      additionalProperties: false
+      example:
+        notifications:
+        - channels:
+          - null
+          - null
+          categoryId: categoryId
+        - channels:
+          - null
+          - null
+          categoryId: categoryId
+      properties:
+        notifications:
+          description: The weather notifications to remove.
+          items:
+            $ref: '#/components/schemas/WeatherNotificationCommand'
+          minItems: 1
+          type: array
+      required:
+      - notifications
       type: object
     ResendVerificationToken:
       additionalProperties: false
@@ -3826,9 +4316,12 @@ components:
         dateAttempted: 2000-01-23T04:56:07.000+00:00
       properties:
         displayMessage:
+          description: Message to display to the end user about their Verification
+            Attempt. May contain instructions for them to follow.
           nullable: true
           type: string
         dateAttempted:
+          description: The date the Verification Attempt was made.
           format: date-time
           nullable: true
           type: string
@@ -3840,8 +4333,10 @@ components:
         message: message
       properties:
         success:
+          description: Specifies if the verification successful.
           type: boolean
         message:
+          description: Description of the Verification.
           nullable: true
           type: string
       type: object
@@ -3855,10 +4350,13 @@ components:
         verificationDate: 2000-01-23T04:56:07.000+00:00
       properties:
         verified:
+          description: Specifieds if this device has been verified.
           type: boolean
         lastVerificationAttempt:
           $ref: '#/components/schemas/VerificationAttempt'
         verificationDate:
+          description: The Date the device was verified. Has no value if the device
+            has not been verified.
           format: date-time
           nullable: true
           type: string
@@ -3885,6 +4383,124 @@ components:
       required:
       - verificationCode
       type: object
+    WeatherCategoriesResponse:
+      additionalProperties: false
+      example:
+        categories:
+        - supportedChannels:
+          - null
+          - null
+          name: name
+          categoryId: categoryId
+        - supportedChannels:
+          - null
+          - null
+          name: name
+          categoryId: categoryId
+      properties:
+        categories:
+          items:
+            $ref: '#/components/schemas/WeatherCategoryInformation'
+          nullable: true
+          type: array
+      type: object
+    WeatherCategoryInformation:
+      additionalProperties: false
+      example:
+        supportedChannels:
+        - null
+        - null
+        name: name
+        categoryId: categoryId
+      properties:
+        categoryId:
+          nullable: true
+          readOnly: true
+          type: string
+        name:
+          nullable: true
+          readOnly: true
+          type: string
+        supportedChannels:
+          items:
+            $ref: '#/components/schemas/WeatherChannel'
+          nullable: true
+          type: array
+      type: object
+    WeatherChannel:
+      enum:
+      - TextEmail
+      - VoiceHome
+      - VoiceCell
+      type: string
+    WeatherNotification:
+      additionalProperties: false
+      example:
+        channels:
+        - null
+        - null
+        name: name
+        categoryId: categoryId
+      properties:
+        categoryId:
+          nullable: true
+          type: string
+        name:
+          nullable: true
+          readOnly: true
+          type: string
+        channels:
+          items:
+            $ref: '#/components/schemas/WeatherChannel'
+          nullable: true
+          type: array
+      type: object
+    WeatherNotificationCollection:
+      additionalProperties: false
+      example:
+        totalCount: 0
+        items:
+        - channels:
+          - null
+          - null
+          name: name
+          categoryId: categoryId
+        - channels:
+          - null
+          - null
+          name: name
+          categoryId: categoryId
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/WeatherNotification'
+          nullable: true
+          type: array
+        totalCount:
+          format: int32
+          readOnly: true
+          type: integer
+      type: object
+    WeatherNotificationCommand:
+      additionalProperties: false
+      example:
+        channels:
+        - null
+        - null
+        categoryId: categoryId
+      properties:
+        categoryId:
+          minLength: 1
+          type: string
+        channels:
+          items:
+            $ref: '#/components/schemas/WeatherChannel'
+          minItems: 1
+          type: array
+      required:
+      - categoryId
+      - channels
+      type: object
   securitySchemes:
     Oauth2Scheme:
       flows:
@@ -3894,9 +4510,9 @@ components:
             content: ExternalID
             elm: GIS
             directory:public: Public User Directory Access
-          tokenUrl: https://auth.dev.alertsense.io/connect/token
+          tokenUrl: https://auth.alertsense.com/connect/token
         implicit:
-          authorizationUrl: https://auth.dev.alertsense.io/connect/authorize
+          authorizationUrl: https://auth.alertsense.com/connect/authorize
           scopes:
             tamarack: Hickory
             content: ExternalID

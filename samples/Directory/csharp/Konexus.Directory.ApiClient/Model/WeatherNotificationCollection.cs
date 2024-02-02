@@ -28,50 +28,40 @@ using OpenAPIDateConverter = Konexus.Directory.ApiClient.Client.OpenAPIDateConve
 namespace Konexus.Directory.ApiClient.Model
 {
     /// <summary>
-    /// GroupReference
+    /// WeatherNotificationCollection
     /// </summary>
-    [DataContract(Name = "GroupReference")]
-    public partial class GroupReference : IEquatable<GroupReference>, IValidatableObject
+    [DataContract(Name = "WeatherNotificationCollection")]
+    public partial class WeatherNotificationCollection : IEquatable<WeatherNotificationCollection>, IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="GroupReference" /> class.
+        /// Initializes a new instance of the <see cref="WeatherNotificationCollection" /> class.
         /// </summary>
-        /// <param name="id">id.</param>
-        /// <param name="name">name.</param>
-        /// <param name="description">description.</param>
-        /// <param name="uri">uri.</param>
-        public GroupReference(string id = default(string), string name = default(string), string description = default(string), string uri = default(string))
+        /// <param name="items">items.</param>
+        public WeatherNotificationCollection(List<WeatherNotification> items = default(List<WeatherNotification>))
         {
-            this.Id = id;
-            this.Name = name;
-            this.Description = description;
-            this.Uri = uri;
+            this.Items = items;
         }
 
         /// <summary>
-        /// Gets or Sets Id
+        /// Gets or Sets Items
         /// </summary>
-        [DataMember(Name = "id", EmitDefaultValue = true)]
-        public string Id { get; set; }
+        [DataMember(Name = "items", EmitDefaultValue = true)]
+        public List<WeatherNotification> Items { get; set; }
 
         /// <summary>
-        /// Gets or Sets Name
+        /// Gets or Sets TotalCount
         /// </summary>
-        [DataMember(Name = "name", EmitDefaultValue = true)]
-        public string Name { get; set; }
+        [DataMember(Name = "totalCount", EmitDefaultValue = false)]
+        public int TotalCount { get; private set; }
 
         /// <summary>
-        /// Gets or Sets Description
+        /// Returns false as TotalCount should not be serialized given that it's read-only.
         /// </summary>
-        [DataMember(Name = "description", EmitDefaultValue = true)]
-        public string Description { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Uri
-        /// </summary>
-        [DataMember(Name = "uri", EmitDefaultValue = true)]
-        public string Uri { get; set; }
-
+        /// <returns>false (boolean)</returns>
+        public bool ShouldSerializeTotalCount()
+        {
+            return false;
+        }
         /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
@@ -79,11 +69,9 @@ namespace Konexus.Directory.ApiClient.Model
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class GroupReference {\n");
-            sb.Append("  Id: ").Append(Id).Append("\n");
-            sb.Append("  Name: ").Append(Name).Append("\n");
-            sb.Append("  Description: ").Append(Description).Append("\n");
-            sb.Append("  Uri: ").Append(Uri).Append("\n");
+            sb.Append("class WeatherNotificationCollection {\n");
+            sb.Append("  Items: ").Append(Items).Append("\n");
+            sb.Append("  TotalCount: ").Append(TotalCount).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -104,15 +92,15 @@ namespace Konexus.Directory.ApiClient.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as GroupReference);
+            return this.Equals(input as WeatherNotificationCollection);
         }
 
         /// <summary>
-        /// Returns true if GroupReference instances are equal
+        /// Returns true if WeatherNotificationCollection instances are equal
         /// </summary>
-        /// <param name="input">Instance of GroupReference to be compared</param>
+        /// <param name="input">Instance of WeatherNotificationCollection to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(GroupReference input)
+        public bool Equals(WeatherNotificationCollection input)
         {
             if (input == null)
             {
@@ -120,24 +108,14 @@ namespace Konexus.Directory.ApiClient.Model
             }
             return 
                 (
-                    this.Id == input.Id ||
-                    (this.Id != null &&
-                    this.Id.Equals(input.Id))
+                    this.Items == input.Items ||
+                    this.Items != null &&
+                    input.Items != null &&
+                    this.Items.SequenceEqual(input.Items)
                 ) && 
                 (
-                    this.Name == input.Name ||
-                    (this.Name != null &&
-                    this.Name.Equals(input.Name))
-                ) && 
-                (
-                    this.Description == input.Description ||
-                    (this.Description != null &&
-                    this.Description.Equals(input.Description))
-                ) && 
-                (
-                    this.Uri == input.Uri ||
-                    (this.Uri != null &&
-                    this.Uri.Equals(input.Uri))
+                    this.TotalCount == input.TotalCount ||
+                    this.TotalCount.Equals(input.TotalCount)
                 );
         }
 
@@ -150,22 +128,11 @@ namespace Konexus.Directory.ApiClient.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.Id != null)
+                if (this.Items != null)
                 {
-                    hashCode = (hashCode * 59) + this.Id.GetHashCode();
+                    hashCode = (hashCode * 59) + this.Items.GetHashCode();
                 }
-                if (this.Name != null)
-                {
-                    hashCode = (hashCode * 59) + this.Name.GetHashCode();
-                }
-                if (this.Description != null)
-                {
-                    hashCode = (hashCode * 59) + this.Description.GetHashCode();
-                }
-                if (this.Uri != null)
-                {
-                    hashCode = (hashCode * 59) + this.Uri.GetHashCode();
-                }
+                hashCode = (hashCode * 59) + this.TotalCount.GetHashCode();
                 return hashCode;
             }
         }
