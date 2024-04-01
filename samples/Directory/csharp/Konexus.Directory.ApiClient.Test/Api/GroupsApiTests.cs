@@ -18,6 +18,9 @@ using Xunit;
 
 using Konexus.Directory.ApiClient.Client;
 using Konexus.Directory.ApiClient.Api;
+using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
+using Konexus.Directory.ApiClient.Model;
 // uncomment below to import models
 //using Konexus.Directory.ApiClient.Model;
 
@@ -52,6 +55,57 @@ namespace Konexus.Directory.ApiClient.Test.Api
         {
             // TODO uncomment below to test 'IsType' GroupsApi
             //Assert.IsType<GroupsApi>(instance);
+
+            JsonSerializerSettings _serializerSettings = new JsonSerializerSettings
+            {
+                // OpenAPI generated types generally hide default constructors.
+                ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
+                MissingMemberHandling = MissingMemberHandling.Error,
+                ContractResolver = new DefaultContractResolver
+                {
+                    NamingStrategy = new CamelCaseNamingStrategy
+                    {
+                        OverrideSpecifiedNames = false
+                    }
+                }
+            };
+
+            var group = new GroupSummary("1234","Test Group", "Group Description", null, null);
+            var fullGroupSummaryJson = JsonConvert.SerializeObject(group, _serializerSettings);
+//            var fullGroupSummaryJson = @"
+//{
+//      ""id"": ""string"",
+//      ""name"": ""string"",
+//      ""description"": ""string"",
+//      ""selfService"": {
+//        ""default"": true
+//      },
+//      ""children"": [
+        
+//      ],
+//      ""isJoinable"": true
+//    }
+//";
+
+            var fullGroupSummary = JsonConvert.DeserializeObject<GroupSummary>(fullGroupSummaryJson, _serializerSettings) as GroupSummary;
+            
+            Assert.NotNull(fullGroupSummary);
+
+            var nullableGroupSummaryJson = @"
+{
+      ""id"": ""string"",
+      ""name"": ""string"",
+      ""description"": ""string"",
+      ""children"": [
+      ],
+      ""isJoinable"": true
+    }
+";
+
+
+            var nullableGroupSummary = JsonConvert.DeserializeObject<GroupSummary>(nullableGroupSummaryJson, _serializerSettings) as GroupSummary;
+
+            Assert.NotNull(nullableGroupSummary);
         }
 
         /// <summary>

@@ -6,6 +6,21 @@ The Konexus Directory Module is central to the platform and provides clients and
 
 # Change Log
 
+## Version 4.3.0
+
+### Breaking Changes
+- Standardized the schema for responses that result in a 400 status code. Changed from BadRequestResponse to ValidationProblemDetails
+
+### Addtions and Enhancements
+- Added support to retrieve meta information for Weather Subscriptions and the packaging configured for a specific TenantId.
+- Extended the UserProfile to include additional details about the user. These additions are more typically used for internal user use casees. The additional pieces of information relate to:
+    - Organization
+        - Includes JobTitle and Department
+    - Authorization
+        - Includes the Role the UserProfile may be assigned to.
+    - LegacyAuthorization
+        - Includes a collection of groups they're authorized to access
+
 ## Version 4.2.3
 
 ### Additions and Enhancements

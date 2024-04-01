@@ -6,7 +6,7 @@ info:
     url: https://bitbucket.org/AlertSense/platform-api-docs/src/dev/
   description: <p>Working draft of the Konexus Platform API - Directory Module</p>
   title: Konexus Platform API - Directory
-  version: 4.2.3
+  version: 4.3.0
 servers:
 - url: /
 paths:
@@ -39,7 +39,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestResponse'
+                $ref: '#/components/schemas/ValidationProblemDetails'
           description: Bad Request
         "403":
           content:
@@ -126,7 +126,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestResponse'
+                $ref: '#/components/schemas/ValidationProblemDetails'
           description: Bad Request
         "403":
           content:
@@ -212,7 +212,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestResponse'
+                $ref: '#/components/schemas/ValidationProblemDetails'
           description: Bad Request
         "403":
           content:
@@ -257,7 +257,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestResponse'
+                $ref: '#/components/schemas/ValidationProblemDetails'
           description: Bad Request
         "401":
           content:
@@ -308,7 +308,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestResponse'
+                $ref: '#/components/schemas/ValidationProblemDetails'
           description: Bad Request
         "403":
           content:
@@ -378,6 +378,52 @@ paths:
       summary: Retrieve supported weather categories.
       tags:
       - Meta
+  /{tenantId}/directory/meta/weather/subscriptions:
+    get:
+      operationId: Meta_GetWeatherSubscriptions
+      parameters:
+      - explode: false
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WeatherSubscriptions'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "401":
+          description: Unauthorized
+      security:
+      - Oauth2Scheme:
+        - tamarack
+        - content
+        JwtBearerTokenScheme: []
+      summary: Retrieve the configured tenant's public weather subscriptions
+      tags:
+      - Meta
   /{tenantId}/testing/verifications/email:
     get:
       operationId: Test_GetPendingEmailVerifications
@@ -407,7 +453,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestResponse'
+                $ref: '#/components/schemas/ValidationProblemDetails'
           description: Bad Request
         "403":
           content:
@@ -466,7 +512,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestResponse'
+                $ref: '#/components/schemas/ValidationProblemDetails'
           description: Bad Request
         "403":
           content:
@@ -532,7 +578,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestResponse'
+                $ref: '#/components/schemas/ValidationProblemDetails'
           description: Bad Request
         "403":
           content:
@@ -654,7 +700,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestResponse'
+                $ref: '#/components/schemas/ValidationProblemDetails'
           description: Bad Request
         "403":
           content:
@@ -728,7 +774,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestResponse'
+                $ref: '#/components/schemas/ValidationProblemDetails'
           description: Bad Request
         "403":
           content:
@@ -862,7 +908,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestResponse'
+                $ref: '#/components/schemas/ValidationProblemDetails'
           description: Bad Request
         "403":
           content:
@@ -926,7 +972,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestResponse'
+                $ref: '#/components/schemas/ValidationProblemDetails'
           description: Bad Request
         "403":
           content:
@@ -997,7 +1043,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestResponse'
+                $ref: '#/components/schemas/ValidationProblemDetails'
           description: Bad Request
         "403":
           content:
@@ -1065,7 +1111,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestResponse'
+                $ref: '#/components/schemas/ValidationProblemDetails'
           description: Bad Request
         "403":
           content:
@@ -1135,7 +1181,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestResponse'
+                $ref: '#/components/schemas/ValidationProblemDetails'
           description: Bad Request
         "403":
           content:
@@ -1213,7 +1259,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestResponse'
+                $ref: '#/components/schemas/ValidationProblemDetails'
           description: Bad Request
         "403":
           content:
@@ -1299,7 +1345,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestResponse'
+                $ref: '#/components/schemas/ValidationProblemDetails'
           description: Bad Request
         "403":
           content:
@@ -1388,7 +1434,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestResponse'
+                $ref: '#/components/schemas/ValidationProblemDetails'
           description: Bad Request
         "403":
           content:
@@ -1544,7 +1590,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestResponse'
+                $ref: '#/components/schemas/ValidationProblemDetails'
           description: Bad Request
         "403":
           content:
@@ -1614,7 +1660,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestResponse'
+                $ref: '#/components/schemas/ValidationProblemDetails'
           description: Bad Request
         "403":
           content:
@@ -1692,7 +1738,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestResponse'
+                $ref: '#/components/schemas/ValidationProblemDetails'
           description: Bad Request
         "403":
           content:
@@ -1778,7 +1824,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestResponse'
+                $ref: '#/components/schemas/ValidationProblemDetails'
           description: Bad Request
         "403":
           content:
@@ -1868,7 +1914,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestResponse'
+                $ref: '#/components/schemas/ValidationProblemDetails'
           description: Bad Request
         "403":
           content:
@@ -1956,7 +2002,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestResponse'
+                $ref: '#/components/schemas/ValidationProblemDetails'
           description: Bad Request
         "403":
           content:
@@ -2031,7 +2077,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestResponse'
+                $ref: '#/components/schemas/ValidationProblemDetails'
           description: Bad Request
         "403":
           content:
@@ -2099,7 +2145,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestResponse'
+                $ref: '#/components/schemas/ValidationProblemDetails'
           description: Bad Request
         "403":
           content:
@@ -2168,7 +2214,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestResponse'
+                $ref: '#/components/schemas/ValidationProblemDetails'
           description: Bad Request
         "403":
           content:
@@ -2238,7 +2284,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestResponse'
+                $ref: '#/components/schemas/ValidationProblemDetails'
           description: Bad Request
         "403":
           content:
@@ -2316,7 +2362,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestResponse'
+                $ref: '#/components/schemas/ValidationProblemDetails'
           description: Bad Request
         "403":
           content:
@@ -2386,7 +2432,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestResponse'
+                $ref: '#/components/schemas/ValidationProblemDetails'
           description: Bad Request
         "403":
           content:
@@ -2444,7 +2490,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestResponse'
+                $ref: '#/components/schemas/ValidationProblemDetails'
           description: Bad Request
         "403":
           content:
@@ -2512,7 +2558,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BadRequestResponse'
+                $ref: '#/components/schemas/ValidationProblemDetails'
           description: Bad Request
         "403":
           content:
@@ -2608,6 +2654,31 @@ components:
       - Work
       - Other
       type: string
+    AuthorizationInformation:
+      additionalProperties: false
+      example:
+        role:
+          name: name
+          description: description
+          id: id
+          uri: https://openapi-generator.tech
+        roles:
+          totalCount: 9
+          items:
+          - name: name
+            description: description
+            id: id
+            uri: https://openapi-generator.tech
+          - name: name
+            description: description
+            id: id
+            uri: https://openapi-generator.tech
+      properties:
+        role:
+          $ref: '#/components/schemas/Reference'
+        roles:
+          $ref: '#/components/schemas/ReferenceBaseDomainCollection'
+      type: object
     AvailableLanguagesResponse:
       additionalProperties: false
       example:
@@ -2651,38 +2722,6 @@ components:
         timeZones:
           items:
             $ref: '#/components/schemas/TimeZoneSummary'
-          nullable: true
-          type: array
-      type: object
-    BadRequestErrorMessage:
-      additionalProperties: false
-      description: Details of an Error that has occurred.
-      properties:
-        errorCode:
-          nullable: true
-          type: string
-        message:
-          nullable: true
-          type: string
-        exception:
-          nullable: true
-      type: object
-    BadRequestResponse:
-      additionalProperties: false
-      properties:
-        errorMessages:
-          description: Collection of Errors that caused the request to fail.
-          items:
-            $ref: '#/components/schemas/BadRequestErrorMessage'
-          nullable: true
-          type: array
-        isValidationError:
-          type: boolean
-        validationErrors:
-          description: Known validation errors the caused the request to fail. Resolving
-            all of these failures does not ensure the request will be processed successfully.
-          items:
-            $ref: '#/components/schemas/ValidationFailure'
           nullable: true
           type: array
       type: object
@@ -3036,6 +3075,9 @@ components:
       required:
       - nonce
       type: object
+    CustomInformation:
+      additionalProperties: false
+      type: object
     EmailAddress:
       additionalProperties: false
       example:
@@ -3108,6 +3150,21 @@ components:
           format: int32
           readOnly: true
           type: integer
+      type: object
+    EmployeeInformation:
+      additionalProperties: false
+      example:
+        jobTitle: jobTitle
+        department: department
+      properties:
+        jobTitle:
+          nullable: true
+          readOnly: true
+          type: string
+        department:
+          nullable: true
+          readOnly: true
+          type: string
       type: object
     FindGroupQuery:
       additionalProperties: false
@@ -3202,6 +3259,30 @@ components:
           format: uri
           nullable: true
           type: string
+      type: object
+    GroupReferenceBaseDomainCollection:
+      additionalProperties: false
+      example:
+        totalCount: 3
+        items:
+        - name: name
+          description: description
+          id: id
+          uri: https://openapi-generator.tech
+        - name: name
+          description: description
+          id: id
+          uri: https://openapi-generator.tech
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/GroupReference'
+          nullable: true
+          type: array
+        totalCount:
+          format: int32
+          readOnly: true
+          type: integer
       type: object
     GroupReferencePagedApiResponse:
       additionalProperties: false
@@ -3320,6 +3401,24 @@ components:
         value:
           nullable: true
           type: string
+      type: object
+    LegacyAuthorization:
+      additionalProperties: false
+      example:
+        availableAlertingGroups:
+          totalCount: 3
+          items:
+          - name: name
+            description: description
+            id: id
+            uri: https://openapi-generator.tech
+          - name: name
+            description: description
+            id: id
+            uri: https://openapi-generator.tech
+      properties:
+        availableAlertingGroups:
+          $ref: '#/components/schemas/GroupReferenceBaseDomainCollection'
       type: object
     Location:
       additionalProperties: false
@@ -3883,6 +3982,30 @@ components:
           nullable: true
           type: string
       type: object
+    ReferenceBaseDomainCollection:
+      additionalProperties: false
+      example:
+        totalCount: 9
+        items:
+        - name: name
+          description: description
+          id: id
+          uri: https://openapi-generator.tech
+        - name: name
+          description: description
+          id: id
+          uri: https://openapi-generator.tech
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/Reference'
+          nullable: true
+          type: array
+        totalCount:
+          format: int32
+          readOnly: true
+          type: integer
+      type: object
     RemoveWeatherNotificationsCommand:
       additionalProperties: false
       example:
@@ -4040,6 +4163,26 @@ components:
     UserProfile:
       additionalProperties: false
       example:
+        organizationInformation:
+          jobTitle: jobTitle
+          department: department
+        authorization:
+          role:
+            name: name
+            description: description
+            id: id
+            uri: https://openapi-generator.tech
+          roles:
+            totalCount: 9
+            items:
+            - name: name
+              description: description
+              id: id
+              uri: https://openapi-generator.tech
+            - name: name
+              description: description
+              id: id
+              uri: https://openapi-generator.tech
         contactInformation:
           emails:
             totalCount: 0
@@ -4096,6 +4239,19 @@ components:
                 verified: true
                 verificationDate: 2000-01-23T04:56:07.000+00:00
               primary: true
+        legacyAuthorization:
+          availableAlertingGroups:
+            totalCount: 3
+            items:
+            - name: name
+              description: description
+              id: id
+              uri: https://openapi-generator.tech
+            - name: name
+              description: description
+              id: id
+              uri: https://openapi-generator.tech
+        customInformation: "{}"
         displayName: displayName
         tenantId: tenantId
         name:
@@ -4216,6 +4372,15 @@ components:
           $ref: '#/components/schemas/ContactInformation'
         notificationPreferences:
           $ref: '#/components/schemas/NotificationPreferences'
+        organizationInformation:
+          $ref: '#/components/schemas/EmployeeInformation'
+        customInformation:
+          additionalProperties: false
+          type: object
+        authorization:
+          $ref: '#/components/schemas/AuthorizationInformation'
+        legacyAuthorization:
+          $ref: '#/components/schemas/LegacyAuthorization'
       type: object
     UserProfileSummary:
       additionalProperties: false
@@ -4296,16 +4461,30 @@ components:
           nullable: true
           type: array
       type: object
-    ValidationFailure:
-      additionalProperties: false
+    ValidationProblemDetails:
+      additionalProperties: {}
       properties:
-        name:
+        errors:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          nullable: true
+          type: object
+        type:
           nullable: true
           type: string
-        errorCode:
+        title:
           nullable: true
           type: string
-        errorMessage:
+        status:
+          format: int32
+          nullable: true
+          type: integer
+        detail:
+          nullable: true
+          type: string
+        instance:
           nullable: true
           type: string
       type: object
@@ -4428,8 +4607,11 @@ components:
           type: array
       type: object
     WeatherChannel:
+      description: The Weather Notification channel that the user would like to receive
+        notifications on.
       enum:
-      - TextEmail
+      - Text
+      - Email
       - VoiceHome
       - VoiceCell
       type: string
@@ -4500,6 +4682,37 @@ components:
       required:
       - categoryId
       - channels
+      type: object
+    WeatherSubscriptions:
+      additionalProperties: false
+      description: The tenant's configured weather subscriptions.
+      example:
+        advisoriesEnabled: true
+        warningsEnabled: true
+        watchesEnabled: true
+        smsEnabled: true
+        voiceEnabled: true
+      properties:
+        warningsEnabled:
+          description: "Whether this tenant is configured to send Weather Warnings\
+            \ to \r\npublic users who have signed up for weather alerts."
+          type: boolean
+        watchesEnabled:
+          description: "Whether this tenant is configured to send Weather Watches\
+            \ to\r\npublic users who have signed up for weather alerts."
+          type: boolean
+        advisoriesEnabled:
+          description: "Whether this tenant is configured to send Weather Advisories\
+            \ to\r\npublic users who have signed up for weather alerts."
+          type: boolean
+        smsEnabled:
+          description: Whether this tenant is configured to send Weather alerts via
+            SMS.
+          type: boolean
+        voiceEnabled:
+          description: Whether this tenant is configured to send Weather alerts via
+            Voice Calls.
+          type: boolean
       type: object
   securitySchemes:
     Oauth2Scheme:

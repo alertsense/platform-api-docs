@@ -18,6 +18,9 @@ using Xunit;
 
 using Konexus.Directory.ApiClient.Client;
 using Konexus.Directory.ApiClient.Api;
+using Konexus.Directory.ApiClient.Model;
+using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
 // uncomment below to import models
 //using Konexus.Directory.ApiClient.Model;
 
@@ -50,8 +53,57 @@ namespace Konexus.Directory.ApiClient.Test.Api
         [Fact]
         public void InstanceTest()
         {
-            // TODO uncomment below to test 'IsType' UsersApi
-            //Assert.IsType<UsersApi>(instance);
+            // TODO uncomment below to test 'IsType' GroupsApi
+            //Assert.IsType<GroupsApi>(instance);
+
+            JsonSerializerSettings _serializerSettings = new JsonSerializerSettings
+            {
+                // OpenAPI generated types generally hide default constructors.
+                ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
+                ContractResolver = new DefaultContractResolver
+                {
+                    NamingStrategy = new CamelCaseNamingStrategy
+                    {
+                        OverrideSpecifiedNames = false
+                    }
+                }
+            };
+
+
+            var fullGroupSummaryJson = @"
+{
+      ""id"": ""string"",
+      ""name"": ""string"",
+      ""description"": ""string"",
+      ""selfService"": {
+        ""default"": true
+      },
+      ""children"": [
+        
+      ],
+      ""isJoinable"": true
+    }
+";
+
+            var fullGroupSummary = JsonConvert.DeserializeObject<GroupSummary>(fullGroupSummaryJson, _serializerSettings) as GroupSummary;
+
+            Assert.NotNull(fullGroupSummary);
+
+            var nullableGroupSummaryJson = @"
+{
+      ""id"": ""string"",
+      ""name"": ""string"",
+      ""description"": ""string"",
+      ""children"": [
+      ],
+      ""isJoinable"": true
+    }
+";
+
+
+            var nullableGroupSummary = JsonConvert.DeserializeObject<GroupSummary>(nullableGroupSummaryJson, _serializerSettings) as GroupSummary;
+
+            Assert.NotNull(nullableGroupSummary);
         }
 
         /// <summary>

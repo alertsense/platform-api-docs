@@ -8,7 +8,7 @@
       "url": "https://bitbucket.org/AlertSense/platform-api-docs/src/dev/",
       "email": "dev@konexus.com"
     },
-    "version": "4.2.3"
+    "version": "4.3.0"
   },
   "paths": {
     "/{tenantId}/directory/{directoryId}/groups/discover": {
@@ -52,7 +52,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponse"
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
                 }
               }
             }
@@ -175,7 +175,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponse"
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
                 }
               }
             }
@@ -289,7 +289,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponse"
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
                 }
               }
             }
@@ -362,7 +362,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponse"
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
                 }
               }
             }
@@ -442,7 +442,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponse"
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
                 }
               }
             }
@@ -555,6 +555,79 @@
         ]
       }
     },
+    "/{tenantId}/directory/meta/weather/subscriptions": {
+      "get": {
+        "tags": [
+          "Meta"
+        ],
+        "summary": "Retrieve the configured tenant's public weather subscriptions",
+        "operationId": "Meta_GetWeatherSubscriptions",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WeatherSubscriptions"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      }
+    },
     "/{tenantId}/testing/verifications/email": {
       "get": {
         "tags": [
@@ -594,7 +667,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponse"
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
                 }
               }
             }
@@ -680,7 +753,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponse"
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
                 }
               }
             }
@@ -785,7 +858,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponse"
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
                 }
               }
             }
@@ -960,7 +1033,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponse"
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
                 }
               }
             }
@@ -1068,7 +1141,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponse"
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
                 }
               }
             }
@@ -1266,7 +1339,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponse"
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
                 }
               }
             }
@@ -1358,7 +1431,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponse"
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
                 }
               }
             }
@@ -1466,7 +1539,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponse"
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
                 }
               }
             }
@@ -1567,7 +1640,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponse"
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
                 }
               }
             }
@@ -1659,7 +1732,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponse"
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
                 }
               }
             }
@@ -1776,7 +1849,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponse"
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
                 }
               }
             }
@@ -1901,7 +1974,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponse"
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
                 }
               }
             }
@@ -2030,7 +2103,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponse"
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
                 }
               }
             }
@@ -2257,7 +2330,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponse"
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
                 }
               }
             }
@@ -2349,7 +2422,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponse"
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
                 }
               }
             }
@@ -2466,7 +2539,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponse"
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
                 }
               }
             }
@@ -2591,7 +2664,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponse"
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
                 }
               }
             }
@@ -2720,7 +2793,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponse"
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
                 }
               }
             }
@@ -2846,7 +2919,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponse"
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
                 }
               }
             }
@@ -2956,7 +3029,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponse"
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
                 }
               }
             }
@@ -3050,7 +3123,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponse"
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
                 }
               }
             }
@@ -3151,7 +3224,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponse"
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
                 }
               }
             }
@@ -3243,7 +3316,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponse"
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
                 }
               }
             }
@@ -3360,7 +3433,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponse"
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
                 }
               }
             }
@@ -3448,7 +3521,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponse"
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
                 }
               }
             }
@@ -3551,7 +3624,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponse"
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
                 }
               }
             }
@@ -3654,7 +3727,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BadRequestResponse"
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
                 }
               }
             }
@@ -3761,6 +3834,18 @@
         ],
         "type": "string"
       },
+      "AuthorizationInformation": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "$ref": "#/components/schemas/Reference"
+          },
+          "roles": {
+            "$ref": "#/components/schemas/ReferenceBaseDomainCollection"
+          }
+        },
+        "additionalProperties": false
+      },
       "AvailableLanguagesResponse": {
         "type": "object",
         "properties": {
@@ -3789,49 +3874,6 @@
             "items": {
               "$ref": "#/components/schemas/TimeZoneSummary"
             },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "BadRequestErrorMessage": {
-        "type": "object",
-        "properties": {
-          "errorCode": {
-            "type": "string",
-            "nullable": true
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          },
-          "exception": {
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "Details of an Error that has occurred."
-      },
-      "BadRequestResponse": {
-        "type": "object",
-        "properties": {
-          "errorMessages": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/BadRequestErrorMessage"
-            },
-            "description": "Collection of Errors that caused the request to fail.",
-            "nullable": true
-          },
-          "isValidationError": {
-            "type": "boolean"
-          },
-          "validationErrors": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ValidationFailure"
-            },
-            "description": "Known validation errors the caused the request to fail. Resolving all of these failures does not ensure the request will be processed successfully.",
             "nullable": true
           }
         },
@@ -4077,6 +4119,10 @@
         },
         "additionalProperties": false
       },
+      "CustomInformation": {
+        "type": "object",
+        "additionalProperties": false
+      },
       "EmailAddress": {
         "type": "object",
         "properties": {
@@ -4117,6 +4163,22 @@
           "totalCount": {
             "type": "integer",
             "format": "int32",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "EmployeeInformation": {
+        "type": "object",
+        "properties": {
+          "jobTitle": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "department": {
+            "type": "string",
+            "nullable": true,
             "readOnly": true
           }
         },
@@ -4214,6 +4276,24 @@
         },
         "additionalProperties": false
       },
+      "GroupReferenceBaseDomainCollection": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GroupReference"
+            },
+            "nullable": true
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
       "GroupReferencePagedApiResponse": {
         "type": "object",
         "properties": {
@@ -4306,6 +4386,15 @@
           "value": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LegacyAuthorization": {
+        "type": "object",
+        "properties": {
+          "availableAlertingGroups": {
+            "$ref": "#/components/schemas/GroupReferenceBaseDomainCollection"
           }
         },
         "additionalProperties": false
@@ -4638,6 +4727,24 @@
         },
         "additionalProperties": false
       },
+      "ReferenceBaseDomainCollection": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Reference"
+            },
+            "nullable": true
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
       "RemoveWeatherNotificationsCommand": {
         "required": [
           "notifications"
@@ -4800,6 +4907,18 @@
           },
           "notificationPreferences": {
             "$ref": "#/components/schemas/NotificationPreferences"
+          },
+          "organizationInformation": {
+            "$ref": "#/components/schemas/EmployeeInformation"
+          },
+          "customInformation": {
+            "$ref": "#/components/schemas/CustomInformation"
+          },
+          "authorization": {
+            "$ref": "#/components/schemas/AuthorizationInformation"
+          },
+          "legacyAuthorization": {
+            "$ref": "#/components/schemas/LegacyAuthorization"
           }
         },
         "additionalProperties": false
@@ -4844,23 +4963,42 @@
         },
         "additionalProperties": false
       },
-      "ValidationFailure": {
+      "ValidationProblemDetails": {
         "type": "object",
         "properties": {
-          "name": {
+          "errors": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "nullable": true
+          },
+          "type": {
             "type": "string",
             "nullable": true
           },
-          "errorCode": {
+          "title": {
             "type": "string",
             "nullable": true
           },
-          "errorMessage": {
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
             "type": "string",
             "nullable": true
           }
         },
-        "additionalProperties": false
+        "additionalProperties": { }
       },
       "VerificationAttempt": {
         "type": "object",
@@ -4977,11 +5115,13 @@
       },
       "WeatherChannel": {
         "enum": [
-          "TextEmail",
+          "Text",
+          "Email",
           "VoiceHome",
           "VoiceCell"
         ],
-        "type": "string"
+        "type": "string",
+        "description": "The Weather Notification channel that the user would like to receive notifications on."
       },
       "WeatherNotification": {
         "type": "object",
@@ -5043,6 +5183,33 @@
           }
         },
         "additionalProperties": false
+      },
+      "WeatherSubscriptions": {
+        "type": "object",
+        "properties": {
+          "warningsEnabled": {
+            "type": "boolean",
+            "description": "Whether this tenant is configured to send Weather Warnings to \r\npublic users who have signed up for weather alerts."
+          },
+          "watchesEnabled": {
+            "type": "boolean",
+            "description": "Whether this tenant is configured to send Weather Watches to\r\npublic users who have signed up for weather alerts."
+          },
+          "advisoriesEnabled": {
+            "type": "boolean",
+            "description": "Whether this tenant is configured to send Weather Advisories to\r\npublic users who have signed up for weather alerts."
+          },
+          "smsEnabled": {
+            "type": "boolean",
+            "description": "Whether this tenant is configured to send Weather alerts via SMS."
+          },
+          "voiceEnabled": {
+            "type": "boolean",
+            "description": "Whether this tenant is configured to send Weather alerts via Voice Calls."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The tenant's configured weather subscriptions."
       }
     },
     "securitySchemes": {

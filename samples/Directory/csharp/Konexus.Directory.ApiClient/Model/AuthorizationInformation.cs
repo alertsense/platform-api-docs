@@ -28,41 +28,33 @@ using OpenAPIDateConverter = Konexus.Directory.ApiClient.Client.OpenAPIDateConve
 namespace Konexus.Directory.ApiClient.Model
 {
     /// <summary>
-    /// ContactInformation
+    /// AuthorizationInformation
     /// </summary>
-    [DataContract(Name = "ContactInformation")]
-    public partial class ContactInformation : IValidatableObject
+    [DataContract(Name = "AuthorizationInformation")]
+    public partial class AuthorizationInformation : IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContactInformation" /> class.
+        /// Initializes a new instance of the <see cref="AuthorizationInformation" /> class.
         /// </summary>
-        /// <param name="emails">emails.</param>
-        /// <param name="phones">phones.</param>
-        /// <param name="mobileApps">mobileApps.</param>
-        public ContactInformation(EmailCollection emails = default(EmailCollection), PhoneCollection phones = default(PhoneCollection), List<MobileApp> mobileApps = default(List<MobileApp>))
+        /// <param name="role">role.</param>
+        /// <param name="roles">roles.</param>
+        public AuthorizationInformation(Reference role = default(Reference), ReferenceBaseDomainCollection roles = default(ReferenceBaseDomainCollection))
         {
-            this.Emails = emails;
-            this.Phones = phones;
-            this.MobileApps = mobileApps;
+            this.Role = role;
+            this.Roles = roles;
         }
 
         /// <summary>
-        /// Gets or Sets Emails
+        /// Gets or Sets Role
         /// </summary>
-        [DataMember(Name = "emails", EmitDefaultValue = false)]
-        public EmailCollection Emails { get; set; }
+        [DataMember(Name = "role", EmitDefaultValue = false)]
+        public Reference Role { get; set; }
 
         /// <summary>
-        /// Gets or Sets Phones
+        /// Gets or Sets Roles
         /// </summary>
-        [DataMember(Name = "phones", EmitDefaultValue = false)]
-        public PhoneCollection Phones { get; set; }
-
-        /// <summary>
-        /// Gets or Sets MobileApps
-        /// </summary>
-        [DataMember(Name = "mobileApps", EmitDefaultValue = true)]
-        public List<MobileApp> MobileApps { get; set; }
+        [DataMember(Name = "roles", EmitDefaultValue = false)]
+        public ReferenceBaseDomainCollection Roles { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -71,10 +63,9 @@ namespace Konexus.Directory.ApiClient.Model
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class ContactInformation {\n");
-            sb.Append("  Emails: ").Append(Emails).Append("\n");
-            sb.Append("  Phones: ").Append(Phones).Append("\n");
-            sb.Append("  MobileApps: ").Append(MobileApps).Append("\n");
+            sb.Append("class AuthorizationInformation {\n");
+            sb.Append("  Role: ").Append(Role).Append("\n");
+            sb.Append("  Roles: ").Append(Roles).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }

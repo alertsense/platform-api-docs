@@ -28,21 +28,23 @@ using OpenAPIDateConverter = Konexus.Directory.ApiClient.Client.OpenAPIDateConve
 namespace Konexus.Directory.ApiClient.Model
 {
     /// <summary>
-    /// ProblemDetails
+    /// ValidationProblemDetails
     /// </summary>
-    [DataContract(Name = "ProblemDetails")]
-    public partial class ProblemDetails : IValidatableObject
+    [DataContract(Name = "ValidationProblemDetails")]
+    public partial class ValidationProblemDetails : IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ProblemDetails" /> class.
+        /// Initializes a new instance of the <see cref="ValidationProblemDetails" /> class.
         /// </summary>
+        /// <param name="errors">errors.</param>
         /// <param name="type">type.</param>
         /// <param name="title">title.</param>
         /// <param name="status">status.</param>
         /// <param name="detail">detail.</param>
         /// <param name="instance">instance.</param>
-        public ProblemDetails(string type = default(string), string title = default(string), int? status = default(int?), string detail = default(string), string instance = default(string))
+        public ValidationProblemDetails(Dictionary<string, List<string>> errors = default(Dictionary<string, List<string>>), string type = default(string), string title = default(string), int? status = default(int?), string detail = default(string), string instance = default(string))
         {
+            this.Errors = errors;
             this.Type = type;
             this.Title = title;
             this.Status = status;
@@ -50,6 +52,12 @@ namespace Konexus.Directory.ApiClient.Model
             this.Instance = instance;
             this.AdditionalProperties = new Dictionary<string, object>();
         }
+
+        /// <summary>
+        /// Gets or Sets Errors
+        /// </summary>
+        [DataMember(Name = "errors", EmitDefaultValue = true)]
+        public Dictionary<string, List<string>> Errors { get; set; }
 
         /// <summary>
         /// Gets or Sets Type
@@ -94,7 +102,8 @@ namespace Konexus.Directory.ApiClient.Model
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class ProblemDetails {\n");
+            sb.Append("class ValidationProblemDetails {\n");
+            sb.Append("  Errors: ").Append(Errors).Append("\n");
             sb.Append("  Type: ").Append(Type).Append("\n");
             sb.Append("  Title: ").Append(Title).Append("\n");
             sb.Append("  Status: ").Append(Status).Append("\n");

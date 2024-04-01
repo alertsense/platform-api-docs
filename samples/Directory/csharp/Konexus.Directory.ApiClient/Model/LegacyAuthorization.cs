@@ -28,41 +28,25 @@ using OpenAPIDateConverter = Konexus.Directory.ApiClient.Client.OpenAPIDateConve
 namespace Konexus.Directory.ApiClient.Model
 {
     /// <summary>
-    /// ContactInformation
+    /// LegacyAuthorization
     /// </summary>
-    [DataContract(Name = "ContactInformation")]
-    public partial class ContactInformation : IValidatableObject
+    [DataContract(Name = "LegacyAuthorization")]
+    public partial class LegacyAuthorization : IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContactInformation" /> class.
+        /// Initializes a new instance of the <see cref="LegacyAuthorization" /> class.
         /// </summary>
-        /// <param name="emails">emails.</param>
-        /// <param name="phones">phones.</param>
-        /// <param name="mobileApps">mobileApps.</param>
-        public ContactInformation(EmailCollection emails = default(EmailCollection), PhoneCollection phones = default(PhoneCollection), List<MobileApp> mobileApps = default(List<MobileApp>))
+        /// <param name="availableAlertingGroups">availableAlertingGroups.</param>
+        public LegacyAuthorization(GroupReferenceBaseDomainCollection availableAlertingGroups = default(GroupReferenceBaseDomainCollection))
         {
-            this.Emails = emails;
-            this.Phones = phones;
-            this.MobileApps = mobileApps;
+            this.AvailableAlertingGroups = availableAlertingGroups;
         }
 
         /// <summary>
-        /// Gets or Sets Emails
+        /// Gets or Sets AvailableAlertingGroups
         /// </summary>
-        [DataMember(Name = "emails", EmitDefaultValue = false)]
-        public EmailCollection Emails { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Phones
-        /// </summary>
-        [DataMember(Name = "phones", EmitDefaultValue = false)]
-        public PhoneCollection Phones { get; set; }
-
-        /// <summary>
-        /// Gets or Sets MobileApps
-        /// </summary>
-        [DataMember(Name = "mobileApps", EmitDefaultValue = true)]
-        public List<MobileApp> MobileApps { get; set; }
+        [DataMember(Name = "availableAlertingGroups", EmitDefaultValue = false)]
+        public GroupReferenceBaseDomainCollection AvailableAlertingGroups { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -71,10 +55,8 @@ namespace Konexus.Directory.ApiClient.Model
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class ContactInformation {\n");
-            sb.Append("  Emails: ").Append(Emails).Append("\n");
-            sb.Append("  Phones: ").Append(Phones).Append("\n");
-            sb.Append("  MobileApps: ").Append(MobileApps).Append("\n");
+            sb.Append("class LegacyAuthorization {\n");
+            sb.Append("  AvailableAlertingGroups: ").Append(AvailableAlertingGroups).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }

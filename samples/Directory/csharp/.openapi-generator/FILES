@@ -22,10 +22,9 @@ Konexus.Directory.ApiClient/Model/AbstractOpenAPISchema.cs
 Konexus.Directory.ApiClient/Model/AddWeatherNotificationsCommand.cs
 Konexus.Directory.ApiClient/Model/Address.cs
 Konexus.Directory.ApiClient/Model/AddressType.cs
+Konexus.Directory.ApiClient/Model/AuthorizationInformation.cs
 Konexus.Directory.ApiClient/Model/AvailableLanguagesResponse.cs
 Konexus.Directory.ApiClient/Model/AvailableTimeZonesResponse.cs
-Konexus.Directory.ApiClient/Model/BadRequestErrorMessage.cs
-Konexus.Directory.ApiClient/Model/BadRequestResponse.cs
 Konexus.Directory.ApiClient/Model/ContactInformation.cs
 Konexus.Directory.ApiClient/Model/ContactTargetType.cs
 Konexus.Directory.ApiClient/Model/CreateEmailCommand.cs
@@ -37,15 +36,18 @@ Konexus.Directory.ApiClient/Model/CreateUserProfileCommand.cs
 Konexus.Directory.ApiClient/Model/CreateVerificationNonceCommand.cs
 Konexus.Directory.ApiClient/Model/EmailAddress.cs
 Konexus.Directory.ApiClient/Model/EmailCollection.cs
+Konexus.Directory.ApiClient/Model/EmployeeInformation.cs
 Konexus.Directory.ApiClient/Model/FindGroupQuery.cs
 Konexus.Directory.ApiClient/Model/FindUserQuery.cs
 Konexus.Directory.ApiClient/Model/GeoLocation.cs
 Konexus.Directory.ApiClient/Model/GroupMemberships.cs
 Konexus.Directory.ApiClient/Model/GroupReference.cs
+Konexus.Directory.ApiClient/Model/GroupReferenceBaseDomainCollection.cs
 Konexus.Directory.ApiClient/Model/GroupReferencePagedApiResponse.cs
 Konexus.Directory.ApiClient/Model/GroupSummary.cs
 Konexus.Directory.ApiClient/Model/GroupSummaryPagedApiResponse.cs
 Konexus.Directory.ApiClient/Model/LanguageCode.cs
+Konexus.Directory.ApiClient/Model/LegacyAuthorization.cs
 Konexus.Directory.ApiClient/Model/Location.cs
 Konexus.Directory.ApiClient/Model/LocationCollection.cs
 Konexus.Directory.ApiClient/Model/LocationPagedApiResponse.cs
@@ -60,6 +62,7 @@ Konexus.Directory.ApiClient/Model/PhoneNumber.cs
 Konexus.Directory.ApiClient/Model/PhoneType.cs
 Konexus.Directory.ApiClient/Model/ProblemDetails.cs
 Konexus.Directory.ApiClient/Model/Reference.cs
+Konexus.Directory.ApiClient/Model/ReferenceBaseDomainCollection.cs
 Konexus.Directory.ApiClient/Model/RemoveWeatherNotificationsCommand.cs
 Konexus.Directory.ApiClient/Model/ResendVerificationToken.cs
 Konexus.Directory.ApiClient/Model/SelfServiceSettings.cs
@@ -69,7 +72,7 @@ Konexus.Directory.ApiClient/Model/UpdateUserProfileCommand.cs
 Konexus.Directory.ApiClient/Model/UserProfile.cs
 Konexus.Directory.ApiClient/Model/UserProfileSummary.cs
 Konexus.Directory.ApiClient/Model/UserProfileSummaryPagedApiResponse.cs
-Konexus.Directory.ApiClient/Model/ValidationFailure.cs
+Konexus.Directory.ApiClient/Model/ValidationProblemDetails.cs
 Konexus.Directory.ApiClient/Model/VerificationAttempt.cs
 Konexus.Directory.ApiClient/Model/VerificationResponse.cs
 Konexus.Directory.ApiClient/Model/VerificationStatus.cs
@@ -81,4 +84,5 @@ Konexus.Directory.ApiClient/Model/WeatherChannel.cs
 Konexus.Directory.ApiClient/Model/WeatherNotification.cs
 Konexus.Directory.ApiClient/Model/WeatherNotificationCollection.cs
 Konexus.Directory.ApiClient/Model/WeatherNotificationCommand.cs
+Konexus.Directory.ApiClient/Model/WeatherSubscriptions.cs
 api/openapi.yaml

@@ -28,42 +28,47 @@ using OpenAPIDateConverter = Konexus.Directory.ApiClient.Client.OpenAPIDateConve
 namespace Konexus.Directory.ApiClient.Model
 {
     /// <summary>
-    /// ContactInformation
+    /// EmployeeInformation
     /// </summary>
-    [DataContract(Name = "ContactInformation")]
-    public partial class ContactInformation : IValidatableObject
+    [DataContract(Name = "EmployeeInformation")]
+    public partial class EmployeeInformation : IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContactInformation" /> class.
+        /// Initializes a new instance of the <see cref="EmployeeInformation" /> class.
         /// </summary>
-        /// <param name="emails">emails.</param>
-        /// <param name="phones">phones.</param>
-        /// <param name="mobileApps">mobileApps.</param>
-        public ContactInformation(EmailCollection emails = default(EmailCollection), PhoneCollection phones = default(PhoneCollection), List<MobileApp> mobileApps = default(List<MobileApp>))
+        [JsonConstructorAttribute]
+        public EmployeeInformation()
         {
-            this.Emails = emails;
-            this.Phones = phones;
-            this.MobileApps = mobileApps;
         }
 
         /// <summary>
-        /// Gets or Sets Emails
+        /// Gets or Sets JobTitle
         /// </summary>
-        [DataMember(Name = "emails", EmitDefaultValue = false)]
-        public EmailCollection Emails { get; set; }
+        [DataMember(Name = "jobTitle", EmitDefaultValue = true)]
+        public string JobTitle { get; private set; }
 
         /// <summary>
-        /// Gets or Sets Phones
+        /// Returns false as JobTitle should not be serialized given that it's read-only.
         /// </summary>
-        [DataMember(Name = "phones", EmitDefaultValue = false)]
-        public PhoneCollection Phones { get; set; }
+        /// <returns>false (boolean)</returns>
+        public bool ShouldSerializeJobTitle()
+        {
+            return false;
+        }
+        /// <summary>
+        /// Gets or Sets Department
+        /// </summary>
+        [DataMember(Name = "department", EmitDefaultValue = true)]
+        public string Department { get; private set; }
 
         /// <summary>
-        /// Gets or Sets MobileApps
+        /// Returns false as Department should not be serialized given that it's read-only.
         /// </summary>
-        [DataMember(Name = "mobileApps", EmitDefaultValue = true)]
-        public List<MobileApp> MobileApps { get; set; }
-
+        /// <returns>false (boolean)</returns>
+        public bool ShouldSerializeDepartment()
+        {
+            return false;
+        }
         /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
@@ -71,10 +76,9 @@ namespace Konexus.Directory.ApiClient.Model
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class ContactInformation {\n");
-            sb.Append("  Emails: ").Append(Emails).Append("\n");
-            sb.Append("  Phones: ").Append(Phones).Append("\n");
-            sb.Append("  MobileApps: ").Append(MobileApps).Append("\n");
+            sb.Append("class EmployeeInformation {\n");
+            sb.Append("  JobTitle: ").Append(JobTitle).Append("\n");
+            sb.Append("  Department: ").Append(Department).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }

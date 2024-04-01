@@ -14,6 +14,7 @@ npm install @openapitools/openapi-generator-cli -g
 In order to generate the csharp client for the Directory module, run the following command.
 
 ```
+npm run openapi:directory-copy
 npm run openapi:directory-csharp
 ```
 

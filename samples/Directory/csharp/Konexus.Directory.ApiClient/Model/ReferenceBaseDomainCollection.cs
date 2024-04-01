@@ -28,42 +28,40 @@ using OpenAPIDateConverter = Konexus.Directory.ApiClient.Client.OpenAPIDateConve
 namespace Konexus.Directory.ApiClient.Model
 {
     /// <summary>
-    /// ContactInformation
+    /// ReferenceBaseDomainCollection
     /// </summary>
-    [DataContract(Name = "ContactInformation")]
-    public partial class ContactInformation : IValidatableObject
+    [DataContract(Name = "ReferenceBaseDomainCollection")]
+    public partial class ReferenceBaseDomainCollection : IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContactInformation" /> class.
+        /// Initializes a new instance of the <see cref="ReferenceBaseDomainCollection" /> class.
         /// </summary>
-        /// <param name="emails">emails.</param>
-        /// <param name="phones">phones.</param>
-        /// <param name="mobileApps">mobileApps.</param>
-        public ContactInformation(EmailCollection emails = default(EmailCollection), PhoneCollection phones = default(PhoneCollection), List<MobileApp> mobileApps = default(List<MobileApp>))
+        /// <param name="items">items.</param>
+        public ReferenceBaseDomainCollection(List<Reference> items = default(List<Reference>))
         {
-            this.Emails = emails;
-            this.Phones = phones;
-            this.MobileApps = mobileApps;
+            this.Items = items;
         }
 
         /// <summary>
-        /// Gets or Sets Emails
+        /// Gets or Sets Items
         /// </summary>
-        [DataMember(Name = "emails", EmitDefaultValue = false)]
-        public EmailCollection Emails { get; set; }
+        [DataMember(Name = "items", EmitDefaultValue = true)]
+        public List<Reference> Items { get; set; }
 
         /// <summary>
-        /// Gets or Sets Phones
+        /// Gets or Sets TotalCount
         /// </summary>
-        [DataMember(Name = "phones", EmitDefaultValue = false)]
-        public PhoneCollection Phones { get; set; }
+        [DataMember(Name = "totalCount", EmitDefaultValue = false)]
+        public int TotalCount { get; private set; }
 
         /// <summary>
-        /// Gets or Sets MobileApps
+        /// Returns false as TotalCount should not be serialized given that it's read-only.
         /// </summary>
-        [DataMember(Name = "mobileApps", EmitDefaultValue = true)]
-        public List<MobileApp> MobileApps { get; set; }
-
+        /// <returns>false (boolean)</returns>
+        public bool ShouldSerializeTotalCount()
+        {
+            return false;
+        }
         /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
@@ -71,10 +69,9 @@ namespace Konexus.Directory.ApiClient.Model
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class ContactInformation {\n");
-            sb.Append("  Emails: ").Append(Emails).Append("\n");
-            sb.Append("  Phones: ").Append(Phones).Append("\n");
-            sb.Append("  MobileApps: ").Append(MobileApps).Append("\n");
+            sb.Append("class ReferenceBaseDomainCollection {\n");
+            sb.Append("  Items: ").Append(Items).Append("\n");
+            sb.Append("  TotalCount: ").Append(TotalCount).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
