@@ -28,22 +28,22 @@ using OpenAPIDateConverter = Konexus.Directory.ApiClient.Client.OpenAPIDateConve
 namespace Konexus.Directory.ApiClient.Model
 {
     /// <summary>
-    /// Defines PendingDeviceType
+    /// Defines PhoneChannel
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
-    public enum PendingDeviceType
+    public enum PhoneChannel
     {
         /// <summary>
-        /// Enum Phone for value: Phone
+        /// Enum Sms for value: Sms
         /// </summary>
-        [EnumMember(Value = "Phone")]
-        Phone = 1,
+        [EnumMember(Value = "Sms")]
+        Sms = 1,
 
         /// <summary>
-        /// Enum Email for value: Email
+        /// Enum Voice for value: Voice
         /// </summary>
-        [EnumMember(Value = "Email")]
-        Email = 2
+        [EnumMember(Value = "Voice")]
+        Voice = 2
     }
 
 }

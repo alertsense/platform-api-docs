@@ -6,6 +6,29 @@ The Konexus Directory Module is central to the platform and provides clients and
 
 # Change Log
 
+## Version 4.3.1
+
+### Additions and Enhancements
+
+#### Verification
+
+Verification now supports two types of Phone Number verification:
+1. The original verification flow remains in place. Phone Numbers can still be directly verified while associated to a UserProfile's contact information.
+2. A new method of Verifying a Phone Number before associating it with a UserProfile has been added: `POST /{tenantId}/phones/{phoneNumber}/verifications/`
+    - Allows pre-verification that a user can receive communication at a targeted Phone Number before synchronizing their profile.
+    - Allows out of band verification of a phone number before adding it to a UserProfile to replace an existing number.
+ 
+
+#### Phone Numbers
+- Phone Numbers can now be created while specifying the user's channel preferences. (SMS or Voice)
+
+### Bug Fixes
+- Resolved cell phone reformatting issue that was preventing SMS verification messages from being sent.
+- Users are now prevented from specifying Voice Weather preferences if they do not have a Home Phone or Cell Phone associated with their User Profile.
+
+### Breaking Changes
+- No breaking changes
+
 ## Version 4.3.0
 
 ### Breaking Changes

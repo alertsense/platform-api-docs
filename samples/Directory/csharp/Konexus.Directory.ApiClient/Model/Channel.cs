@@ -28,49 +28,41 @@ using OpenAPIDateConverter = Konexus.Directory.ApiClient.Client.OpenAPIDateConve
 namespace Konexus.Directory.ApiClient.Model
 {
     /// <summary>
-    /// GroupReference
+    /// Represents the status of a phone&#39;s communication channels (SMS, Voice).  Active: Indicates if the channel is active and can be used for communication.  Status: A user-friendly message indicating the status of the channel.
     /// </summary>
-    [DataContract(Name = "GroupReference")]
-    public partial class GroupReference : IValidatableObject
+    [DataContract(Name = "Channel")]
+    public partial class Channel : IValidatableObject
     {
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="GroupReference" /> class.
+        /// Gets or Sets Type
         /// </summary>
-        /// <param name="id">id.</param>
-        /// <param name="name">name.</param>
-        /// <param name="description">description.</param>
-        /// <param name="uri">uri.</param>
-        public GroupReference(string id = default(string), string name = default(string), string description = default(string), string uri = default(string))
+        [DataMember(Name = "type", EmitDefaultValue = false)]
+        public PhoneChannel? Type { get; set; }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Channel" /> class.
+        /// </summary>
+        /// <param name="active">active.</param>
+        /// <param name="type">type.</param>
+        /// <param name="status">status.</param>
+        public Channel(bool active = default(bool), PhoneChannel? type = default(PhoneChannel?), string status = default(string))
         {
-            this.Id = id;
-            this.Name = name;
-            this.Description = description;
-            this.Uri = uri;
+            this.Active = active;
+            this.Type = type;
+            this.Status = status;
         }
 
         /// <summary>
-        /// Gets or Sets Id
+        /// Gets or Sets Active
         /// </summary>
-        [DataMember(Name = "id", EmitDefaultValue = true)]
-        public string Id { get; set; }
+        [DataMember(Name = "active", EmitDefaultValue = true)]
+        public bool Active { get; set; }
 
         /// <summary>
-        /// Gets or Sets Name
+        /// Gets or Sets Status
         /// </summary>
-        [DataMember(Name = "name", EmitDefaultValue = true)]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Description
-        /// </summary>
-        [DataMember(Name = "description", EmitDefaultValue = true)]
-        public string Description { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Uri
-        /// </summary>
-        [DataMember(Name = "uri", EmitDefaultValue = true)]
-        public string Uri { get; set; }
+        [DataMember(Name = "status", EmitDefaultValue = true)]
+        public string Status { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -79,11 +71,10 @@ namespace Konexus.Directory.ApiClient.Model
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class GroupReference {\n");
-            sb.Append("  Id: ").Append(Id).Append("\n");
-            sb.Append("  Name: ").Append(Name).Append("\n");
-            sb.Append("  Description: ").Append(Description).Append("\n");
-            sb.Append("  Uri: ").Append(Uri).Append("\n");
+            sb.Append("class Channel {\n");
+            sb.Append("  Active: ").Append(Active).Append("\n");
+            sb.Append("  Type: ").Append(Type).Append("\n");
+            sb.Append("  Status: ").Append(Status).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }

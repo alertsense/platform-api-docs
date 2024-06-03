@@ -28,49 +28,33 @@ using OpenAPIDateConverter = Konexus.Directory.ApiClient.Client.OpenAPIDateConve
 namespace Konexus.Directory.ApiClient.Model
 {
     /// <summary>
-    /// GroupReference
+    /// PendingVerificationSummary
     /// </summary>
-    [DataContract(Name = "GroupReference")]
-    public partial class GroupReference : IValidatableObject
+    [DataContract(Name = "PendingVerificationSummary")]
+    public partial class PendingVerificationSummary : IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="GroupReference" /> class.
+        /// Initializes a new instance of the <see cref="PendingVerificationSummary" /> class.
         /// </summary>
-        /// <param name="id">id.</param>
-        /// <param name="name">name.</param>
-        /// <param name="description">description.</param>
-        /// <param name="uri">uri.</param>
-        public GroupReference(string id = default(string), string name = default(string), string description = default(string), string uri = default(string))
+        /// <param name="verificationId">verificationId.</param>
+        /// <param name="number">number.</param>
+        public PendingVerificationSummary(string verificationId = default(string), string number = default(string))
         {
-            this.Id = id;
-            this.Name = name;
-            this.Description = description;
-            this.Uri = uri;
+            this.VerificationId = verificationId;
+            this.Number = number;
         }
 
         /// <summary>
-        /// Gets or Sets Id
+        /// Gets or Sets VerificationId
         /// </summary>
-        [DataMember(Name = "id", EmitDefaultValue = true)]
-        public string Id { get; set; }
+        [DataMember(Name = "verificationId", EmitDefaultValue = true)]
+        public string VerificationId { get; set; }
 
         /// <summary>
-        /// Gets or Sets Name
+        /// Gets or Sets Number
         /// </summary>
-        [DataMember(Name = "name", EmitDefaultValue = true)]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Description
-        /// </summary>
-        [DataMember(Name = "description", EmitDefaultValue = true)]
-        public string Description { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Uri
-        /// </summary>
-        [DataMember(Name = "uri", EmitDefaultValue = true)]
-        public string Uri { get; set; }
+        [DataMember(Name = "number", EmitDefaultValue = true)]
+        public string Number { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -79,11 +63,9 @@ namespace Konexus.Directory.ApiClient.Model
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class GroupReference {\n");
-            sb.Append("  Id: ").Append(Id).Append("\n");
-            sb.Append("  Name: ").Append(Name).Append("\n");
-            sb.Append("  Description: ").Append(Description).Append("\n");
-            sb.Append("  Uri: ").Append(Uri).Append("\n");
+            sb.Append("class PendingVerificationSummary {\n");
+            sb.Append("  VerificationId: ").Append(VerificationId).Append("\n");
+            sb.Append("  Number: ").Append(Number).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }

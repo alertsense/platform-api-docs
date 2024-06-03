@@ -25,123 +25,127 @@ namespace Konexus.Directory.ApiClient.Api
     /// <summary>
     /// Represents a collection of functions to interact with the API endpoints
     /// </summary>
-    public interface ITestApiSync : IApiAccessor
+    public interface IPhonesApiSync : IApiAccessor
     {
         #region Synchronous Operations
         /// <summary>
-        /// 
+        /// Create a new verification for a phone number.
         /// </summary>
         /// <exception cref="Konexus.Directory.ApiClient.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="tenantId"></param>
-        /// <param name="emailAddress"> (optional)</param>
-        /// <returns>PendingVerificationAttempt</returns>
-        PendingVerificationAttempt TestGetPendingEmailVerifications(string tenantId, string? emailAddress = default(string?));
+        /// <param name="phoneNumber"></param>
+        /// <param name="createVerificationRequest"> (optional)</param>
+        /// <returns>PendingVerificationSummary</returns>
+        PendingVerificationSummary PhonesCreatePhoneVerification(string tenantId, string phoneNumber, CreateVerificationRequest? createVerificationRequest = default(CreateVerificationRequest?));
 
         /// <summary>
-        /// 
+        /// Create a new verification for a phone number.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="Konexus.Directory.ApiClient.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="tenantId"></param>
-        /// <param name="emailAddress"> (optional)</param>
-        /// <returns>ApiResponse of PendingVerificationAttempt</returns>
-        ApiResponse<PendingVerificationAttempt> TestGetPendingEmailVerificationsWithHttpInfo(string tenantId, string? emailAddress = default(string?));
+        /// <param name="phoneNumber"></param>
+        /// <param name="createVerificationRequest"> (optional)</param>
+        /// <returns>ApiResponse of PendingVerificationSummary</returns>
+        ApiResponse<PendingVerificationSummary> PhonesCreatePhoneVerificationWithHttpInfo(string tenantId, string phoneNumber, CreateVerificationRequest? createVerificationRequest = default(CreateVerificationRequest?));
         /// <summary>
-        /// 
+        /// Attempt to verify a phone number.
         /// </summary>
         /// <exception cref="Konexus.Directory.ApiClient.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="tenantId"></param>
-        /// <param name="userId"> (optional)</param>
-        /// <param name="phoneNumber"> (optional)</param>
-        /// <param name="verificationId"> (optional)</param>
-        /// <returns>PendingVerificationAttempt</returns>
-        PendingVerificationAttempt TestGetPendingPhoneVerifications(string tenantId, string? userId = default(string?), string? phoneNumber = default(string?), string? verificationId = default(string?));
+        /// <param name="phoneNumber"></param>
+        /// <param name="verificationId"></param>
+        /// <param name="verificationRequest"> (optional)</param>
+        /// <returns></returns>
+        void PhonesVerifyPhone(string tenantId, string phoneNumber, string verificationId, VerificationRequest? verificationRequest = default(VerificationRequest?));
 
         /// <summary>
-        /// 
+        /// Attempt to verify a phone number.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="Konexus.Directory.ApiClient.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="tenantId"></param>
-        /// <param name="userId"> (optional)</param>
-        /// <param name="phoneNumber"> (optional)</param>
-        /// <param name="verificationId"> (optional)</param>
-        /// <returns>ApiResponse of PendingVerificationAttempt</returns>
-        ApiResponse<PendingVerificationAttempt> TestGetPendingPhoneVerificationsWithHttpInfo(string tenantId, string? userId = default(string?), string? phoneNumber = default(string?), string? verificationId = default(string?));
+        /// <param name="phoneNumber"></param>
+        /// <param name="verificationId"></param>
+        /// <param name="verificationRequest"> (optional)</param>
+        /// <returns>ApiResponse of Object(void)</returns>
+        ApiResponse<Object> PhonesVerifyPhoneWithHttpInfo(string tenantId, string phoneNumber, string verificationId, VerificationRequest? verificationRequest = default(VerificationRequest?));
         #endregion Synchronous Operations
     }
 
     /// <summary>
     /// Represents a collection of functions to interact with the API endpoints
     /// </summary>
-    public interface ITestApiAsync : IApiAccessor
+    public interface IPhonesApiAsync : IApiAccessor
     {
         #region Asynchronous Operations
         /// <summary>
-        /// 
+        /// Create a new verification for a phone number.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="Konexus.Directory.ApiClient.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="tenantId"></param>
-        /// <param name="emailAddress"> (optional)</param>
+        /// <param name="phoneNumber"></param>
+        /// <param name="createVerificationRequest"> (optional)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of PendingVerificationAttempt</returns>
-        System.Threading.Tasks.Task<PendingVerificationAttempt> TestGetPendingEmailVerificationsAsync(string tenantId, string? emailAddress = default(string?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of PendingVerificationSummary</returns>
+        System.Threading.Tasks.Task<PendingVerificationSummary> PhonesCreatePhoneVerificationAsync(string tenantId, string phoneNumber, CreateVerificationRequest? createVerificationRequest = default(CreateVerificationRequest?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
-        /// 
+        /// Create a new verification for a phone number.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="Konexus.Directory.ApiClient.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="tenantId"></param>
-        /// <param name="emailAddress"> (optional)</param>
+        /// <param name="phoneNumber"></param>
+        /// <param name="createVerificationRequest"> (optional)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (PendingVerificationAttempt)</returns>
-        System.Threading.Tasks.Task<ApiResponse<PendingVerificationAttempt>> TestGetPendingEmailVerificationsWithHttpInfoAsync(string tenantId, string? emailAddress = default(string?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of ApiResponse (PendingVerificationSummary)</returns>
+        System.Threading.Tasks.Task<ApiResponse<PendingVerificationSummary>> PhonesCreatePhoneVerificationWithHttpInfoAsync(string tenantId, string phoneNumber, CreateVerificationRequest? createVerificationRequest = default(CreateVerificationRequest?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         /// <summary>
-        /// 
+        /// Attempt to verify a phone number.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="Konexus.Directory.ApiClient.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="tenantId"></param>
-        /// <param name="userId"> (optional)</param>
-        /// <param name="phoneNumber"> (optional)</param>
-        /// <param name="verificationId"> (optional)</param>
+        /// <param name="phoneNumber"></param>
+        /// <param name="verificationId"></param>
+        /// <param name="verificationRequest"> (optional)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of PendingVerificationAttempt</returns>
-        System.Threading.Tasks.Task<PendingVerificationAttempt> TestGetPendingPhoneVerificationsAsync(string tenantId, string? userId = default(string?), string? phoneNumber = default(string?), string? verificationId = default(string?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of void</returns>
+        System.Threading.Tasks.Task PhonesVerifyPhoneAsync(string tenantId, string phoneNumber, string verificationId, VerificationRequest? verificationRequest = default(VerificationRequest?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <summary>
-        /// 
+        /// Attempt to verify a phone number.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="Konexus.Directory.ApiClient.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="tenantId"></param>
-        /// <param name="userId"> (optional)</param>
-        /// <param name="phoneNumber"> (optional)</param>
-        /// <param name="verificationId"> (optional)</param>
+        /// <param name="phoneNumber"></param>
+        /// <param name="verificationId"></param>
+        /// <param name="verificationRequest"> (optional)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (PendingVerificationAttempt)</returns>
-        System.Threading.Tasks.Task<ApiResponse<PendingVerificationAttempt>> TestGetPendingPhoneVerificationsWithHttpInfoAsync(string tenantId, string? userId = default(string?), string? phoneNumber = default(string?), string? verificationId = default(string?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        /// <returns>Task of ApiResponse</returns>
+        System.Threading.Tasks.Task<ApiResponse<Object>> PhonesVerifyPhoneWithHttpInfoAsync(string tenantId, string phoneNumber, string verificationId, VerificationRequest? verificationRequest = default(VerificationRequest?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         #endregion Asynchronous Operations
     }
 
     /// <summary>
     /// Represents a collection of functions to interact with the API endpoints
     /// </summary>
-    public interface ITestApi : ITestApiSync, ITestApiAsync
+    public interface IPhonesApi : IPhonesApiSync, IPhonesApiAsync
     {
 
     }
@@ -149,29 +153,29 @@ namespace Konexus.Directory.ApiClient.Api
     /// <summary>
     /// Represents a collection of functions to interact with the API endpoints
     /// </summary>
-    public partial class TestApi : IDisposable, ITestApi
+    public partial class PhonesApi : IDisposable, IPhonesApi
     {
         private Konexus.Directory.ApiClient.Client.ExceptionFactory _exceptionFactory = (name, response) => null;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TestApi"/> class.
+        /// Initializes a new instance of the <see cref="PhonesApi"/> class.
         /// **IMPORTANT** This will also create an instance of HttpClient, which is less than ideal.
         /// It's better to reuse the <see href="https://docs.microsoft.com/en-us/dotnet/architecture/microservices/implement-resilient-applications/use-httpclientfactory-to-implement-resilient-http-requests#issues-with-the-original-httpclient-class-available-in-net">HttpClient and HttpClientHandler</see>.
         /// </summary>
         /// <returns></returns>
-        public TestApi() : this((string)null)
+        public PhonesApi() : this((string)null)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TestApi"/> class.
+        /// Initializes a new instance of the <see cref="PhonesApi"/> class.
         /// **IMPORTANT** This will also create an instance of HttpClient, which is less than ideal.
         /// It's better to reuse the <see href="https://docs.microsoft.com/en-us/dotnet/architecture/microservices/implement-resilient-applications/use-httpclientfactory-to-implement-resilient-http-requests#issues-with-the-original-httpclient-class-available-in-net">HttpClient and HttpClientHandler</see>.
         /// </summary>
         /// <param name="basePath">The target service's base path in URL format.</param>
         /// <exception cref="ArgumentException"></exception>
         /// <returns></returns>
-        public TestApi(string basePath)
+        public PhonesApi(string basePath)
         {
             this.Configuration = Konexus.Directory.ApiClient.Client.Configuration.MergeConfigurations(
                 Konexus.Directory.ApiClient.Client.GlobalConfiguration.Instance,
@@ -184,14 +188,14 @@ namespace Konexus.Directory.ApiClient.Api
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TestApi"/> class using Configuration object.
+        /// Initializes a new instance of the <see cref="PhonesApi"/> class using Configuration object.
         /// **IMPORTANT** This will also create an instance of HttpClient, which is less than ideal.
         /// It's better to reuse the <see href="https://docs.microsoft.com/en-us/dotnet/architecture/microservices/implement-resilient-applications/use-httpclientfactory-to-implement-resilient-http-requests#issues-with-the-original-httpclient-class-available-in-net">HttpClient and HttpClientHandler</see>.
         /// </summary>
         /// <param name="configuration">An instance of Configuration.</param>
         /// <exception cref="ArgumentNullException"></exception>
         /// <returns></returns>
-        public TestApi(Konexus.Directory.ApiClient.Client.Configuration configuration)
+        public PhonesApi(Konexus.Directory.ApiClient.Client.Configuration configuration)
         {
             if (configuration == null) throw new ArgumentNullException("configuration");
 
@@ -206,7 +210,7 @@ namespace Konexus.Directory.ApiClient.Api
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TestApi"/> class.
+        /// Initializes a new instance of the <see cref="PhonesApi"/> class.
         /// </summary>
         /// <param name="client">An instance of HttpClient.</param>
         /// <param name="handler">An optional instance of HttpClientHandler that is used by HttpClient.</param>
@@ -216,12 +220,12 @@ namespace Konexus.Directory.ApiClient.Api
         /// Some configuration settings will not be applied without passing an HttpClientHandler.
         /// The features affected are: Setting and Retrieving Cookies, Client Certificates, Proxy settings.
         /// </remarks>
-        public TestApi(HttpClient client, HttpClientHandler handler = null) : this(client, (string)null, handler)
+        public PhonesApi(HttpClient client, HttpClientHandler handler = null) : this(client, (string)null, handler)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TestApi"/> class.
+        /// Initializes a new instance of the <see cref="PhonesApi"/> class.
         /// </summary>
         /// <param name="client">An instance of HttpClient.</param>
         /// <param name="basePath">The target service's base path in URL format.</param>
@@ -233,7 +237,7 @@ namespace Konexus.Directory.ApiClient.Api
         /// Some configuration settings will not be applied without passing an HttpClientHandler.
         /// The features affected are: Setting and Retrieving Cookies, Client Certificates, Proxy settings.
         /// </remarks>
-        public TestApi(HttpClient client, string basePath, HttpClientHandler handler = null)
+        public PhonesApi(HttpClient client, string basePath, HttpClientHandler handler = null)
         {
             if (client == null) throw new ArgumentNullException("client");
 
@@ -248,7 +252,7 @@ namespace Konexus.Directory.ApiClient.Api
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TestApi"/> class using Configuration object.
+        /// Initializes a new instance of the <see cref="PhonesApi"/> class using Configuration object.
         /// </summary>
         /// <param name="client">An instance of HttpClient.</param>
         /// <param name="configuration">An instance of Configuration.</param>
@@ -259,7 +263,7 @@ namespace Konexus.Directory.ApiClient.Api
         /// Some configuration settings will not be applied without passing an HttpClientHandler.
         /// The features affected are: Setting and Retrieving Cookies, Client Certificates, Proxy settings.
         /// </remarks>
-        public TestApi(HttpClient client, Konexus.Directory.ApiClient.Client.Configuration configuration, HttpClientHandler handler = null)
+        public PhonesApi(HttpClient client, Konexus.Directory.ApiClient.Client.Configuration configuration, HttpClientHandler handler = null)
         {
             if (configuration == null) throw new ArgumentNullException("configuration");
             if (client == null) throw new ArgumentNullException("client");
@@ -275,14 +279,14 @@ namespace Konexus.Directory.ApiClient.Api
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TestApi"/> class
+        /// Initializes a new instance of the <see cref="PhonesApi"/> class
         /// using a Configuration object and client instance.
         /// </summary>
         /// <param name="client">The client interface for synchronous API access.</param>
         /// <param name="asyncClient">The client interface for asynchronous API access.</param>
         /// <param name="configuration">The configuration object.</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public TestApi(Konexus.Directory.ApiClient.Client.ISynchronousClient client, Konexus.Directory.ApiClient.Client.IAsynchronousClient asyncClient, Konexus.Directory.ApiClient.Client.IReadableConfiguration configuration)
+        public PhonesApi(Konexus.Directory.ApiClient.Client.ISynchronousClient client, Konexus.Directory.ApiClient.Client.IAsynchronousClient asyncClient, Konexus.Directory.ApiClient.Client.IReadableConfiguration configuration)
         {
             if (client == null) throw new ArgumentNullException("client");
             if (asyncClient == null) throw new ArgumentNullException("asyncClient");
@@ -349,34 +353,44 @@ namespace Konexus.Directory.ApiClient.Api
         }
 
         /// <summary>
-        ///  
+        /// Create a new verification for a phone number. 
         /// </summary>
         /// <exception cref="Konexus.Directory.ApiClient.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="tenantId"></param>
-        /// <param name="emailAddress"> (optional)</param>
-        /// <returns>PendingVerificationAttempt</returns>
-        public PendingVerificationAttempt TestGetPendingEmailVerifications(string tenantId, string? emailAddress = default(string?))
+        /// <param name="phoneNumber"></param>
+        /// <param name="createVerificationRequest"> (optional)</param>
+        /// <returns>PendingVerificationSummary</returns>
+        public PendingVerificationSummary PhonesCreatePhoneVerification(string tenantId, string phoneNumber, CreateVerificationRequest? createVerificationRequest = default(CreateVerificationRequest?))
         {
-            Konexus.Directory.ApiClient.Client.ApiResponse<PendingVerificationAttempt> localVarResponse = TestGetPendingEmailVerificationsWithHttpInfo(tenantId, emailAddress);
+            Konexus.Directory.ApiClient.Client.ApiResponse<PendingVerificationSummary> localVarResponse = PhonesCreatePhoneVerificationWithHttpInfo(tenantId, phoneNumber, createVerificationRequest);
             return localVarResponse.Data;
         }
 
         /// <summary>
-        ///  
+        /// Create a new verification for a phone number. 
         /// </summary>
         /// <exception cref="Konexus.Directory.ApiClient.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="tenantId"></param>
-        /// <param name="emailAddress"> (optional)</param>
-        /// <returns>ApiResponse of PendingVerificationAttempt</returns>
-        public Konexus.Directory.ApiClient.Client.ApiResponse<PendingVerificationAttempt> TestGetPendingEmailVerificationsWithHttpInfo(string tenantId, string? emailAddress = default(string?))
+        /// <param name="phoneNumber"></param>
+        /// <param name="createVerificationRequest"> (optional)</param>
+        /// <returns>ApiResponse of PendingVerificationSummary</returns>
+        public Konexus.Directory.ApiClient.Client.ApiResponse<PendingVerificationSummary> PhonesCreatePhoneVerificationWithHttpInfo(string tenantId, string phoneNumber, CreateVerificationRequest? createVerificationRequest = default(CreateVerificationRequest?))
         {
             // verify the required parameter 'tenantId' is set
             if (tenantId == null)
-                throw new Konexus.Directory.ApiClient.Client.ApiException(400, "Missing required parameter 'tenantId' when calling TestApi->TestGetPendingEmailVerifications");
+                throw new Konexus.Directory.ApiClient.Client.ApiException(400, "Missing required parameter 'tenantId' when calling PhonesApi->PhonesCreatePhoneVerification");
+
+            // verify the required parameter 'phoneNumber' is set
+            if (phoneNumber == null)
+                throw new Konexus.Directory.ApiClient.Client.ApiException(400, "Missing required parameter 'phoneNumber' when calling PhonesApi->PhonesCreatePhoneVerification");
 
             Konexus.Directory.ApiClient.Client.RequestOptions localVarRequestOptions = new Konexus.Directory.ApiClient.Client.RequestOptions();
 
             string[] _contentTypes = new string[] {
+                "application/json-patch+json",
+                "application/json",
+                "text/json",
+                "application/*+json"
             };
 
             // to determine the Accept header
@@ -391,10 +405,8 @@ namespace Konexus.Directory.ApiClient.Api
             if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
 
             localVarRequestOptions.PathParameters.Add("tenantId", Konexus.Directory.ApiClient.Client.ClientUtils.ParameterToString(tenantId)); // path parameter
-            if (emailAddress != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Konexus.Directory.ApiClient.Client.ClientUtils.ParameterToMultiMap("", "emailAddress", emailAddress));
-            }
+            localVarRequestOptions.PathParameters.Add("phoneNumber", Konexus.Directory.ApiClient.Client.ClientUtils.ParameterToString(phoneNumber)); // path parameter
+            localVarRequestOptions.Data = createVerificationRequest;
 
             // authentication (Oauth2Scheme) required
             // oauth required
@@ -415,11 +427,11 @@ namespace Konexus.Directory.ApiClient.Api
             }
 
             // make the HTTP request
-            var localVarResponse = this.Client.Get<PendingVerificationAttempt>("/{tenantId}/testing/verifications/email", localVarRequestOptions, this.Configuration);
+            var localVarResponse = this.Client.Post<PendingVerificationSummary>("/{tenantId}/phones/{phoneNumber}/verifications", localVarRequestOptions, this.Configuration);
 
             if (this.ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("TestGetPendingEmailVerifications", localVarResponse);
+                Exception _exception = this.ExceptionFactory("PhonesCreatePhoneVerification", localVarResponse);
                 if (_exception != null) throw _exception;
             }
 
@@ -427,37 +439,47 @@ namespace Konexus.Directory.ApiClient.Api
         }
 
         /// <summary>
-        ///  
+        /// Create a new verification for a phone number. 
         /// </summary>
         /// <exception cref="Konexus.Directory.ApiClient.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="tenantId"></param>
-        /// <param name="emailAddress"> (optional)</param>
+        /// <param name="phoneNumber"></param>
+        /// <param name="createVerificationRequest"> (optional)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of PendingVerificationAttempt</returns>
-        public async System.Threading.Tasks.Task<PendingVerificationAttempt> TestGetPendingEmailVerificationsAsync(string tenantId, string? emailAddress = default(string?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of PendingVerificationSummary</returns>
+        public async System.Threading.Tasks.Task<PendingVerificationSummary> PhonesCreatePhoneVerificationAsync(string tenantId, string phoneNumber, CreateVerificationRequest? createVerificationRequest = default(CreateVerificationRequest?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            Konexus.Directory.ApiClient.Client.ApiResponse<PendingVerificationAttempt> localVarResponse = await TestGetPendingEmailVerificationsWithHttpInfoAsync(tenantId, emailAddress, cancellationToken).ConfigureAwait(false);
+            Konexus.Directory.ApiClient.Client.ApiResponse<PendingVerificationSummary> localVarResponse = await PhonesCreatePhoneVerificationWithHttpInfoAsync(tenantId, phoneNumber, createVerificationRequest, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
         /// <summary>
-        ///  
+        /// Create a new verification for a phone number. 
         /// </summary>
         /// <exception cref="Konexus.Directory.ApiClient.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="tenantId"></param>
-        /// <param name="emailAddress"> (optional)</param>
+        /// <param name="phoneNumber"></param>
+        /// <param name="createVerificationRequest"> (optional)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (PendingVerificationAttempt)</returns>
-        public async System.Threading.Tasks.Task<Konexus.Directory.ApiClient.Client.ApiResponse<PendingVerificationAttempt>> TestGetPendingEmailVerificationsWithHttpInfoAsync(string tenantId, string? emailAddress = default(string?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of ApiResponse (PendingVerificationSummary)</returns>
+        public async System.Threading.Tasks.Task<Konexus.Directory.ApiClient.Client.ApiResponse<PendingVerificationSummary>> PhonesCreatePhoneVerificationWithHttpInfoAsync(string tenantId, string phoneNumber, CreateVerificationRequest? createVerificationRequest = default(CreateVerificationRequest?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             // verify the required parameter 'tenantId' is set
             if (tenantId == null)
-                throw new Konexus.Directory.ApiClient.Client.ApiException(400, "Missing required parameter 'tenantId' when calling TestApi->TestGetPendingEmailVerifications");
+                throw new Konexus.Directory.ApiClient.Client.ApiException(400, "Missing required parameter 'tenantId' when calling PhonesApi->PhonesCreatePhoneVerification");
+
+            // verify the required parameter 'phoneNumber' is set
+            if (phoneNumber == null)
+                throw new Konexus.Directory.ApiClient.Client.ApiException(400, "Missing required parameter 'phoneNumber' when calling PhonesApi->PhonesCreatePhoneVerification");
 
 
             Konexus.Directory.ApiClient.Client.RequestOptions localVarRequestOptions = new Konexus.Directory.ApiClient.Client.RequestOptions();
 
             string[] _contentTypes = new string[] {
+                "application/json-patch+json", 
+                "application/json", 
+                "text/json", 
+                "application/*+json"
             };
 
             // to determine the Accept header
@@ -473,10 +495,8 @@ namespace Konexus.Directory.ApiClient.Api
             if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
 
             localVarRequestOptions.PathParameters.Add("tenantId", Konexus.Directory.ApiClient.Client.ClientUtils.ParameterToString(tenantId)); // path parameter
-            if (emailAddress != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Konexus.Directory.ApiClient.Client.ClientUtils.ParameterToMultiMap("", "emailAddress", emailAddress));
-            }
+            localVarRequestOptions.PathParameters.Add("phoneNumber", Konexus.Directory.ApiClient.Client.ClientUtils.ParameterToString(phoneNumber)); // path parameter
+            localVarRequestOptions.Data = createVerificationRequest;
 
             // authentication (Oauth2Scheme) required
             // oauth required
@@ -498,11 +518,11 @@ namespace Konexus.Directory.ApiClient.Api
 
             // make the HTTP request
 
-            var localVarResponse = await this.AsynchronousClient.GetAsync<PendingVerificationAttempt>("/{tenantId}/testing/verifications/email", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            var localVarResponse = await this.AsynchronousClient.PostAsync<PendingVerificationSummary>("/{tenantId}/phones/{phoneNumber}/verifications", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
             if (this.ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("TestGetPendingEmailVerifications", localVarResponse);
+                Exception _exception = this.ExceptionFactory("PhonesCreatePhoneVerification", localVarResponse);
                 if (_exception != null) throw _exception;
             }
 
@@ -510,38 +530,49 @@ namespace Konexus.Directory.ApiClient.Api
         }
 
         /// <summary>
-        ///  
+        /// Attempt to verify a phone number. 
         /// </summary>
         /// <exception cref="Konexus.Directory.ApiClient.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="tenantId"></param>
-        /// <param name="userId"> (optional)</param>
-        /// <param name="phoneNumber"> (optional)</param>
-        /// <param name="verificationId"> (optional)</param>
-        /// <returns>PendingVerificationAttempt</returns>
-        public PendingVerificationAttempt TestGetPendingPhoneVerifications(string tenantId, string? userId = default(string?), string? phoneNumber = default(string?), string? verificationId = default(string?))
+        /// <param name="phoneNumber"></param>
+        /// <param name="verificationId"></param>
+        /// <param name="verificationRequest"> (optional)</param>
+        /// <returns></returns>
+        public void PhonesVerifyPhone(string tenantId, string phoneNumber, string verificationId, VerificationRequest? verificationRequest = default(VerificationRequest?))
         {
-            Konexus.Directory.ApiClient.Client.ApiResponse<PendingVerificationAttempt> localVarResponse = TestGetPendingPhoneVerificationsWithHttpInfo(tenantId, userId, phoneNumber, verificationId);
-            return localVarResponse.Data;
+            PhonesVerifyPhoneWithHttpInfo(tenantId, phoneNumber, verificationId, verificationRequest);
         }
 
         /// <summary>
-        ///  
+        /// Attempt to verify a phone number. 
         /// </summary>
         /// <exception cref="Konexus.Directory.ApiClient.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="tenantId"></param>
-        /// <param name="userId"> (optional)</param>
-        /// <param name="phoneNumber"> (optional)</param>
-        /// <param name="verificationId"> (optional)</param>
-        /// <returns>ApiResponse of PendingVerificationAttempt</returns>
-        public Konexus.Directory.ApiClient.Client.ApiResponse<PendingVerificationAttempt> TestGetPendingPhoneVerificationsWithHttpInfo(string tenantId, string? userId = default(string?), string? phoneNumber = default(string?), string? verificationId = default(string?))
+        /// <param name="phoneNumber"></param>
+        /// <param name="verificationId"></param>
+        /// <param name="verificationRequest"> (optional)</param>
+        /// <returns>ApiResponse of Object(void)</returns>
+        public Konexus.Directory.ApiClient.Client.ApiResponse<Object> PhonesVerifyPhoneWithHttpInfo(string tenantId, string phoneNumber, string verificationId, VerificationRequest? verificationRequest = default(VerificationRequest?))
         {
             // verify the required parameter 'tenantId' is set
             if (tenantId == null)
-                throw new Konexus.Directory.ApiClient.Client.ApiException(400, "Missing required parameter 'tenantId' when calling TestApi->TestGetPendingPhoneVerifications");
+                throw new Konexus.Directory.ApiClient.Client.ApiException(400, "Missing required parameter 'tenantId' when calling PhonesApi->PhonesVerifyPhone");
+
+            // verify the required parameter 'phoneNumber' is set
+            if (phoneNumber == null)
+                throw new Konexus.Directory.ApiClient.Client.ApiException(400, "Missing required parameter 'phoneNumber' when calling PhonesApi->PhonesVerifyPhone");
+
+            // verify the required parameter 'verificationId' is set
+            if (verificationId == null)
+                throw new Konexus.Directory.ApiClient.Client.ApiException(400, "Missing required parameter 'verificationId' when calling PhonesApi->PhonesVerifyPhone");
 
             Konexus.Directory.ApiClient.Client.RequestOptions localVarRequestOptions = new Konexus.Directory.ApiClient.Client.RequestOptions();
 
             string[] _contentTypes = new string[] {
+                "application/json-patch+json",
+                "application/json",
+                "text/json",
+                "application/*+json"
             };
 
             // to determine the Accept header
@@ -556,18 +587,9 @@ namespace Konexus.Directory.ApiClient.Api
             if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
 
             localVarRequestOptions.PathParameters.Add("tenantId", Konexus.Directory.ApiClient.Client.ClientUtils.ParameterToString(tenantId)); // path parameter
-            if (userId != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Konexus.Directory.ApiClient.Client.ClientUtils.ParameterToMultiMap("", "userId", userId));
-            }
-            if (phoneNumber != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Konexus.Directory.ApiClient.Client.ClientUtils.ParameterToMultiMap("", "phoneNumber", phoneNumber));
-            }
-            if (verificationId != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Konexus.Directory.ApiClient.Client.ClientUtils.ParameterToMultiMap("", "verificationId", verificationId));
-            }
+            localVarRequestOptions.PathParameters.Add("phoneNumber", Konexus.Directory.ApiClient.Client.ClientUtils.ParameterToString(phoneNumber)); // path parameter
+            localVarRequestOptions.PathParameters.Add("verificationId", Konexus.Directory.ApiClient.Client.ClientUtils.ParameterToString(verificationId)); // path parameter
+            localVarRequestOptions.Data = verificationRequest;
 
             // authentication (Oauth2Scheme) required
             // oauth required
@@ -588,11 +610,11 @@ namespace Konexus.Directory.ApiClient.Api
             }
 
             // make the HTTP request
-            var localVarResponse = this.Client.Get<PendingVerificationAttempt>("/{tenantId}/testing/verifications/phone", localVarRequestOptions, this.Configuration);
+            var localVarResponse = this.Client.Post<Object>("/{tenantId}/phones/{phoneNumber}/verifications/{verificationId}/verify", localVarRequestOptions, this.Configuration);
 
             if (this.ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("TestGetPendingPhoneVerifications", localVarResponse);
+                Exception _exception = this.ExceptionFactory("PhonesVerifyPhone", localVarResponse);
                 if (_exception != null) throw _exception;
             }
 
@@ -600,41 +622,52 @@ namespace Konexus.Directory.ApiClient.Api
         }
 
         /// <summary>
-        ///  
+        /// Attempt to verify a phone number. 
         /// </summary>
         /// <exception cref="Konexus.Directory.ApiClient.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="tenantId"></param>
-        /// <param name="userId"> (optional)</param>
-        /// <param name="phoneNumber"> (optional)</param>
-        /// <param name="verificationId"> (optional)</param>
+        /// <param name="phoneNumber"></param>
+        /// <param name="verificationId"></param>
+        /// <param name="verificationRequest"> (optional)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of PendingVerificationAttempt</returns>
-        public async System.Threading.Tasks.Task<PendingVerificationAttempt> TestGetPendingPhoneVerificationsAsync(string tenantId, string? userId = default(string?), string? phoneNumber = default(string?), string? verificationId = default(string?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of void</returns>
+        public async System.Threading.Tasks.Task PhonesVerifyPhoneAsync(string tenantId, string phoneNumber, string verificationId, VerificationRequest? verificationRequest = default(VerificationRequest?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            Konexus.Directory.ApiClient.Client.ApiResponse<PendingVerificationAttempt> localVarResponse = await TestGetPendingPhoneVerificationsWithHttpInfoAsync(tenantId, userId, phoneNumber, verificationId, cancellationToken).ConfigureAwait(false);
-            return localVarResponse.Data;
+            await PhonesVerifyPhoneWithHttpInfoAsync(tenantId, phoneNumber, verificationId, verificationRequest, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
-        ///  
+        /// Attempt to verify a phone number. 
         /// </summary>
         /// <exception cref="Konexus.Directory.ApiClient.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="tenantId"></param>
-        /// <param name="userId"> (optional)</param>
-        /// <param name="phoneNumber"> (optional)</param>
-        /// <param name="verificationId"> (optional)</param>
+        /// <param name="phoneNumber"></param>
+        /// <param name="verificationId"></param>
+        /// <param name="verificationRequest"> (optional)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
-        /// <returns>Task of ApiResponse (PendingVerificationAttempt)</returns>
-        public async System.Threading.Tasks.Task<Konexus.Directory.ApiClient.Client.ApiResponse<PendingVerificationAttempt>> TestGetPendingPhoneVerificationsWithHttpInfoAsync(string tenantId, string? userId = default(string?), string? phoneNumber = default(string?), string? verificationId = default(string?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        /// <returns>Task of ApiResponse</returns>
+        public async System.Threading.Tasks.Task<Konexus.Directory.ApiClient.Client.ApiResponse<Object>> PhonesVerifyPhoneWithHttpInfoAsync(string tenantId, string phoneNumber, string verificationId, VerificationRequest? verificationRequest = default(VerificationRequest?), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             // verify the required parameter 'tenantId' is set
             if (tenantId == null)
-                throw new Konexus.Directory.ApiClient.Client.ApiException(400, "Missing required parameter 'tenantId' when calling TestApi->TestGetPendingPhoneVerifications");
+                throw new Konexus.Directory.ApiClient.Client.ApiException(400, "Missing required parameter 'tenantId' when calling PhonesApi->PhonesVerifyPhone");
+
+            // verify the required parameter 'phoneNumber' is set
+            if (phoneNumber == null)
+                throw new Konexus.Directory.ApiClient.Client.ApiException(400, "Missing required parameter 'phoneNumber' when calling PhonesApi->PhonesVerifyPhone");
+
+            // verify the required parameter 'verificationId' is set
+            if (verificationId == null)
+                throw new Konexus.Directory.ApiClient.Client.ApiException(400, "Missing required parameter 'verificationId' when calling PhonesApi->PhonesVerifyPhone");
 
 
             Konexus.Directory.ApiClient.Client.RequestOptions localVarRequestOptions = new Konexus.Directory.ApiClient.Client.RequestOptions();
 
             string[] _contentTypes = new string[] {
+                "application/json-patch+json", 
+                "application/json", 
+                "text/json", 
+                "application/*+json"
             };
 
             // to determine the Accept header
@@ -650,18 +683,9 @@ namespace Konexus.Directory.ApiClient.Api
             if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
 
             localVarRequestOptions.PathParameters.Add("tenantId", Konexus.Directory.ApiClient.Client.ClientUtils.ParameterToString(tenantId)); // path parameter
-            if (userId != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Konexus.Directory.ApiClient.Client.ClientUtils.ParameterToMultiMap("", "userId", userId));
-            }
-            if (phoneNumber != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Konexus.Directory.ApiClient.Client.ClientUtils.ParameterToMultiMap("", "phoneNumber", phoneNumber));
-            }
-            if (verificationId != null)
-            {
-                localVarRequestOptions.QueryParameters.Add(Konexus.Directory.ApiClient.Client.ClientUtils.ParameterToMultiMap("", "verificationId", verificationId));
-            }
+            localVarRequestOptions.PathParameters.Add("phoneNumber", Konexus.Directory.ApiClient.Client.ClientUtils.ParameterToString(phoneNumber)); // path parameter
+            localVarRequestOptions.PathParameters.Add("verificationId", Konexus.Directory.ApiClient.Client.ClientUtils.ParameterToString(verificationId)); // path parameter
+            localVarRequestOptions.Data = verificationRequest;
 
             // authentication (Oauth2Scheme) required
             // oauth required
@@ -683,11 +707,11 @@ namespace Konexus.Directory.ApiClient.Api
 
             // make the HTTP request
 
-            var localVarResponse = await this.AsynchronousClient.GetAsync<PendingVerificationAttempt>("/{tenantId}/testing/verifications/phone", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+            var localVarResponse = await this.AsynchronousClient.PostAsync<Object>("/{tenantId}/phones/{phoneNumber}/verifications/{verificationId}/verify", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
 
             if (this.ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("TestGetPendingPhoneVerifications", localVarResponse);
+                Exception _exception = this.ExceptionFactory("PhonesVerifyPhone", localVarResponse);
                 if (_exception != null) throw _exception;
             }
 

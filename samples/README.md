@@ -16,6 +16,9 @@ In order to generate the csharp client for the Directory module, run the followi
 ```
 npm run openapi:directory-copy
 npm run openapi:directory-csharp
+
+# or run both commands
+npm run openapi:directory-copy ; npm run openapi:directory-csharp
 ```
 
 [View Directory csharp Sample](samples/Directory/csharp)

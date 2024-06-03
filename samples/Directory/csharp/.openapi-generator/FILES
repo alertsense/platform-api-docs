@@ -1,5 +1,6 @@
 Konexus.Directory.ApiClient/Api/GroupsApi.cs
 Konexus.Directory.ApiClient/Api/MetaApi.cs
+Konexus.Directory.ApiClient/Api/PhonesApi.cs
 Konexus.Directory.ApiClient/Api/TestApi.cs
 Konexus.Directory.ApiClient/Api/UsersApi.cs
 Konexus.Directory.ApiClient/Client/ApiClient.cs
@@ -25,6 +26,7 @@ Konexus.Directory.ApiClient/Model/AddressType.cs
 Konexus.Directory.ApiClient/Model/AuthorizationInformation.cs
 Konexus.Directory.ApiClient/Model/AvailableLanguagesResponse.cs
 Konexus.Directory.ApiClient/Model/AvailableTimeZonesResponse.cs
+Konexus.Directory.ApiClient/Model/Channel.cs
 Konexus.Directory.ApiClient/Model/ContactInformation.cs
 Konexus.Directory.ApiClient/Model/ContactTargetType.cs
 Konexus.Directory.ApiClient/Model/CreateEmailCommand.cs
@@ -34,6 +36,7 @@ Konexus.Directory.ApiClient/Model/CreateLocationCommand.cs
 Konexus.Directory.ApiClient/Model/CreatePhoneCommand.cs
 Konexus.Directory.ApiClient/Model/CreateUserProfileCommand.cs
 Konexus.Directory.ApiClient/Model/CreateVerificationNonceCommand.cs
+Konexus.Directory.ApiClient/Model/CreateVerificationRequest.cs
 Konexus.Directory.ApiClient/Model/EmailAddress.cs
 Konexus.Directory.ApiClient/Model/EmailCollection.cs
 Konexus.Directory.ApiClient/Model/EmployeeInformation.cs
@@ -56,7 +59,9 @@ Konexus.Directory.ApiClient/Model/NotificationPreferences.cs
 Konexus.Directory.ApiClient/Model/NotificationPreferencesSummary.cs
 Konexus.Directory.ApiClient/Model/PendingDeviceType.cs
 Konexus.Directory.ApiClient/Model/PendingVerificationAttempt.cs
+Konexus.Directory.ApiClient/Model/PendingVerificationSummary.cs
 Konexus.Directory.ApiClient/Model/PersonName.cs
+Konexus.Directory.ApiClient/Model/PhoneChannel.cs
 Konexus.Directory.ApiClient/Model/PhoneCollection.cs
 Konexus.Directory.ApiClient/Model/PhoneNumber.cs
 Konexus.Directory.ApiClient/Model/PhoneType.cs
@@ -74,6 +79,7 @@ Konexus.Directory.ApiClient/Model/UserProfileSummary.cs
 Konexus.Directory.ApiClient/Model/UserProfileSummaryPagedApiResponse.cs
 Konexus.Directory.ApiClient/Model/ValidationProblemDetails.cs
 Konexus.Directory.ApiClient/Model/VerificationAttempt.cs
+Konexus.Directory.ApiClient/Model/VerificationRequest.cs
 Konexus.Directory.ApiClient/Model/VerificationResponse.cs
 Konexus.Directory.ApiClient/Model/VerificationStatus.cs
 Konexus.Directory.ApiClient/Model/VerifyEmailCommand.cs

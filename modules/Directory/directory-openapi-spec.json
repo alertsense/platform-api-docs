@@ -8,7 +8,7 @@
       "url": "https://bitbucket.org/AlertSense/platform-api-docs/src/dev/",
       "email": "dev@konexus.com"
     },
-    "version": "4.3.0"
+    "version": "4.3.1"
   },
   "paths": {
     "/{tenantId}/directory/{directoryId}/groups/discover": {
@@ -628,6 +628,241 @@
         ]
       }
     },
+    "/{tenantId}/phones/{phoneNumber}/verifications": {
+      "post": {
+        "tags": [
+          "Phones"
+        ],
+        "summary": "Create a new verification for a phone number.",
+        "operationId": "Phones_CreatePhoneVerification",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "phoneNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateVerificationRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateVerificationRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateVerificationRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateVerificationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PendingVerificationSummary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      }
+    },
+    "/{tenantId}/phones/{phoneNumber}/verifications/{verificationId}/verify": {
+      "post": {
+        "tags": [
+          "Phones"
+        ],
+        "summary": "Attempt to verify a phone number.",
+        "operationId": "Phones_VerifyPhone",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "phoneNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "verificationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerificationRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerificationRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerificationRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerificationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Oauth2Scheme": [
+              "tamarack",
+              "content"
+            ],
+            "JwtBearerTokenScheme": [ ]
+          }
+        ]
+      }
+    },
     "/{tenantId}/testing/verifications/email": {
       "get": {
         "tags": [
@@ -731,6 +966,13 @@
           },
           {
             "name": "phoneNumber",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "verificationId",
             "in": "query",
             "schema": {
               "type": "string"
@@ -3879,6 +4121,23 @@
         },
         "additionalProperties": false
       },
+      "Channel": {
+        "type": "object",
+        "properties": {
+          "active": {
+            "type": "boolean"
+          },
+          "type": {
+            "$ref": "#/components/schemas/PhoneChannel"
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents the status of a phone's communication channels (SMS, Voice).\r\nActive: Indicates if the channel is active and can be used for communication.\r\nStatus: A user-friendly message indicating the status of the channel."
+      },
       "ContactInformation": {
         "type": "object",
         "properties": {
@@ -4025,6 +4284,17 @@
           },
           "mobilePhone": {
             "type": "boolean"
+          },
+          "verificationId": {
+            "type": "string",
+            "nullable": true
+          },
+          "channels": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PhoneChannel"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -4115,6 +4385,16 @@
             "minLength": 1,
             "type": "string",
             "description": "A nonce is a random string, uniquely generated by the client to allow the server to verify that a request has \r\nnever been made before and helps prevent spamming end users with too many verification requests through email."
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateVerificationRequest": {
+        "type": "object",
+        "properties": {
+          "nonce": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -4583,6 +4863,20 @@
         },
         "additionalProperties": false
       },
+      "PendingVerificationSummary": {
+        "type": "object",
+        "properties": {
+          "verificationId": {
+            "type": "string",
+            "nullable": true
+          },
+          "number": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "PersonName": {
         "type": "object",
         "properties": {
@@ -4620,6 +4914,13 @@
         },
         "additionalProperties": false,
         "description": "The components of the user's name.  Service providers MAY return \r\njust the full name as a single string in the formatted\r\nsub-attribute, or they MAY return just the individual component\r\nattributes using the other sub-attributes, or they MAY return\r\nboth.If both variants are returned, they SHOULD be describing\r\nthe same name, with the formatted name indicating how the\r\ncomponent attributes should be combined."
+      },
+      "PhoneChannel": {
+        "enum": [
+          "Sms",
+          "Voice"
+        ],
+        "type": "string"
       },
       "PhoneCollection": {
         "type": "object",
@@ -4665,6 +4966,14 @@
           },
           "deviceType": {
             "$ref": "#/components/schemas/PhoneType"
+          },
+          "channels": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Channel"
+            },
+            "description": "The communication channels the phone number can be targeted on.",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -5012,6 +5321,16 @@
             "type": "string",
             "description": "The date the Verification Attempt was made.",
             "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "VerificationRequest": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
             "nullable": true
           }
         },
