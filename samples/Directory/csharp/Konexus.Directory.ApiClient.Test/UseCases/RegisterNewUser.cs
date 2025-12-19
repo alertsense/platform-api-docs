@@ -1,3 +1,4 @@
+using dotenv.net;
 using Konexus.Directory.ApiClient.Model;
 using Microsoft.VisualStudio.TestPlatform.Utilities;
 using Serilog;
@@ -9,7 +10,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Xunit;
 using Xunit.Abstractions;
-using static IdentityModel.OidcConstants;
+using static Duende.IdentityModel.OidcConstants;
 
 namespace Konexus.Directory.ApiClient.Test.UseCases
 {
@@ -59,8 +60,9 @@ namespace Konexus.Directory.ApiClient.Test.UseCases
             _apiBaseUrl = "https://api-handweave.dev.alertsense.io";
             _authorityUrl = "https://auth.dev.alertsense.io";
 
-            string clientId = "XXXXX";
-            string clientSecret = "XXXXXXXXX";
+            DotEnv.Load();
+            string clientId = Environment.GetEnvironmentVariable("CLIENT_ID");
+            string clientSecret = Environment.GetEnvironmentVariable("CLIENT_SECRET");
 
             _apiClient = CreateAuthenticatedApiClientAsync(clientId, clientSecret).Result;
 

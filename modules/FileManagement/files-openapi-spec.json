@@ -1,0 +1,726 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "4.0.1",
+        "title": "File Management",
+        "description": "File Management Module API Specification"
+    },
+    "host": "admin.alertsense.com",
+    "basePath": "/api",
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/v4/{tenantId}/files": {
+            "get": {
+                "operationId": "getAllFilesV4",
+                "description": "Gets a list of files in blob store for this tenant. (tenant based)",
+                "tags": [
+                    "files"
+                ],
+                "parameters": [
+                    {
+                        "name": "tenantId",
+                        "in": "path",
+                        "description": "The tenantId to use for the request",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "IncludeAudioUrls",
+                        "in": "query",
+                        "description": "whether or not to include audio urls in the returned listing",
+                        "required": true,
+                        "type": "boolean"
+                    },
+                    {
+                        "name": "Filter",
+                        "in": "query",
+                        "description": "Used to indicate which file type to include in the returned results",
+                        "required": false,
+                        "type": "string",
+                        "enum": [
+                            "image",
+                            "audio"
+                        ]
+                    },
+                    {
+                        "name": "SearchTerm",
+                        "in": "query",
+                        "description": "Used to filter file results by file name. Filters results to where the full file name contains the search term",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success. Returns a list of the blob store files for this tenant.",
+                        "schema": {
+                            "$ref": "#/definitions/AllFilesResponse"
+                        },
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "Id": "2f910da1-bef2-4164-a76f-999665c6edf1",
+                                    "FileName": "foo.mp3",
+                                    "ContentType": "audio/mp3",
+                                    "Folder": "abcd",
+                                    "Path": "efgh",
+                                    "PublicUrl": "http://foo.bar/foo.mp3",
+                                    "IsPrivate": false,
+                                    "VoiceAudioUrl": "http://foo.bar/audio_files/foo.mp3",
+                                    "EasAudioUrl": "http://foo.bar/eas/foo.mp3",
+                                    "IsAudio": true,
+                                    "IsImage": false
+                                },
+                                {
+                                    "Id": "625275eb-baf3-4e02-baac-32c178df93a2",
+                                    "FileName": "foo.jpg",
+                                    "ContentType": "image/jpg",
+                                    "Folder": "abcd",
+                                    "Path": "efgh",
+                                    "PublicUrl": "http://foo.bar/foo.jpg",
+                                    "IsPrivate": true,
+                                    "VoiceAudioUrl": "",
+                                    "EasAudioUrl": "",
+                                    "IsAudio": false,
+                                    "IsImage": true
+                                }
+                            ]
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "JwtBearerTokenScheme": [],
+                        "Oauth2Scheme": []
+                    }
+                ]
+            },
+            "post": {
+                "operationId": "uploadFileV4",
+                "description": "Upload new file (tenant based)",
+                "tags": [
+                    "files"
+                ],
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "parameters": [
+                    {
+                        "name": "tenantId",
+                        "in": "path",
+                        "description": "The tenantId to use for the request",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "HttpFile",
+                        "in": "formData",
+                        "description": "the file to upload",
+                        "required": true,
+                        "type": "file"
+                    },
+                    {
+                        "name": "FolderName",
+                        "in": "query",
+                        "description": "name of the folder",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "FileName",
+                        "in": "query",
+                        "description": "name of the file",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "ContentType",
+                        "in": "query",
+                        "description": "type of the file",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "ContentLength",
+                        "in": "query",
+                        "description": "size of the file",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "name": "EncodeForEasAudio",
+                        "in": "query",
+                        "description": "",
+                        "required": false,
+                        "type": "boolean"
+                    },
+                    {
+                        "name": "EncodeForVoiceAudio",
+                        "in": "query",
+                        "description": "",
+                        "required": false,
+                        "type": "boolean"
+                    },
+                    {
+                        "name": "ResizeImage",
+                        "in": "query",
+                        "description": "whether or not to resize the image",
+                        "required": false,
+                        "type": "boolean"
+                    },
+                    {
+                        "name": "MaxWidth",
+                        "in": "query",
+                        "description": "the max width of the resized image",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "Description",
+                        "in": "query",
+                        "description": "the description for the file",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success. Returns a fileModel for the uploaded file.",
+                        "schema": {
+                            "$ref": "#/definitions/FileModel"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "Id": "2f910da1-bef2-4164-a76f-999665c6edf1",
+                                "FileName": "foo.mp3",
+                                "ContentType": "audio/mp3",
+                                "Folder": "abcd",
+                                "Path": "efgh",
+                                "PublicUrl": "http://foo.bar/foo.mp3",
+                                "IsPrivate": false,
+                                "VoiceAudioUrl": "http://foo.bar/audio_files/foo.mp3",
+                                "EasAudioUrl": "http://foo.bar/eas/foo.mp3",
+                                "IsAudio": true,
+                                "IsImage": false
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "JwtBearerTokenScheme": [],
+                        "Oauth2Scheme": []
+                    }
+                ]
+            }
+        },
+        "/v4/{tenantId}/files/{FileName}": {
+            "get": {
+                "operationId": "getFileV4",
+                "description": "Gets the file info for the requested file (tenant based)",
+                "tags": [
+                    "files"
+                ],
+                "parameters": [
+                    {
+                        "name": "tenantId",
+                        "in": "path",
+                        "description": "The tenantId to use for the request",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "FileName",
+                        "in": "path",
+                        "description": "the path of the file to update",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success. Returns the requested file.",
+                        "schema": {
+                            "$ref": "#/definitions/FileModel"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "JwtBearerTokenScheme": [],
+                        "Oauth2Scheme": []
+                    }
+                ]
+            },
+            "put": {
+                "operationId": "updateFileDescriptionV4",
+                "description": "Updates the description of the file (tenant based)",
+                "tags": [
+                    "files"
+                ],
+                "parameters": [
+                    {
+                        "name": "tenantId",
+                        "in": "path",
+                        "description": "The tenantId to use for the request",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "FileName",
+                        "in": "path",
+                        "description": "the path of the file to update",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "Description",
+                        "in": "query",
+                        "description": "the new description for the file",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success. Returns the updated file.",
+                        "schema": {
+                            "$ref": "#/definitions/FileModelResponse"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "JwtBearerTokenScheme": [],
+                        "Oauth2Scheme": []
+                    }
+                ]
+            },
+            "delete": {
+                "operationId": "deleteFileV4",
+                "description": "Deletes the requested file (tenant based)",
+                "tags": [
+                    "files"
+                ],
+                "parameters": [
+                    {
+                        "name": "tenantId",
+                        "in": "path",
+                        "description": "The tenantId to use for the request",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "FileName",
+                        "in": "path",
+                        "description": "the path of the file to delete",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Success. The file no longer exists."
+                    }
+                },
+                "security": [
+                    {
+                        "JwtBearerTokenScheme": [],
+                        "Oauth2Scheme": []
+                    }
+                ]
+            }
+        }
+    },
+    "parameters": {
+        "endDate": {
+            "name": "endDate",
+            "in": "query",
+            "description": "The ending date for the date range.",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+        },
+        "integrationsCategory": {
+            "name": "category",
+            "in": "query",
+            "description": "The category of integration history items.",
+            "required": false,
+            "type": "string",
+            "enum": [
+                "None",
+                "Event",
+                "Trigger",
+                "Action",
+                "Status"
+            ]
+        },
+        "level": {
+            "name": "level",
+            "in": "query",
+            "description": "The level of history items.",
+            "required": false,
+            "type": "string",
+            "enum": [
+                "Debug",
+                "Information",
+                "Warning",
+                "Error"
+            ]
+        },
+        "page": {
+            "name": "page",
+            "in": "query",
+            "description": "The page number of items to return. (1 by default)",
+            "required": false,
+            "default": 1,
+            "type": "integer",
+            "format": "int32"
+        },
+        "pageSize": {
+            "name": "pageSize",
+            "in": "query",
+            "description": "The desired number of items per page. (25 by default)",
+            "default": 25,
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+        },
+        "search": {
+            "name": "search",
+            "in": "query",
+            "description": "A value matched against one or more resource properties.",
+            "required": false,
+            "type": "string"
+        },
+        "sort": {
+            "name": "sort",
+            "in": "query",
+            "description": "A comma seperated list of properties to order by. Properties preceded by a '-' will be ordered descending. (e.g.  ?sort=lastName,firstName,-responseTime). Property names are case insensitive.",
+            "required": false,
+            "type": "string"
+        },
+        "startDate": {
+            "name": "startDate",
+            "in": "query",
+            "description": "The starting date for the date range.",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+        }
+    },
+    "responses": {
+        "204": {
+            "description": "Success. No Content."
+        },
+        "400": {
+            "description": "Bad request.",
+            "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+            },
+            "examples": {
+                "application/json": {
+                    "error": "Bad request."
+                }
+            }
+        },
+        "401": {
+            "description": "Unauthorized.",
+            "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+            },
+            "examples": {
+                "application/json": {
+                    "error": "Unauthorized."
+                }
+            }
+        },
+        "403": {
+            "description": "Forbidden.",
+            "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+            },
+            "examples": {
+                "application/json": {
+                    "error": "Forbidden."
+                }
+            }
+        },
+        "404": {
+            "description": "Not Found.",
+            "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+            },
+            "examples": {
+                "application/json": {
+                    "error": "Not Found."
+                }
+            }
+        },
+        "500": {
+            "description": "Internal server error.",
+            "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+            },
+            "examples": {
+                "application/json": {
+                    "error": "Unexpected server error."
+                }
+            }
+        }
+    },
+    "definitions": {
+        "AllFilesResponse": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/FileModel"
+            }
+        },
+        "ApiResponse": {
+            "discriminator": "type",
+            "properties": {
+                "status": {
+                    "$ref": "#/definitions/ResponseStatus"
+                },
+                "hasErrors": {
+                    "description": "Set true when status.isSuccess is false.",
+                    "type": "boolean"
+                },
+                "isValid": {
+                    "description": "Set false on API parameter validation failures.",
+                    "type": "boolean"
+                }
+            },
+            "type": "object"
+        },
+        "ErrorResponse": {
+            "properties": {
+                "error": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "FileModel": {
+            "properties": {
+                "Id": {
+                    "type": "string",
+                    "format": "guid"
+                },
+                "FileName": {
+                    "type": "string"
+                },
+                "ContentType": {
+                    "type": "string"
+                },
+                "Extension": {
+                    "type": "string"
+                },
+                "Length": {
+                    "format": "double",
+                    "type": "number"
+                },
+                "FileSize": {
+                    "type": "string"
+                },
+                "Folder": {
+                    "type": "string"
+                },
+                "Path": {
+                    "type": "string"
+                },
+                "PublicUrl": {
+                    "type": "string"
+                },
+                "IsPrivate": {
+                    "type": "boolean"
+                },
+                "FileAttachmentType": {
+                    "enum": [
+                        "None",
+                        "Private",
+                        "Public",
+                        "VoiceMessage",
+                        "SocialMediaImage"
+                    ],
+                    "type": "string"
+                },
+                "VoiceAudioUrl": {
+                    "type": "string"
+                },
+                "EasAudioUrl": {
+                    "type": "string"
+                },
+                "IsAudio": {
+                    "type": "boolean"
+                },
+                "IsImage": {
+                    "type": "boolean"
+                },
+                "DateCreated": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "Description": {
+                    "type": "string"
+                },
+                "Metadata": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "OwnerId": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "FileModelResponse": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ApiResponse"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "item": {
+                            "$ref": "#/definitions/FileModel"
+                        }
+                    }
+                }
+            ]
+        },
+        "ResponseMessage": {
+            "type": "object",
+            "properties": {
+                "severity": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "resourceKey": {
+                    "type": "string"
+                }
+            },
+            "example": {
+                "severity": "Warning",
+                "message": "My custom message",
+                "resourceKey": "warnings.customMessage"
+            }
+        },
+        "ResponseStatus": {
+            "type": "object",
+            "properties": {
+                "resourceKey": {
+                    "type": "string"
+                },
+                "isSuccess": {
+                    "description": "False when errorCode is not None or there is an errorMessage or validationFailures.",
+                    "type": "boolean"
+                },
+                "errorCode": {
+                    "type": "string"
+                },
+                "errorMessage": {
+                    "type": "string"
+                },
+                "validationFailures": {
+                    "description": "API parameter validation failures.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ValidationFailure"
+                    }
+                },
+                "messages": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ResponseMessage"
+                    }
+                }
+            },
+            "example": {
+                "resourceKey": "error.notFound",
+                "isSuccess": false,
+                "errorCode": "NotFound",
+                "errorMessage": "The item cannot be found.",
+                "validationFailures": [
+                    {
+                        "propertyName": "email",
+                        "errorMessage": "Value is required",
+                        "errorCode": "Required",
+                        "attemptedValue": "chester.tester@mailinator.com"
+                    }
+                ],
+                "messages": [
+                    {
+                        "severity": "Warning",
+                        "message": "My custom message"
+                    }
+                ]
+            }
+        },
+        "ValidationFailure": {
+            "type": "object",
+            "properties": {
+                "propertyName": {
+                    "type": "string"
+                },
+                "errorMessage": {
+                    "type": "string"
+                },
+                "errorCode": {
+                    "type": "string"
+                },
+                "attemptedValue": {
+                    "type": "object"
+                },
+                "resourceKey": {
+                    "type": "string"
+                }
+            },
+            "example": {
+                "propertyName": "email",
+                "errorMessage": "Value is required",
+                "errorCode": "Required",
+                "attemptedValue": "chester.tester@mailinator.com",
+                "resourceKey": "validation.required"
+            }
+        }
+    },
+    "securityDefinitions": {
+        "Oauth2Scheme": {
+            "type": "oauth2",
+            "flow": "accessCode",
+            "tokenUrl": "https://auth.alertsense.com/connect/token",
+            "authorizationUrl": "https://auth.alertsense.com/account/login",
+            "scopes": {
+                "tamarack": "Hickory",
+                "content": "ExternalID",
+                "elm": "GIS"
+            }
+        },
+        "JwtBearerTokenScheme": {
+            "type": "apiKey",
+            "description": "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}

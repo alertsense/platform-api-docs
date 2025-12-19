@@ -1,0 +1,605 @@
+openapi: 3.0.1
+info:
+  description: File Management Module API Specification
+  title: File Management
+  version: 4.0.1
+servers:
+- url: http://admin.alertsense.com/api
+- url: https://admin.alertsense.com/api
+paths:
+  /v4/{tenantId}/files:
+    get:
+      description: Gets a list of files in blob store for this tenant. (tenant based)
+      operationId: getAllFilesV4
+      parameters:
+      - description: The tenantId to use for the request
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          format: int32
+          type: integer
+      - description: whether or not to include audio urls in the returned listing
+        in: query
+        name: IncludeAudioUrls
+        required: true
+        schema:
+          type: boolean
+      - description: Used to indicate which file type to include in the returned results
+        in: query
+        name: Filter
+        schema:
+          enum:
+          - image
+          - audio
+          type: string
+      - description: Used to filter file results by file name. Filters results to
+          where the full file name contains the search term
+        in: query
+        name: SearchTerm
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+              - Id: 2f910da1-bef2-4164-a76f-999665c6edf1
+                FileName: foo.mp3
+                ContentType: audio/mp3
+                Folder: abcd
+                Path: efgh
+                PublicUrl: http://foo.bar/foo.mp3
+                IsPrivate: false
+                VoiceAudioUrl: http://foo.bar/audio_files/foo.mp3
+                EasAudioUrl: http://foo.bar/eas/foo.mp3
+                IsAudio: true
+                IsImage: false
+              - Id: 625275eb-baf3-4e02-baac-32c178df93a2
+                FileName: foo.jpg
+                ContentType: image/jpg
+                Folder: abcd
+                Path: efgh
+                PublicUrl: http://foo.bar/foo.jpg
+                IsPrivate: true
+                VoiceAudioUrl: ""
+                EasAudioUrl: ""
+                IsAudio: false
+                IsImage: true
+              schema:
+                $ref: "#/components/schemas/AllFilesResponse"
+          description: Success. Returns a list of the blob store files for this tenant.
+      security:
+      - JwtBearerTokenScheme: []
+        Oauth2Scheme: []
+      tags:
+      - files
+    post:
+      description: Upload new file (tenant based)
+      operationId: uploadFileV4
+      parameters:
+      - description: The tenantId to use for the request
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          format: int32
+          type: integer
+      - description: name of the folder
+        in: query
+        name: FolderName
+        schema:
+          type: string
+      - description: name of the file
+        in: query
+        name: FileName
+        required: true
+        schema:
+          type: string
+      - description: type of the file
+        in: query
+        name: ContentType
+        required: true
+        schema:
+          type: string
+      - description: size of the file
+        in: query
+        name: ContentLength
+        required: true
+        schema:
+          format: int64
+          type: integer
+      - in: query
+        name: EncodeForEasAudio
+        schema:
+          type: boolean
+      - in: query
+        name: EncodeForVoiceAudio
+        schema:
+          type: boolean
+      - description: whether or not to resize the image
+        in: query
+        name: ResizeImage
+        schema:
+          type: boolean
+      - description: the max width of the resized image
+        in: query
+        name: MaxWidth
+        schema:
+          type: integer
+      - description: the description for the file
+        in: query
+        name: Description
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/uploadFileV4_request"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                Id: 2f910da1-bef2-4164-a76f-999665c6edf1
+                FileName: foo.mp3
+                ContentType: audio/mp3
+                Folder: abcd
+                Path: efgh
+                PublicUrl: http://foo.bar/foo.mp3
+                IsPrivate: false
+                VoiceAudioUrl: http://foo.bar/audio_files/foo.mp3
+                EasAudioUrl: http://foo.bar/eas/foo.mp3
+                IsAudio: true
+                IsImage: false
+              schema:
+                $ref: "#/components/schemas/FileModel"
+          description: Success. Returns a fileModel for the uploaded file.
+      security:
+      - JwtBearerTokenScheme: []
+        Oauth2Scheme: []
+      tags:
+      - files
+  /v4/{tenantId}/files/{FileName}:
+    delete:
+      description: Deletes the requested file (tenant based)
+      operationId: deleteFileV4
+      parameters:
+      - description: The tenantId to use for the request
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          format: int32
+          type: integer
+      - description: the path of the file to delete
+        in: path
+        name: FileName
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: Success. The file no longer exists.
+      security:
+      - JwtBearerTokenScheme: []
+        Oauth2Scheme: []
+      tags:
+      - files
+    get:
+      description: Gets the file info for the requested file (tenant based)
+      operationId: getFileV4
+      parameters:
+      - description: The tenantId to use for the request
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          format: int32
+          type: integer
+      - description: the path of the file to update
+        in: path
+        name: FileName
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FileModel"
+          description: Success. Returns the requested file.
+      security:
+      - JwtBearerTokenScheme: []
+        Oauth2Scheme: []
+      tags:
+      - files
+    put:
+      description: Updates the description of the file (tenant based)
+      operationId: updateFileDescriptionV4
+      parameters:
+      - description: The tenantId to use for the request
+        in: path
+        name: tenantId
+        required: true
+        schema:
+          format: int32
+          type: integer
+      - description: the path of the file to update
+        in: path
+        name: FileName
+        required: true
+        schema:
+          type: string
+      - description: the new description for the file
+        in: query
+        name: Description
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FileModelResponse"
+          description: Success. Returns the updated file.
+      security:
+      - JwtBearerTokenScheme: []
+        Oauth2Scheme: []
+      tags:
+      - files
+components:
+  parameters:
+    endDate:
+      description: The ending date for the date range.
+      in: query
+      name: endDate
+      schema:
+        format: date-time
+        type: string
+    integrationsCategory:
+      description: The category of integration history items.
+      in: query
+      name: category
+      schema:
+        enum:
+        - None
+        - Event
+        - Trigger
+        - Action
+        - Status
+        type: string
+    level:
+      description: The level of history items.
+      in: query
+      name: level
+      schema:
+        enum:
+        - Debug
+        - Information
+        - Warning
+        - Error
+        type: string
+    page:
+      description: The page number of items to return. (1 by default)
+      in: query
+      name: page
+      schema:
+        default: 1
+        format: int32
+        type: integer
+    pageSize:
+      description: The desired number of items per page. (25 by default)
+      in: query
+      name: pageSize
+      schema:
+        default: 25
+        format: int32
+        type: integer
+    search:
+      description: A value matched against one or more resource properties.
+      in: query
+      name: search
+      schema:
+        type: string
+    sort:
+      description: "A comma seperated list of properties to order by. Properties preceded\
+        \ by a '-' will be ordered descending. (e.g.  ?sort=lastName,firstName,-responseTime).\
+        \ Property names are case insensitive."
+      in: query
+      name: sort
+      schema:
+        type: string
+    startDate:
+      description: The starting date for the date range.
+      in: query
+      name: startDate
+      schema:
+        format: date-time
+        type: string
+  responses:
+    "204":
+      content: {}
+      description: Success. No Content.
+    "400":
+      content:
+        application/json:
+          example:
+            error: Bad request.
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+      description: Bad request.
+    "401":
+      content:
+        application/json:
+          example:
+            error: Unauthorized.
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+      description: Unauthorized.
+    "403":
+      content:
+        application/json:
+          example:
+            error: Forbidden.
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+      description: Forbidden.
+    "404":
+      content:
+        application/json:
+          example:
+            error: Not Found.
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+      description: Not Found.
+    "500":
+      content:
+        application/json:
+          example:
+            error: Unexpected server error.
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+      description: Internal server error.
+  schemas:
+    AllFilesResponse:
+      items:
+        $ref: "#/components/schemas/FileModel"
+      type: array
+    ApiResponse:
+      discriminator:
+        propertyName: type
+      properties:
+        status:
+          $ref: "#/components/schemas/ResponseStatus"
+        hasErrors:
+          description: Set true when status.isSuccess is false.
+          type: boolean
+        isValid:
+          description: Set false on API parameter validation failures.
+          type: boolean
+      type: object
+    ErrorResponse:
+      properties:
+        error:
+          type: string
+      type: object
+    FileModel:
+      example:
+        Path: Path
+        IsAudio: true
+        Description: Description
+        ContentType: ContentType
+        FileName: FileName
+        Metadata:
+          key: Metadata
+        DateCreated: 2000-01-23T04:56:07.000+00:00
+        IsImage: true
+        EasAudioUrl: EasAudioUrl
+        Folder: Folder
+        VoiceAudioUrl: VoiceAudioUrl
+        Extension: Extension
+        FileAttachmentType: None
+        OwnerId: 6
+        Length: 0.8008281904610115
+        PublicUrl: PublicUrl
+        Id: Id
+        IsPrivate: true
+        FileSize: FileSize
+      properties:
+        Id:
+          format: guid
+          type: string
+        FileName:
+          type: string
+        ContentType:
+          type: string
+        Extension:
+          type: string
+        Length:
+          format: double
+          type: number
+        FileSize:
+          type: string
+        Folder:
+          type: string
+        Path:
+          type: string
+        PublicUrl:
+          type: string
+        IsPrivate:
+          type: boolean
+        FileAttachmentType:
+          enum:
+          - None
+          - Private
+          - Public
+          - VoiceMessage
+          - SocialMediaImage
+          type: string
+        VoiceAudioUrl:
+          type: string
+        EasAudioUrl:
+          type: string
+        IsAudio:
+          type: boolean
+        IsImage:
+          type: boolean
+        DateCreated:
+          format: date-time
+          type: string
+        Description:
+          type: string
+        Metadata:
+          additionalProperties:
+            type: string
+          type: object
+        OwnerId:
+          format: int32
+          type: integer
+      type: object
+    FileModelResponse:
+      allOf:
+      - $ref: "#/components/schemas/ApiResponse"
+      - properties:
+          item:
+            $ref: "#/components/schemas/FileModel"
+        type: object
+      example:
+        item:
+          Path: Path
+          IsAudio: true
+          Description: Description
+          ContentType: ContentType
+          FileName: FileName
+          Metadata:
+            key: Metadata
+          DateCreated: 2000-01-23T04:56:07.000+00:00
+          IsImage: true
+          EasAudioUrl: EasAudioUrl
+          Folder: Folder
+          VoiceAudioUrl: VoiceAudioUrl
+          Extension: Extension
+          FileAttachmentType: None
+          OwnerId: 6
+          Length: 0.8008281904610115
+          PublicUrl: PublicUrl
+          Id: Id
+          IsPrivate: true
+          FileSize: FileSize
+        hasErrors: true
+        isValid: true
+        status:
+          resourceKey: error.notFound
+          isSuccess: false
+          errorCode: NotFound
+          errorMessage: The item cannot be found.
+          validationFailures:
+          - propertyName: email
+            errorMessage: Value is required
+            errorCode: Required
+            attemptedValue: chester.tester@mailinator.com
+          messages:
+          - severity: Warning
+            message: My custom message
+    ResponseMessage:
+      example:
+        severity: Warning
+        message: My custom message
+        resourceKey: warnings.customMessage
+      properties:
+        severity:
+          type: string
+        message:
+          type: string
+        resourceKey:
+          type: string
+      type: object
+    ResponseStatus:
+      example:
+        resourceKey: error.notFound
+        isSuccess: false
+        errorCode: NotFound
+        errorMessage: The item cannot be found.
+        validationFailures:
+        - propertyName: email
+          errorMessage: Value is required
+          errorCode: Required
+          attemptedValue: chester.tester@mailinator.com
+        messages:
+        - severity: Warning
+          message: My custom message
+      properties:
+        resourceKey:
+          type: string
+        isSuccess:
+          description: False when errorCode is not None or there is an errorMessage
+            or validationFailures.
+          type: boolean
+        errorCode:
+          type: string
+        errorMessage:
+          type: string
+        validationFailures:
+          description: API parameter validation failures.
+          items:
+            $ref: "#/components/schemas/ValidationFailure"
+          type: array
+        messages:
+          items:
+            $ref: "#/components/schemas/ResponseMessage"
+          type: array
+      type: object
+    ValidationFailure:
+      example:
+        propertyName: email
+        errorMessage: Value is required
+        errorCode: Required
+        attemptedValue: chester.tester@mailinator.com
+        resourceKey: validation.required
+      properties:
+        propertyName:
+          type: string
+        errorMessage:
+          type: string
+        errorCode:
+          type: string
+        attemptedValue:
+          properties: {}
+          type: object
+        resourceKey:
+          type: string
+      type: object
+    uploadFileV4_request:
+      properties:
+        HttpFile:
+          description: the file to upload
+          format: binary
+          type: string
+      required:
+      - HttpFile
+      type: object
+  securitySchemes:
+    Oauth2Scheme:
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.alertsense.com/account/login
+          scopes:
+            tamarack: Hickory
+            content: ExternalID
+            elm: GIS
+          tokenUrl: https://auth.alertsense.com/connect/token
+      type: oauth2
+    JwtBearerTokenScheme:
+      description: "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter\
+        \ 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample:\
+        \ \"Bearer 12345abcdef\""
+      in: header
+      name: Authorization
+      type: apiKey
+x-original-swagger-version: "2.0"
+

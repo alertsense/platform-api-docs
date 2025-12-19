@@ -4,7 +4,9 @@
   "scripts": {
     "openapi:directory-csharp": "openapi-generator-cli generate -i ../modules/Directory/directory-openapi-spec.json -g csharp -o ./Directory/csharp -c ./Directory/csharp/openapi-config-directory.json --global-property=apiTests=true  --global-property=modelTests=false --global-property=apiDocs=false --global-property=modelDocs=false",
     "openapi:directory-copy": "@powershell copy ../../handweave/open-api/directory-openapi-spec.json ../modules/Directory/directory-openapi-spec.json",
-    "openapi:directory-markdown": "openapi-generator-cli generate -i ../modules/Directory/directory-openapi-spec.json -g markdown -o ./Directory/markdown -c ./Directory/markdown/openapi-config-directory.json"
+    "openapi:directory-markdown": "openapi-generator-cli generate -i ../modules/Directory/directory-openapi-spec.json -g markdown -o ./Directory/markdown -c ./Directory/markdown/openapi-config-directory.json",
+    "openapi:file-management-csharp": "openapi-generator-cli generate -i ../modules/FileManagement/files-openapi-spec.json -g csharp -o ./FileManagement/csharp -c ./FileManagement/csharp/openapi-config-files.json --global-property=apiTests=true  --global-property=modelTests=false --global-property=apiDocs=false --global-property=modelDocs=false",
+    "openapi:alerting-csharp": "openapi-generator-cli generate -i ../modules/Alerting/alerting-openapi-spec.json -g csharp -o ./Alerting/csharp -c ./Alerting/csharp/openapi-config-alerting.json --global-property=apiTests=true  --global-property=modelTests=false --global-property=apiDocs=false --global-property=modelDocs=false"
   },
   "private": true
 }

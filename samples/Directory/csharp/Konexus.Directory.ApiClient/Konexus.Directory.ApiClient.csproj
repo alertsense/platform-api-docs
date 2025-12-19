@@ -3,6 +3,7 @@
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo><!-- setting GenerateAssemblyInfo to false causes this bug https://github.com/dotnet/project-system/issues/3934 -->
     <TargetFramework>netstandard2.0</TargetFramework>
+	<LangVersion>8.0</LangVersion>
     <AssemblyName>Konexus.Directory.ApiClient</AssemblyName>
     <PackageId>Konexus.Directory.ApiClient</PackageId>
     <OutputType>Library</OutputType>
@@ -20,7 +21,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="IdentityModel" Version="6.1.0" />
+    <PackageReference Include="Duende.IdentityModel" Version="7.1.0" />
     <PackageReference Include="JsonSubTypes" Version="1.9.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Polly" Version="7.2.3" />

@@ -5,6 +5,8 @@ The Konexus Platform API is made up of many Modules that represent the Business 
 ## Available Modules
 
 - [Directory Module](modules/Directory)
+- [File Management Module](modules/FileManagement)
+- [Alerting Module](modules/Alerting)
 
 
 

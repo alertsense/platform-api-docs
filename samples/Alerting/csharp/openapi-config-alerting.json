@@ -1,0 +1,7 @@
+{
+    "packageName": "Konexus.Alerting.ApiClient",
+    "library": "httpclient",
+    "sourceFolder": "./",
+    "optionalProjectFile": false,
+    "targetFramework": "netstandard2.0"
+}

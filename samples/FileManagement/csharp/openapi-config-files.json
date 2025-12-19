@@ -1,0 +1,7 @@
+{
+    "packageName": "Konexus.FileManagement.ApiClient",
+    "library": "httpclient",
+    "sourceFolder": "./",
+    "optionalProjectFile": false,
+    "targetFramework": "netstandard2.0"
+}

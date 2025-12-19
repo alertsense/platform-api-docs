@@ -1,4 +1,4 @@
-using IdentityModel.Client;
+using Duende.IdentityModel.Client;
 using Konexus.Directory.ApiClient.Api;
 using Konexus.Directory.ApiClient.Client;
 using System;

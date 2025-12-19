@@ -19,6 +19,7 @@ using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Net.Http;
+using System.Net.Security;
 
 namespace Konexus.Directory.ApiClient.Client
 {
@@ -402,6 +403,10 @@ namespace Konexus.Directory.ApiClient.Client
                 _operationServers = value;
             }
         }
+
+        public bool UseDefaultCredentials => throw new NotImplementedException();
+
+        public RemoteCertificateValidationCallback RemoteCertificateValidationCallback => throw new NotImplementedException();
 
         /// <summary>
         /// Returns URL based on server settings without providing values
