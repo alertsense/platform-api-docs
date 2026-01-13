@@ -1332,6 +1332,55 @@ paths:
       tags:
       - groups
       - v2.1
+  /v2/features/count:
+    post:
+      operationId: postFeaturesCount
+      parameters:
+      - description: Ordered comma-separated search parameter keys
+        in: query
+        name: keys
+        schema:
+          type: string
+      - description: Ordered comma-separated search parameter values to match
+        in: query
+        name: values
+        schema:
+          type: string
+      - description: The type of object you want to search for in the given feature
+          collection.
+        in: query
+        name: featuresSource
+        schema:
+          enum:
+          - Assets
+          - Groups
+          - Users
+          - PublicUsers
+          - InternalUsers
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FeatureCollectionRequest"
+        description: geoJson by which to constrain results via geographic intersection
+        required: false
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                count: 1
+              schema:
+                $ref: "#/components/schemas/CountResponse"
+          description: Success.  Returns feature count for given layerId; filtered
+            by geoJson
+      security:
+      - JwtBearerTokenScheme: []
+        Oauth2Scheme: []
+      tags:
+      - alerts
+      x-codegen-request-body-name: geoJson
 components:
   parameters:
     endDate:
@@ -4766,6 +4815,14 @@ components:
             an external link
           type: boolean
       type: object
+    CountResponse:
+      example:
+        count: 0
+      properties:
+        count:
+          format: int32
+          type: integer
+      type: object
     CreateDistributionListFromFileRequest:
       example:
         returnFirstPage: true
@@ -5847,6 +5904,85 @@ components:
           - Feature
           - FeatureCollection
           type: string
+      type: object
+    FeatureCollectionRequest:
+      example:
+        geoJson:
+          features:
+          - crs:
+              type: Unspecified
+            bbox:
+            - 8.762042012749001
+            - 8.762042012749001
+            geometry:
+              bbox:
+              - 9.369310271410669
+              - 9.369310271410669
+              coordinates:
+              - - - 6.683562403749608
+                  - 6.683562403749608
+                - - 6.683562403749608
+                  - 6.683562403749608
+              - - - 6.683562403749608
+                  - 6.683562403749608
+                - - 6.683562403749608
+                  - 6.683562403749608
+              type: Point
+            id: id
+            type: Point
+            properties:
+              key: "{}"
+          - crs:
+              type: Unspecified
+            bbox:
+            - 8.762042012749001
+            - 8.762042012749001
+            geometry:
+              bbox:
+              - 9.369310271410669
+              - 9.369310271410669
+              coordinates:
+              - - - 6.683562403749608
+                  - 6.683562403749608
+                - - 6.683562403749608
+                  - 6.683562403749608
+              - - - 6.683562403749608
+                  - 6.683562403749608
+                - - 6.683562403749608
+                  - 6.683562403749608
+              type: Point
+            id: id
+            type: Point
+            properties:
+              key: "{}"
+          crs:
+            type: Unspecified
+          bbox:
+          - 6.438423552598547
+          - 6.438423552598547
+          spatialReference:
+            wkid: 9
+          type: Point
+        countsOnly: true
+        groupIds:
+        - groupIds
+        - groupIds
+        legacyGroupIds:
+        - 0
+        - 0
+      properties:
+        geoJson:
+          $ref: "#/components/schemas/FeatureCollection"
+        countsOnly:
+          type: boolean
+        groupIds:
+          items:
+            type: string
+          type: array
+        legacyGroupIds:
+          items:
+            type: integer
+          type: array
       type: object
     FeatureLayerSettings:
       example:

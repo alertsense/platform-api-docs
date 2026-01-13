@@ -58,6 +58,7 @@ Konexus.Alerting.ApiClient/Model/ContactInformationEmailAddress.cs
 Konexus.Alerting.ApiClient/Model/ContactInformationPhone.cs
 Konexus.Alerting.ApiClient/Model/ContactSummary.cs
 Konexus.Alerting.ApiClient/Model/ContentSettings.cs
+Konexus.Alerting.ApiClient/Model/CountResponse.cs
 Konexus.Alerting.ApiClient/Model/CreateDistributionListFromFileRequest.cs
 Konexus.Alerting.ApiClient/Model/CreateDistributionListFromFileResponse.cs
 Konexus.Alerting.ApiClient/Model/CreateShortenedUrlRequest.cs
@@ -84,6 +85,7 @@ Konexus.Alerting.ApiClient/Model/FacilitySettings.cs
 Konexus.Alerting.ApiClient/Model/FaxChannel.cs
 Konexus.Alerting.ApiClient/Model/Feature.cs
 Konexus.Alerting.ApiClient/Model/FeatureCollection.cs
+Konexus.Alerting.ApiClient/Model/FeatureCollectionRequest.cs
 Konexus.Alerting.ApiClient/Model/FeatureLayerSettings.cs
 Konexus.Alerting.ApiClient/Model/Field.cs
 Konexus.Alerting.ApiClient/Model/FileDetails.cs

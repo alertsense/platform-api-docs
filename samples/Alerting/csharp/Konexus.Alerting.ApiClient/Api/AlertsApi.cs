@@ -426,6 +426,30 @@ namespace Konexus.Alerting.ApiClient.Api
         /// <param name="sort">A comma seperated list of properties to order by. Property names are case insensitive. Default is AccountName. (optional)</param>
         /// <returns>ApiResponse of PagedNextdoorChannelStatusResponse</returns>
         ApiResponse<PagedNextdoorChannelStatusResponse> GetNextdoorChannelStatusWithHttpInfo(int alertId, int? page = default, int? pageSize = default, string sort = default);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <exception cref="Konexus.Alerting.ApiClient.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="keys">Ordered comma-separated search parameter keys (optional)</param>
+        /// <param name="values">Ordered comma-separated search parameter values to match (optional)</param>
+        /// <param name="featuresSource">The type of object you want to search for in the given feature collection. (optional)</param>
+        /// <param name="geoJson">geoJson by which to constrain results via geographic intersection (optional)</param>
+        /// <returns>CountResponse</returns>
+        CountResponse PostFeaturesCount(string keys = default, string values = default, string featuresSource = default, FeatureCollectionRequest geoJson = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Konexus.Alerting.ApiClient.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="keys">Ordered comma-separated search parameter keys (optional)</param>
+        /// <param name="values">Ordered comma-separated search parameter values to match (optional)</param>
+        /// <param name="featuresSource">The type of object you want to search for in the given feature collection. (optional)</param>
+        /// <param name="geoJson">geoJson by which to constrain results via geographic intersection (optional)</param>
+        /// <returns>ApiResponse of CountResponse</returns>
+        ApiResponse<CountResponse> PostFeaturesCountWithHttpInfo(string keys = default, string values = default, string featuresSource = default, FeatureCollectionRequest geoJson = default);
         #endregion Synchronous Operations
     }
 
@@ -874,6 +898,35 @@ namespace Konexus.Alerting.ApiClient.Api
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (PagedNextdoorChannelStatusResponse)</returns>
         System.Threading.Tasks.Task<ApiResponse<PagedNextdoorChannelStatusResponse>> GetNextdoorChannelStatusWithHttpInfoAsync(int alertId, int? page = default, int? pageSize = default, string sort = default, System.Threading.CancellationToken cancellationToken = default);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Konexus.Alerting.ApiClient.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="keys">Ordered comma-separated search parameter keys (optional)</param>
+        /// <param name="values">Ordered comma-separated search parameter values to match (optional)</param>
+        /// <param name="featuresSource">The type of object you want to search for in the given feature collection. (optional)</param>
+        /// <param name="geoJson">geoJson by which to constrain results via geographic intersection (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of CountResponse</returns>
+        System.Threading.Tasks.Task<CountResponse> PostFeaturesCountAsync(string keys = default, string values = default, string featuresSource = default, FeatureCollectionRequest geoJson = default, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="Konexus.Alerting.ApiClient.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="keys">Ordered comma-separated search parameter keys (optional)</param>
+        /// <param name="values">Ordered comma-separated search parameter values to match (optional)</param>
+        /// <param name="featuresSource">The type of object you want to search for in the given feature collection. (optional)</param>
+        /// <param name="geoJson">geoJson by which to constrain results via geographic intersection (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (CountResponse)</returns>
+        System.Threading.Tasks.Task<ApiResponse<CountResponse>> PostFeaturesCountWithHttpInfoAsync(string keys = default, string values = default, string featuresSource = default, FeatureCollectionRequest geoJson = default, System.Threading.CancellationToken cancellationToken = default);
         #endregion Asynchronous Operations
     }
 
@@ -3600,6 +3653,173 @@ namespace Konexus.Alerting.ApiClient.Api
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("GetNextdoorChannelStatus", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Konexus.Alerting.ApiClient.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="keys">Ordered comma-separated search parameter keys (optional)</param>
+        /// <param name="values">Ordered comma-separated search parameter values to match (optional)</param>
+        /// <param name="featuresSource">The type of object you want to search for in the given feature collection. (optional)</param>
+        /// <param name="geoJson">geoJson by which to constrain results via geographic intersection (optional)</param>
+        /// <returns>CountResponse</returns>
+        public CountResponse PostFeaturesCount(string keys = default, string values = default, string featuresSource = default, FeatureCollectionRequest geoJson = default)
+        {
+            Konexus.Alerting.ApiClient.Client.ApiResponse<CountResponse> localVarResponse = PostFeaturesCountWithHttpInfo(keys, values, featuresSource, geoJson);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Konexus.Alerting.ApiClient.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="keys">Ordered comma-separated search parameter keys (optional)</param>
+        /// <param name="values">Ordered comma-separated search parameter values to match (optional)</param>
+        /// <param name="featuresSource">The type of object you want to search for in the given feature collection. (optional)</param>
+        /// <param name="geoJson">geoJson by which to constrain results via geographic intersection (optional)</param>
+        /// <returns>ApiResponse of CountResponse</returns>
+        public Konexus.Alerting.ApiClient.Client.ApiResponse<CountResponse> PostFeaturesCountWithHttpInfo(string keys = default, string values = default, string featuresSource = default, FeatureCollectionRequest geoJson = default)
+        {
+            Konexus.Alerting.ApiClient.Client.RequestOptions localVarRequestOptions = new Konexus.Alerting.ApiClient.Client.RequestOptions();
+
+            string[] _contentTypes = new string[] {
+                "application/json"
+            };
+
+            // to determine the Accept header
+            string[] _accepts = new string[] {
+                "application/json"
+            };
+
+            var localVarContentType = Konexus.Alerting.ApiClient.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Konexus.Alerting.ApiClient.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            if (keys != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Konexus.Alerting.ApiClient.Client.ClientUtils.ParameterToMultiMap("", "keys", keys));
+            }
+            if (values != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Konexus.Alerting.ApiClient.Client.ClientUtils.ParameterToMultiMap("", "values", values));
+            }
+            if (featuresSource != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Konexus.Alerting.ApiClient.Client.ClientUtils.ParameterToMultiMap("", "featuresSource", featuresSource));
+            }
+            localVarRequestOptions.Data = geoJson;
+
+            // authentication (Oauth2Scheme) required
+            // oauth required
+            if (!string.IsNullOrEmpty(this.Configuration.AccessToken) && !localVarRequestOptions.HeaderParameters.ContainsKey("Authorization"))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+            // authentication (JwtBearerTokenScheme) required
+            if (!string.IsNullOrEmpty(this.Configuration.GetApiKeyWithPrefix("Authorization")))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", this.Configuration.GetApiKeyWithPrefix("Authorization"));
+            }
+
+            // make the HTTP request
+            var localVarResponse = this.Client.Post<CountResponse>("/v2/features/count", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("PostFeaturesCount", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Konexus.Alerting.ApiClient.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="keys">Ordered comma-separated search parameter keys (optional)</param>
+        /// <param name="values">Ordered comma-separated search parameter values to match (optional)</param>
+        /// <param name="featuresSource">The type of object you want to search for in the given feature collection. (optional)</param>
+        /// <param name="geoJson">geoJson by which to constrain results via geographic intersection (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of CountResponse</returns>
+        public async System.Threading.Tasks.Task<CountResponse> PostFeaturesCountAsync(string keys = default, string values = default, string featuresSource = default, FeatureCollectionRequest geoJson = default, System.Threading.CancellationToken cancellationToken = default)
+        {
+            Konexus.Alerting.ApiClient.Client.ApiResponse<CountResponse> localVarResponse = await PostFeaturesCountWithHttpInfoAsync(keys, values, featuresSource, geoJson, cancellationToken).ConfigureAwait(false);
+            return localVarResponse.Data;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <exception cref="Konexus.Alerting.ApiClient.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="keys">Ordered comma-separated search parameter keys (optional)</param>
+        /// <param name="values">Ordered comma-separated search parameter values to match (optional)</param>
+        /// <param name="featuresSource">The type of object you want to search for in the given feature collection. (optional)</param>
+        /// <param name="geoJson">geoJson by which to constrain results via geographic intersection (optional)</param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns>Task of ApiResponse (CountResponse)</returns>
+        public async System.Threading.Tasks.Task<Konexus.Alerting.ApiClient.Client.ApiResponse<CountResponse>> PostFeaturesCountWithHttpInfoAsync(string keys = default, string values = default, string featuresSource = default, FeatureCollectionRequest geoJson = default, System.Threading.CancellationToken cancellationToken = default)
+        {
+
+            Konexus.Alerting.ApiClient.Client.RequestOptions localVarRequestOptions = new Konexus.Alerting.ApiClient.Client.RequestOptions();
+
+            string[] _contentTypes = new string[] {
+                "application/json"
+            };
+
+            // to determine the Accept header
+            string[] _accepts = new string[] {
+                "application/json"
+            };
+
+
+            var localVarContentType = Konexus.Alerting.ApiClient.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = Konexus.Alerting.ApiClient.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            if (keys != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Konexus.Alerting.ApiClient.Client.ClientUtils.ParameterToMultiMap("", "keys", keys));
+            }
+            if (values != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Konexus.Alerting.ApiClient.Client.ClientUtils.ParameterToMultiMap("", "values", values));
+            }
+            if (featuresSource != null)
+            {
+                localVarRequestOptions.QueryParameters.Add(Konexus.Alerting.ApiClient.Client.ClientUtils.ParameterToMultiMap("", "featuresSource", featuresSource));
+            }
+            localVarRequestOptions.Data = geoJson;
+
+            // authentication (Oauth2Scheme) required
+            // oauth required
+            if (!string.IsNullOrEmpty(this.Configuration.AccessToken) && !localVarRequestOptions.HeaderParameters.ContainsKey("Authorization"))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", "Bearer " + this.Configuration.AccessToken);
+            }
+            // authentication (JwtBearerTokenScheme) required
+            if (!string.IsNullOrEmpty(this.Configuration.GetApiKeyWithPrefix("Authorization")))
+            {
+                localVarRequestOptions.HeaderParameters.Add("Authorization", this.Configuration.GetApiKeyWithPrefix("Authorization"));
+            }
+
+            // make the HTTP request
+
+            var localVarResponse = await this.AsynchronousClient.PostAsync<CountResponse>("/v2/features/count", localVarRequestOptions, this.Configuration, cancellationToken).ConfigureAwait(false);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("PostFeaturesCount", localVarResponse);
                 if (_exception != null) throw _exception;
             }
 

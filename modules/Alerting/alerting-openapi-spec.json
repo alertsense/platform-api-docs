@@ -1790,6 +1790,72 @@
                     }
                 ]
             }
+        },
+        "/v2/features/count": {
+            "post": {
+                "operationId": "postFeaturesCount",
+                "tags": [
+                    "alerts"
+                ],
+                "parameters": [
+                    {
+                        "name": "geoJson",
+                        "in": "body",
+                        "description": "geoJson by which to constrain results via geographic intersection",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/FeatureCollectionRequest"
+                        }
+                    },
+                    {
+                        "name": "keys",
+                        "in": "query",
+                        "type": "string",
+                        "description": "Ordered comma-separated search parameter keys",
+                        "required": false
+                    },
+                    {
+                        "name": "values",
+                        "in": "query",
+                        "type": "string",
+                        "description": "Ordered comma-separated search parameter values to match",
+                        "required": false
+                    },
+                    {
+                        "name": "featuresSource",
+                        "in": "query",
+                        "description": "The type of object you want to search for in the given feature collection.",
+                        "required": false,
+                        "type": "string",
+                        "enum": [
+                            "Assets",
+                            "Groups",
+                            "Users",
+                            "PublicUsers",
+                            "InternalUsers"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success.  Returns feature count for given layerId; filtered by geoJson",
+                        "schema": {
+                            "$ref": "#/definitions/CountResponse"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "count": 1
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "JwtBearerTokenScheme": [],
+                        "Oauth2Scheme": []
+                    }
+                ]
+            }
         }
     },
     "parameters": {
@@ -2729,6 +2795,15 @@
             },
             "type": "object"
         },
+        "CountResponse": {
+            "properties": {
+                "count": {
+                    "format": "int32",
+                    "type": "integer"
+                }
+            },
+            "type": "object"
+        },
         "CreateDistributionListFromFileRequest": {
             "type": "object",
             "properties": {
@@ -3344,6 +3419,29 @@
                     "type": "string"
                 }
             }
+        },
+        "FeatureCollectionRequest": {
+            "properties": {
+                "geoJson": {
+                    "$ref": "#/definitions/FeatureCollection"
+                },
+                "countsOnly": {
+                    "type": "boolean"
+                },
+                "groupIds": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "legacyGroupIds": {
+                    "items": {
+                        "type": "integer"
+                    },
+                    "type": "array"
+                }
+            },
+            "type": "object"
         },
         "FeatureLayerSettings": {
             "properties": {
